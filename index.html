@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Utaha — Portfolio</title>
+  <meta name="description" content="Portfolio of Utaha: computer science and crochet projects.">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <a class="skip-link" href="#main">Skip to content</a>
+
+  <header class="navbar">
+    <nav aria-label="Main">
+      <ul class="nav-links">
+        <li><a href="#home" data-section="home" aria-current="page">Home</a></li>
+        <li><a href="#about" data-section="about">About</a></li>
+        <li><a href="projects.html">Projects</a></li>
+        <li><a href="#contact" data-section="contact">Contact</a></li>
+      </ul>
+    </nav>
+  </header>
+
+  <main id="main">
+    <!-- HOME / HERO -->
+    <section class="hero" id="home" aria-labelledby="hero-title">
+      <h1 class="sr-only" id="hero-title">Hello, it’s Utaha!</h1>
+      <div class="sky-scene" aria-hidden="true">
+        <span class="flight-line"></span>
+
+        <div class="cloud">
+          <i class="puff p1"></i><i class="puff p2"></i><i class="puff p3"></i>
+          <i class="puff p4"></i><i class="puff p5"></i>
+          <!-- Put your photo at assets/photo.png (square-ish crop works best).
+               Until then the silhouette placeholder shows. -->
+          <div class="portrait"><img src="assets/photo.png" alt="" onerror="this.remove()"></div>
+        </div>
+
+        <svg class="plane" viewBox="0 0 24 24" focusable="false">
+          <path d="M21 16v-2l-8-5V3.5c0-.83-.67-1.5-1.5-1.5S10 2.67 10 3.5V9l-8 5v2l8-2.5V19l-2 1.5V22l3.5-1 3.5 1v-1.5L13 19v-5.5l8 2.5z"/>
+        </svg>
+
+        <svg class="arc-title" viewBox="0 0 700 200" focusable="false">
+          <defs><path id="arc" d="M 60 150 Q 350 -20 640 150"/></defs>
+          <text><textPath href="#arc" startOffset="50%" text-anchor="middle">Hello, it’s Utaha!</textPath></text>
+        </svg>
+      </div>
+    </section>
+
+    <!-- ABOUT -->
+    <section class="section" id="about" aria-labelledby="about-title">
+      <div class="container split">
+        <h2 class="sky-heading reveal" id="about-title">ABOUT ME</h2>
+        <div class="panel about-text reveal">
+          <p>Hi, I’m Utaha, a fourth-year Computer Science student at the University of Calgary! I am passionate about solving real-world problems with technology. My goal is to apply my skills and knowledge to make the world a more accessible and inclusive place for everyone.</p>
+          <!-- <p>Outside of computer science, I’m fascinated by the aviation and space industries. I love seeing how these fields push the boundaries of innovation and forming new ways of life.</p> -->
+          <p>I also have a deep appreciation for exchanging cultures. I enjoy travelling and learning new languages in my free time, and I believe that understanding diverse perspectives enriches both personal and professional growth.</p>
+          <p>I am always excited to leverage my passions and explore opportunities where technology and culture make a positive impact to the world.</p>
+          <div class="btn-row">
+            <a class="btn" href="projects.html">See projects</a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- CONTACT -->
+    <section class="section contact" id="contact" aria-labelledby="contact-title">
+      <div class="container split">
+        <h2 class="sky-heading reveal" id="contact-title">CONTACT</h2>
+        <form class="form reveal" id="contact-form" novalidate>
+          <label for="name">Your name:</label>
+          <input id="name" name="name" type="text" autocomplete="name" required>
+
+          <label for="email">Your email:</label>
+          <input id="email" name="email" type="email" autocomplete="email" required>
+
+          <label for="subject">Subject:</label>
+          <input id="subject" name="subject" type="text">
+
+          <label for="content">Content:</label>
+          <textarea id="content" name="content" required></textarea>
+
+          <div class="actions"><button class="btn" type="submit">Send</button></div>
+          <p class="form-status" id="form-status" role="status" aria-live="polite"></p>
+        </form>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer">© <span id="year">2026</span></footer>
+
+  <script src="script.js"></script>
+</body>
+</html>
