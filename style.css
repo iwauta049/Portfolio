@@ -254,20 +254,21 @@ p {
 
 .portrait {
   position: absolute;
-  left: 37%;
-  top: 14%;
-  width: 36%;
+  left: 30%;
+  top: 20%;
+  width: 40%;
   aspect-ratio: 1;
-  border-radius: 50%;
+  /* border-radius: 50%; */
   overflow: hidden;
-  background: radial-gradient(circle at 50% 38%, #d9ebf7 0 22%, transparent 23%),
+  /* background: radial-gradient(circle at 50% 38%, #d9ebf7 0 22%, transparent 23%),
     radial-gradient(ellipse at 50% 100%, #bcd9ee 0 48%, transparent 49%),
-    #e8f2fa;
+    #e8f2fa; */
 }
 
 .portrait img {
   width: 100%;
-  height: 100%;
+  object-position: 100% 0%;
+  height: 90%;
   object-fit: cover;
 }
 
@@ -317,7 +318,7 @@ p {
 
 @media (max-width: 760px) {
   .split {
-    grid-template-columns: 1fr;
+    grid-template-columns: 2fr;
   }
 
   .split>.sky-heading {
@@ -359,6 +360,13 @@ p {
 /* ===== Contact form ===== */
 .contact .sky-heading {
   text-shadow: 4px 3px 3px var(--shadow-b);
+}
+
+.contact-info {
+  padding: 1.5rem 0;
+  display: grid;
+  gap: 0.5rem;
+  margin-bottom: 1.5rem;
 }
 
 .form {
@@ -481,7 +489,7 @@ p {
   color: var(--ink-deep);
   background: rgba(255, 255, 255, 0.5);
   border: 1px solid rgba(255, 255, 255, 0.75);
-  border-radius: 20px;
+  border-radius: 25px;
   padding: 1.1rem;
   backdrop-filter: blur(6px);
   -webkit-backdrop-filter: blur(6px);
@@ -496,13 +504,21 @@ p {
 
 .project-card .thumb {
   aspect-ratio: 4 / 3;
-  border-radius: 14px;
+  border-radius: 10px;
   margin-bottom: 0.9rem;
   display: grid;
   place-items: center;
   color: #5b7aa8;
+  overflow: hidden;
   font-size: 0.9rem;
   background: linear-gradient(160deg, #e6f1fb, #bcd5f0);
+}
+
+.project-card .thumb img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
 }
 
 .project-card h3 {
@@ -526,7 +542,7 @@ p {
 .detail-grid {
   display: grid;
   gap: clamp(2rem, 5vw, 5rem);
-  grid-template-columns: minmax(0, 1fr) minmax(0, 1.2fr);
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1.5fr);
   align-items: center;
 }
 

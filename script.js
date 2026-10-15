@@ -137,11 +137,11 @@
     var name = form.elements["name"].value.trim();
     var email = form.elements["email"].value.trim();
     var subject = form.elements["subject"].value.trim();
-    var content = form.elements["content"].value.trim();
+    var messge = form.elements["messge"].value.trim();
 
     status.classList.remove("error");
 
-    if (!name || !email || !content) {
+    if (!name || !email || !messge) {
       status.textContent = "Please fill in your name, email and message.";
       status.classList.add("error");
       return;
@@ -153,7 +153,7 @@
     }
 
     var mailSubject = encodeURIComponent(subject || "Portfolio message from " + name);
-    var body = encodeURIComponent(content + "\n\n— " + name + " (" + email + ")");
+    var body = encodeURIComponent(messge + "\n\n— " + name + " (" + email + ")");
     window.location.href = "mailto:" + TO_EMAIL + "?subject=" + mailSubject + "&body=" + body;
     status.textContent = "Opening your email app…";
   });
