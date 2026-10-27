@@ -1,0 +1,305 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Family of Buttons · Utaha Iwai</title>
+  <meta name="description" content="Family of Buttons, a CPSC 581 group project: one button per teammate, designed as stars in a shared constellation.">
+  <meta name="theme-color" content="#0F1428">
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='-12 -12 24 24'%3E%3Cpath d='M0 -12 L3 -3 L12 0 L3 3 L0 12 L-3 3 L-12 0 L-3 -3 Z' fill='%23FFE9A8'/%3E%3C/svg%3E">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,600&family=Chango&display=swap">
+  <link rel="stylesheet" href="css/project.css">
+  <script>document.documentElement.classList.add('js');</script>
+</head>
+
+<!--
+  HOW TO MAKE THE NEXT PROJECT PAGE
+  1. Duplicate this file (e.g. my-next-project.html).
+  2. Change the <title>, description, hero text and the four sections.
+  3. Keep css/project.css and js/project.js as they are. They work for any project.
+  4. Carousel images: one <figure class="slide"> per image. Put the text that
+     appears under the image in data-caption, and write a short alt for the image.
+-->
+
+<body>
+  <div class="sky" aria-hidden="true"></div>
+
+  <div class="page">
+    <a class="skip" href="#main">Skip to content</a>
+
+    <div class="topbar">
+      <!-- index.html#code returns to the room with the code projects card already open -->
+      <a class="pill" href="index.html#code">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="15 5 8 12 15 19"/></svg>
+        Back to the room
+      </a>
+      <nav class="jump" aria-label="On this page">
+        <a href="#overview">Overview</a>
+        <a href="#ideation">Ideation</a>
+        <a href="#decision">Design decision</a>
+        <a href="#final">Final product</a>
+      </nav>
+    </div>
+
+    <header class="hero">
+      <p class="kicker">CPSC 581 · Group project 1</p>
+      <h1>Family of Buttons</h1>
+      <!-- <p class="tagline">Four teammates, four stars, one constellation.</p> -->
+
+      <!-- the team, drawn as a constellation -->
+      <svg class="constellation" viewBox="0 -20 520 150" role="img" aria-label="Team constellation: Utaha, Ishika, Linden and Yasmin">
+        <path class="c-line" pathLength="1" d="M50 84 L178 34 L330 90 L470 38"/>
+        <path class="c-line" pathLength="1" style="animation-delay:1.4s" d="M178 34 L470 38"/>
+
+        <g transform="translate(50 84)">
+          <circle class="c-halo" r="19"/>
+          <path class="c-spark" d="M0 -11 L3 -3 L11 0 L3 3 L0 11 L-3 3 L-11 0 L-3 -3 Z"/>
+        </g>
+        <g transform="translate(178 34)">
+          <circle class="c-halo" r="19"/>
+          <path class="c-spark" style="animation-delay:.8s" d="M0 -11 L3 -3 L11 0 L3 3 L0 11 L-3 3 L-11 0 L-3 -3 Z"/>
+        </g>
+        <g transform="translate(330 90)">
+          <circle class="c-halo" r="19"/>
+          <path class="c-spark" style="animation-delay:1.6s" d="M0 -11 L3 -3 L11 0 L3 3 L0 11 L-3 3 L-11 0 L-3 -3 Z"/>
+        </g>
+        <g transform="translate(470 38)">
+          <circle class="c-halo" r="19"/>
+          <path class="c-spark" style="animation-delay:2.4s" d="M0 -11 L3 -3 L11 0 L3 3 L0 11 L-3 3 L-11 0 L-3 -3 Z"/>
+        </g>
+
+        <text class="c-name" x="50" y="120">Utaha</text>
+        <text class="c-name" x="178" y="4">Ishika</text>
+        <text class="c-name" x="330" y="124">Linden</text>
+        <text class="c-name" x="470" y="8">Yasmin</text>
+      </svg>
+
+      <div class="cta">
+        <a class="btn" href="https://ishikaghosh04.github.io/CPSC581A1/" target="_blank" rel="noopener noreferrer">
+          See the product online
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 17 L17 7 M8 7 H17 V16"/></svg>
+          <span class="sr-only">(opens in a new tab)</span>
+        </a>
+        <a class="btn ghost" href="https://github.com/ishikaghosh04/CPSC581A1" target="_blank" rel="noopener noreferrer">
+          GitHub repo
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 17 L17 7 M8 7 H17 V16"/></svg>
+          <span class="sr-only">(opens in a new tab)</span>
+        </a>
+      </div>
+    </header>
+
+    <main id="main">
+
+      <!-- ============ Overview ============ -->
+      <section class="sheet reveal" id="overview" aria-labelledby="overview-title">
+        <div class="copy">
+          <p class="eyebrow">
+            <svg class="spark" viewBox="-12 -12 24 24" aria-hidden="true"><path d="M0 -12 L3 -3 L12 0 L3 3 L0 12 L-3 3 L-12 0 L-3 -3 Z" fill="currentColor"/></svg>
+            the brief
+          </p>
+          <h2 id="overview-title">Project overview</h2>
+          <p>Sketch, design, implement, and document a web/software application in which the interaction centres around exactly one button per team member, such that:</p>
+          <ul class="star-list">
+            <li>Each button represents one team member’s personality or likeness in some way.</li>
+            <li>Interactions with the application reveal aspects of the dynamics between the team members, e.g., highlighting similarities/differences between {experiences, values, personalities} of the team members.</li>
+          </ul>
+        </div>
+      </section>
+
+      <!-- ============ Initial ideation ============ -->
+      <section class="sheet reveal" id="ideation" aria-labelledby="ideation-title">
+        <div class="split">
+          <div class="copy">
+            <p class="eyebrow">
+              <svg class="spark" viewBox="-12 -12 24 24" aria-hidden="true"><path d="M0 -12 L3 -3 L12 0 L3 3 L0 12 L-3 3 L-12 0 L-3 -3 Z" fill="currentColor"/></svg>
+              first sketches
+            </p>
+            <h2 id="ideation-title">Initial ideation</h2>
+            <p>During the initial ideation phase, we first brainstormed our personalities as well as our hobbies to create unique button designs that reflect each team member's characteristics. We then sketched out our ideas and created sketches to visualize the button designs and their interactions. The sketches helped us to refine our ideas and select the best concepts for implementation.</p>
+          </div>
+
+          <div class="carousel" data-carousel role="group" aria-roledescription="carousel" aria-label="Initial sketches">
+            <div class="viewport">
+              <div class="track">
+                <figure class="slide" role="group" aria-roledescription="slide" aria-label="1 of 3"
+                  data-caption="Reaction sketch: if a person is a leader type, clicking on their button will burst everyone else's buttons (like a chain reaction).">
+                  <button class="zoom" type="button" aria-haspopup="dialog">
+                    <img src="assets/family-of-buttons/ideation-gallery/ideation1.jpg" alt="Sketch of the chain-reaction idea, where one button bursts the others">
+                  </button>
+                </figure>
+                <figure class="slide" role="group" aria-roledescription="slide" aria-label="2 of 3"
+                  data-caption="Pressing a button causes a character to dress up and act out in a way that represents their personality and hobbies.">
+                  <button class="zoom" type="button" aria-haspopup="dialog">
+                    <img src="assets/family-of-buttons/ideation-gallery/ideation2.jpg" alt="Sketch of a character dressing up when its button is pressed" loading="lazy">
+                  </button>
+                </figure>
+                <figure class="slide" role="group" aria-roledescription="slide" aria-label="3 of 3"
+                  data-caption="RPG game theme: each button represents a character in a game, and clicking on their button will trigger an action that reflects their personality to help the team achieve a common goal.">
+                  <button class="zoom" type="button" aria-haspopup="dialog">
+                    <img src="assets/family-of-buttons/ideation-gallery/ideation3.jpg" alt="Sketch of the RPG idea, with each button as a game character" loading="lazy">
+                  </button>
+                </figure>
+              </div>
+              <button class="arrow prev" type="button" aria-label="Previous image">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="15 5 8 12 15 19"/></svg>
+              </button>
+              <button class="arrow next" type="button" aria-label="Next image">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="9 5 16 12 9 19"/></svg>
+              </button>
+            </div>
+            <div class="meta">
+              <span class="count" aria-hidden="true">1 / 3</span>
+              <p class="caption">Reaction sketch: if a person is a leader type, clicking on their button will burst everyone else's buttons (like a chain reaction).</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ============ Design decision ============ -->
+      <section class="sheet reveal" id="decision" aria-labelledby="decision-title">
+        <div class="split flip">
+          <div class="copy">
+            <p class="eyebrow">
+              <svg class="spark" viewBox="-12 -12 24 24" aria-hidden="true"><path d="M0 -12 L3 -3 L12 0 L3 3 L0 12 L-3 3 L-12 0 L-3 -3 Z" fill="currentColor"/></svg>
+              choosing a direction
+            </p>
+            <h2 id="decision-title">Design decision</h2>
+            <p>After comparing initial sketches and different design concepts to express ourselves as distinct buttons, we selected the idea of representing the members as stars in the sky, and all of us being part of the same constellation. The reason for selecting this idea was that it represents a story of how we are all connected and how we can work together as a group to achieve a common goal.</p>
+          </div>
+
+          <div class="carousel" data-carousel role="group" aria-roledescription="carousel" aria-label="Design decision sketches">
+            <div class="viewport">
+              <div class="track">
+                <figure class="slide" role="group" aria-roledescription="slide" aria-label="1 of 2"
+                  data-caption="Constellation sketch: different connections between the stars represent different relationships between the team members (similarities, differences, etc.).">
+                  <button class="zoom" type="button" aria-haspopup="dialog">
+                    <img src="assets/family-of-buttons/design-decision-gallery/design-decision1.jpg" alt="Sketch of a constellation connecting the team's stars">
+                  </button>
+                </figure>
+                <figure class="slide" role="group" aria-roledescription="slide" aria-label="2 of 2"
+                  data-caption="States of my star button: shy and introverted, but gains confidence as the user keeps interacting with it."
+                  >
+                  <button class="zoom" type="button" aria-haspopup="dialog">
+                    <img src="assets/family-of-buttons/design-decision-gallery/design-decision2.jpg" alt="Sketches of a star button changing from shy to confident" loading="lazy">
+                  </button>
+                </figure>
+              </div>
+              <button class="arrow prev" type="button" aria-label="Previous image">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="15 5 8 12 15 19"/></svg>
+              </button>
+              <button class="arrow next" type="button" aria-label="Next image">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="9 5 16 12 9 19"/></svg>
+              </button>
+            </div>
+            <div class="meta">
+              <span class="count" aria-hidden="true">1 / 2</span>
+              <p class="caption">Constellation sketch: different connections between the stars represent different relationships between the team members (similarities, differences, etc.).</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ============ Final product ============ -->
+      <section class="sheet reveal" id="final" aria-labelledby="final-title">
+        <div class="split">
+          <div class="copy">
+            <p class="eyebrow">
+              <svg class="spark" viewBox="-12 -12 24 24" aria-hidden="true"><path d="M0 -12 L3 -3 L12 0 L3 3 L0 12 L-3 3 L-12 0 L-3 -3 Z" fill="currentColor"/></svg>
+              the finished sky
+            </p>
+            <h2 id="final-title">Final product</h2>
+            <p>For the final product, we used Figma to create background designs and digitally drew the interactive elements, including different star states. To showcase our team to its fullest extent, these features were implemented:</p>
+            <ul class="star-list">
+              <li>Clicking on a star reveals that person's characteristics and hobbies.</li>
+              <li>Different reaction times to hovering depending on the personality of the person: extraverts have a faster reaction time.</li>
+              <li>Dragging a star close to the sun/moon reveals that person's lifestyle (morning/night person).</li>
+              <li>Selecting two or more stars highlights shared hobbies and a descriptive caption about their personality.</li>
+            </ul>
+            <p>Our stars not only represent our personalities, but also our relationships with each other with respect to the constellation theme.</p>
+            <p>
+              <a href="https://github.com/ishikaghosh04/CPSC581A1" target="_blank" rel="noopener noreferrer">Visit the GitHub repo<span class="sr-only"> (opens in a new tab)</span></a>
+              or
+              <a href="https://ishikaghosh04.github.io/CPSC581A1/" target="_blank" rel="noopener noreferrer">see the product online<span class="sr-only"> (opens in a new tab)</span></a>.
+            </p>
+          </div>
+
+          <div class="carousel" data-carousel role="group" aria-roledescription="carousel" aria-label="Final product screenshots">
+            <div class="viewport">
+              <div class="track">
+                <figure class="slide" role="group" aria-roledescription="slide" aria-label="1 of 6"
+                  data-caption="Default screen: stars impersonating each of the members float in the sky.">
+                  <button class="zoom" type="button" aria-haspopup="dialog">
+                    <img src="assets/family-of-buttons/product-gallery/product1.png" alt="Screenshot of the default sky with a star for each team member">
+                  </button>
+                </figure>
+                <figure class="slide" role="group" aria-roledescription="slide" aria-label="2 of 6"
+                  data-caption="Star states: hovering and clicking reveals that person's characteristics and hobbies.">
+                  <button class="zoom" type="button" aria-haspopup="dialog">
+                    <img src="assets/family-of-buttons/product-gallery/product2.png" alt="Screenshot of a star's hover and click states" loading="lazy">
+                  </button>
+                </figure>
+                <figure class="slide" role="group" aria-roledescription="slide" aria-label="3 of 6"
+                  data-caption="Dragging stars: dragging a star close to the sun/moon reveals that person's lifestyle (morning/night person)."
+                  >
+                  <button class="zoom" type="button" aria-haspopup="dialog">
+                    <img src="assets/family-of-buttons/product-gallery/product3.png" alt="Screenshot of a star being dragged toward the sun or moon" loading="lazy">
+                  </button>
+                </figure>
+                <figure class="slide" role="group" aria-roledescription="slide" aria-label="4 of 6"
+                  data-caption="Connection (1): selecting two stars highlights shared hobbies and a descriptive caption about their personality.">
+                  <button class="zoom" type="button" aria-haspopup="dialog">
+                    <img src="assets/family-of-buttons/product-gallery/product4.png" alt="Screenshot of two selected stars with shared hobbies highlighted" loading="lazy">
+                  </button>
+                </figure>
+                <figure class="slide" role="group" aria-roledescription="slide" aria-label="5 of 6"
+                  data-caption="Connection (2): selecting more stars highlights their relationships.">
+                  <button class="zoom" type="button" aria-haspopup="dialog">
+                    <img src="assets/family-of-buttons/product-gallery/product5.png" alt="Screenshot of several selected stars and their relationships" loading="lazy">
+                  </button>
+                </figure>
+                <figure class="slide" role="group" aria-roledescription="slide" aria-label="6 of 6"
+                  data-caption="Final view: all stars connected in a network.">
+                  <button class="zoom" type="button" aria-haspopup="dialog">
+                    <img src="assets/family-of-buttons/product-gallery/product6.png" alt="Screenshot of all the stars connected as one constellation" loading="lazy">
+                  </button>
+                </figure>
+              </div>
+              <button class="arrow prev" type="button" aria-label="Previous image">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="15 5 8 12 15 19"/></svg>
+              </button>
+              <button class="arrow next" type="button" aria-label="Next image">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="9 5 16 12 9 19"/></svg>
+              </button>
+            </div>
+            <div class="meta">
+              <span class="count" aria-hidden="true">1 / 6</span>
+              <p class="caption">Default screen: stars impersonating each of the members float in the sky.</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+    </main>
+
+    <footer class="foot">
+      © <span id="year">2026</span> Utaha Iwai ·
+      <a href="index.html#code">Back to the room</a>
+    </footer>
+  </div>
+
+  <!-- enlarged image viewer (opens when a picture is clicked) -->
+  <dialog id="lightbox" class="lightbox" aria-label="Enlarged image">
+    <div class="lb-inner">
+      <img alt="">
+      <p class="lb-caption"></p>
+      <form method="dialog">
+        <button class="lb-close" aria-label="Close enlarged image">×</button>
+      </form>
+    </div>
+  </dialog>
+
+  <script src="js/project.js"></script>
+</body>
+</html>
