@@ -1497,7 +1497,7 @@
         </div>
         <div class="hcl" style="position:absolute;left:0;top:0;transform-origin:0 0;transform:{{tfc_desk}};display:{{cdsp_desk}};--inv:{{inv_desk}}">
           <button class="hot" aria-label="Open code projects" onClick="{{ openCode }}"
-            style="position:absolute;left:802px;top:384px;width:130px;height:94px;background:transparent;border:0;border-radius:14px;cursor:pointer;padding:0"><span class="tag">computer science projects</span></button>
+            style="position:absolute;left:802px;top:384px;width:130px;height:94px;background:transparent;border:0;border-radius:14px;cursor:pointer;padding:0"><span class="tag">cs projects</span></button>
           <button class="hot" aria-label="Say hi" onClick="{{ openContact }}"
             style="position:absolute;left:934px;top:402px;width:102px;height:76px;background:transparent;border:0;border-radius:14px;cursor:pointer;padding:0"><span class="tag">say hi</span></button>
         </div>
@@ -1508,27 +1508,27 @@
         <div class="hcl" style="position:absolute;left:0;top:0;transform-origin:0 0;transform:{{tfc_fireplace}};display:{{cdsp_fireplace}};--inv:{{inv_fireplace}}">
           <button class="hot" aria-label="About me, by the fire" onClick="{{ openAbout }}"
             style="position:absolute;left:480px;top:432px;width:300px;height:190px;background:transparent;border:0;border-radius:14px;cursor:pointer;padding:0"><span class="tag">about me</span></button>
-          <button class="hot" aria-label="Pet the ginger cat" onClick="{{ meow1 }}"
-            style="position:absolute;left:488px;top:298px;width:106px;height:120px;background:transparent;border:0;border-radius:40px;cursor:pointer;padding:0"><span class="tag">pet me?</span></button>
+          <button  aria-label="Pet the ginger cat" onClick="{{ meow1 }}"
+            style="position:absolute;left:488px;top:298px;width:106px;height:120px;background:transparent;border:0;border-radius:40px;cursor:pointer;padding:0"></button>
           <sc-if value="{{ say1 }}" hint-placeholder-val="{{ false }}">
             <div class="bubble" style="left:534px;top:252px">mrrp!</div>
           </sc-if>
         </div>
         <div class="hcl" style="position:absolute;left:0;top:0;transform-origin:0 0;transform:{{tfc_cat2}};display:{{cdsp_cat2}};--inv:{{inv_cat2}}">
-          <button class="hot" aria-label="Pet the calico cat" onClick="{{ meow2 }}"
-            style="position:absolute;left:946px;top:624px;width:100px;height:124px;background:transparent;border:0;border-radius:40px;cursor:pointer;padding:0"><span class="tag">pet me?</span></button>
+          <button  aria-label="Pet the calico cat" onClick="{{ meow2 }}"
+            style="position:absolute;left:946px;top:624px;width:100px;height:124px;background:transparent;border:0;border-radius:40px;cursor:pointer;padding:0"></button>
           <sc-if value="{{ say2 }}" hint-placeholder-val="{{ false }}">
             <div class="bubble" style="left:996px;top:580px">…purr</div>
           </sc-if>
         </div>
         <div class="hcl" style="position:absolute;left:0;top:0;transform-origin:0 0;transform:{{tfc_clock}};display:{{cdsp_clock}};--inv:{{inv_clock}}">
-          <button class="hot" aria-label="{{ clockLabel }}" onClick="{{ cycleTime }}"
+          <button aria-label="{{ clockLabel }}" onClick="{{ cycleTime }}"
             style="position:absolute;left:852px;top:146px;width:132px;height:156px;background:transparent;border:0;border-radius:20px;cursor:pointer;padding:0">
           </button>
         </div>
         <div class="hcl" style="position:absolute;left:0;top:0;transform-origin:0 0;transform:{{tfc_window}};display:{{cdsp_window}};--inv:{{inv_window}}">
-          <button class="hot" aria-label="{{ seasonLabel }}" onClick="{{ cycleSeason }}"
-            style="position:absolute;left:288px;top:304px;width:60px;height:108px;background:transparent;border:0;border-radius:14px;cursor:pointer;padding:0"><span class="tag">{{ seasonTag }}</span></button>
+          <button  aria-label="{{ seasonLabel }}" onClick="{{ cycleSeason }}"
+            style="position:absolute;left:288px;top:304px;width:60px;height:108px;background:transparent;border:0;border-radius:14px;cursor:pointer;padding:0"></button>
         </div>
 
 
@@ -1790,16 +1790,18 @@ class Component extends DCLogic {
       at('fireplace', 630, 626, xo + 410, yF + 22 * kF, kF);
       at('desk', 918, 622, xo + 16 + 120 * kD, yF + 18 * kD, kD);
       const deskTop = yF + 18 * kD - (622 - 385) * kD;
-      const top0 = 110, hW = (426 - 118) * kW, hC = (300 - 150) * kC;
-      const gap = Math.max(14, (deskTop - top0 - hW - hC) / 3);
-      const wTop = top0 + gap, cTop = wTop + hW + gap;
+      const top0 = 124, hW = (426 - 118) * kW, hC = (300 - 150) * kC;
+      // window: centred in the free space of the left column between the title and the desk
+      const wTop = top0 + Math.max(14, (deskTop - top0 - hW) / 2);
       at('window', 226, 118, xo + 16 + 186 * kW, wTop, kW);
-      at('clock', 918, 150, xo + 16 + 120 * kD, cTop, kC);
+      // clock: on the chimney, centred, just above the shelves (top shelf plant starts around y=116)
+      const shelfTop = yF + 22 * kF + (116 - 626) * kF;
+      at('clock', 918, 150, xo + 410, Math.max(top0, shelfTop - hC - 18), kC);
       at('rug', 640, 715, xo + 290, yF + 130, 0.6);
       at('basket', 230, 718, xo + 175, yF + 235, 0.8);
       at('monstera', 87, 778, xo + 52, yF + 272, 0.6);
       at('cat2', 995, 748, xo + 450, yF + 252, 0.85);
-      put('header', xo + 16, 14, 0.8);
+      put('header', xo + 16, 44, 0.8);   // below the fairy lights
       lightsK = 0.55; lightsX = W / 2 - 640 * lightsK;
     }
     return { vw: vw, vh: vh, s: s, W: W, H: H, yF: yF, C: C, lightsK: lightsK, lightsX: lightsX, portrait: portrait };
