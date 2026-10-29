@@ -179,6 +179,32 @@
           }
         }
 
+        @keyframes fl {
+          0%, 100% { transform: scale(1, 1) skewX(0deg) }
+          22% { transform: scale(.95, 1.07) skewX(2.4deg) }
+          50% { transform: scale(1.05, .94) skewX(-2.8deg) }
+          76% { transform: scale(.97, 1.05) skewX(1.6deg) }
+        }
+        .fl { transform-box: fill-box; transform-origin: 50% 100%; animation: fl 1.8s ease-in-out infinite }
+        /* sparks: the rise (one smooth move up) and the side-to-side wobble (a smooth back-and-forth)
+           are separate animations, so the path never stops and starts */
+        @keyframes spRise {
+          from { transform: translateY(0) }
+          to { transform: translateY(var(--dy)) }
+        }
+        @keyframes spSway {
+          from { transform: translateX(calc(var(--w) * -1)) }
+          to { transform: translateX(var(--w)) }
+        }
+        @keyframes spFade {
+          0% { opacity: 0 }
+          12% { opacity: 1 }
+          65% { opacity: .85 }
+          100% { opacity: 0 }
+        }
+        .sp { animation: spRise var(--t, 2.8s) cubic-bezier(.3, .35, .55, 1) infinite; animation-delay: var(--d, 0s) }
+        .sp-s { opacity: 0; animation: spSway var(--ts, 1.3s) ease-in-out infinite alternate, spFade var(--t, 2.8s) linear infinite;
+                animation-delay: var(--d2, 0s), var(--d, 0s) }
         .flame {
           transform-box: fill-box;
           transform-origin: 50% 100%;
@@ -282,6 +308,9 @@
           .cat-blink,
           .cur,
           .flame,
+          .fl,
+          .sp,
+          .sp-s,
           .fall,
           .steam {
             animation: none
@@ -383,8 +412,11 @@
                ################################################################ -->
           <defs>
             <g id="ivy">
-              <path d="M0 0 C-3 -4 -9 -3 -10 -9 C-6 -9 -5 -13 -6 -16 C-2 -14 -2 -18 0 -23 C2 -18 2 -14 6 -16 C5 -13 6 -9 10 -9 C9 -3 3 -4 0 0 Z" fill="currentColor"></path>
-              <path d="M0 -2 V-19 M0 -6 L-6 -9 M0 -6 L6 -9 M0 -12 L-3 -15 M0 -12 L3 -15" stroke="#D8EBC0" stroke-width=".7" stroke-linecap="round" fill="none" opacity=".55"></path>
+              <path
+                d="M0 0 C-3 -4 -9 -3 -10 -9 C-6 -9 -5 -13 -6 -16 C-2 -14 -2 -18 0 -23 C2 -18 2 -14 6 -16 C5 -13 6 -9 10 -9 C9 -3 3 -4 0 0 Z"
+                fill="currentColor"></path>
+              <path d="M0 -2 V-19 M0 -6 L-6 -9 M0 -6 L6 -9 M0 -12 L-3 -15 M0 -12 L3 -15" stroke="#D8EBC0"
+                stroke-width=".7" stroke-linecap="round" fill="none" opacity=".55"></path>
             </g>
             <g id="aloe">
               <path d="M0 0 C-6 -6 -6 -19 0 -31 C6 -19 6 -6 0 0 Z" fill="currentColor"></path>
@@ -393,14 +425,24 @@
             </g>
             <mask id="mmask" maskUnits="userSpaceOnUse" x="-60" y="-80" width="120" height="110">
               <rect x="-60" y="-80" width="120" height="110" fill="#fff"></rect>
-              <path d="M9 -12 L52 -3 L52 7 Z M9 -28 L52 -19 L52 -9 Z M9 -44 L50 -37 L50 -27 Z M-9 -12 L-52 -3 L-52 7 Z M-9 -28 L-52 -19 L-52 -9 Z M-9 -44 L-50 -37 L-50 -27 Z" fill="#000"></path>
-              <path d="M17 -18 a1.8 3.2 0 1 0 3.6 0 a1.8 3.2 0 1 0 -3.6 0 Z M-20.6 -18 a1.8 3.2 0 1 0 3.6 0 a1.8 3.2 0 1 0 -3.6 0 Z" fill="#000"></path>
+              <path
+                d="M9 -12 L52 -3 L52 7 Z M9 -28 L52 -19 L52 -9 Z M9 -44 L50 -37 L50 -27 Z M-9 -12 L-52 -3 L-52 7 Z M-9 -28 L-52 -19 L-52 -9 Z M-9 -44 L-50 -37 L-50 -27 Z"
+                fill="#000"></path>
+              <path
+                d="M17 -18 a1.8 3.2 0 1 0 3.6 0 a1.8 3.2 0 1 0 -3.6 0 Z M-20.6 -18 a1.8 3.2 0 1 0 3.6 0 a1.8 3.2 0 1 0 -3.6 0 Z"
+                fill="#000"></path>
             </mask>
-            <clipPath id="mclip"><path d="M0 -2 C-6 8 -30 12 -38 -8 C-46 -30 -30 -58 0 -64 C30 -58 46 -30 38 -8 C30 12 6 8 0 -2 Z" transform="scale(.92) translate(0 -2)"></path></clipPath>
+            <clipPath id="mclip">
+              <path d="M0 -2 C-6 8 -30 12 -38 -8 C-46 -30 -30 -58 0 -64 C30 -58 46 -30 38 -8 C30 12 6 8 0 -2 Z"
+                transform="scale(.92) translate(0 -2)"></path>
+            </clipPath>
             <g id="monstera">
-              <path d="M0 -2 C-6 8 -30 12 -38 -8 C-46 -30 -30 -58 0 -64 C30 -58 46 -30 38 -8 C30 12 6 8 0 -2 Z" fill="currentColor" mask="url(#mmask)"></path>
-              <path d="M0 -4 V-58 M0 -6 Q18 -3 32 10 M0 -6 Q-18 -3 -32 10 M0 -20 Q22 -16 42 -6 M0 -20 Q-22 -16 -42 -6 M0 -36 Q22 -34 40 -26 M0 -36 Q-22 -34 -40 -26 M0 -50 Q14 -50 26 -46 M0 -50 Q-14 -50 -26 -46"
-                stroke="#D5EBB8" stroke-width=".7" stroke-linecap="round" fill="none" opacity=".7" mask="url(#mmask)" clip-path="url(#mclip)"></path>
+              <path d="M0 -2 C-6 8 -30 12 -38 -8 C-46 -30 -30 -58 0 -64 C30 -58 46 -30 38 -8 C30 12 6 8 0 -2 Z"
+                fill="currentColor" mask="url(#mmask)"></path>
+              <path
+                d="M0 -4 V-58 M0 -6 Q18 -3 32 10 M0 -6 Q-18 -3 -32 10 M0 -20 Q22 -16 42 -6 M0 -20 Q-22 -16 -42 -6 M0 -36 Q22 -34 40 -26 M0 -36 Q-22 -34 -40 -26 M0 -50 Q14 -50 26 -46 M0 -50 Q-14 -50 -26 -46"
+                stroke="#D5EBB8" stroke-width=".7" stroke-linecap="round" fill="none" opacity=".7" mask="url(#mmask)"
+                clip-path="url(#mclip)"></path>
             </g>
             <g id="banana">
               <path d="M0 0 C-28 -30 -30 -85 0 -122 C30 -85 28 -30 0 0Z" fill="#8DBE4B"></path>
@@ -426,40 +468,72 @@
           </defs>
           <defs>
             <g id="lightsTile">
-          <path d="M0 20 Q320 74 640 24 Q960 74 1280 20" stroke="#6A4A34" stroke-width="2" fill="none"></path>
-          <g fill="#F6D98A" opacity="{{bulb}}">
-            <circle class="tw" cx="80" cy="39" r="9"></circle>
-            <circle cx="80" cy="39" r="5"></circle>
-            <circle class="tw" style="animation-delay:.4s" cx="160" cy="48" r="9"></circle>
-            <circle cx="160" cy="48" r="5"></circle>
-            <circle class="tw" style="animation-delay:.8s" cx="240" cy="53" r="9"></circle>
-            <circle cx="240" cy="53" r="5"></circle>
-            <circle class="tw" style="animation-delay:1.2s" cx="320" cy="55" r="9"></circle>
-            <circle cx="320" cy="55" r="5"></circle>
-            <circle class="tw" style="animation-delay:1.6s" cx="400" cy="54" r="9"></circle>
-            <circle cx="400" cy="54" r="5"></circle>
-            <circle class="tw" style="animation-delay:2s" cx="480" cy="50" r="9"></circle>
-            <circle cx="480" cy="50" r="5"></circle>
-            <circle class="tw" style="animation-delay:2.4s" cx="560" cy="42" r="9"></circle>
-            <circle cx="560" cy="42" r="5"></circle>
-            <circle class="tw" style="animation-delay:2.8s" cx="640" cy="31" r="9"></circle>
-            <circle cx="640" cy="31" r="5"></circle>
-            <circle class="tw" style="animation-delay:.2s" cx="720" cy="42" r="9"></circle>
-            <circle cx="720" cy="42" r="5"></circle>
-            <circle class="tw" style="animation-delay:.6s" cx="800" cy="50" r="9"></circle>
-            <circle cx="800" cy="50" r="5"></circle>
-            <circle class="tw" style="animation-delay:1s" cx="880" cy="54" r="9"></circle>
-            <circle cx="880" cy="54" r="5"></circle>
-            <circle class="tw" style="animation-delay:1.4s" cx="960" cy="55" r="9"></circle>
-            <circle cx="960" cy="55" r="5"></circle>
-            <circle class="tw" style="animation-delay:1.8s" cx="1040" cy="53" r="9"></circle>
-            <circle cx="1040" cy="53" r="5"></circle>
-            <circle class="tw" style="animation-delay:2.2s" cx="1120" cy="48" r="9"></circle>
-            <circle cx="1120" cy="48" r="5"></circle>
-            <circle class="tw" style="animation-delay:2.6s" cx="1200" cy="39" r="9"></circle>
-            <circle cx="1200" cy="39" r="5"></circle>
-          </g>
+              <path d="M0 20 Q320 74 640 24 Q960 74 1280 20" stroke="#6A4A34" stroke-width="2" fill="none"></path>
+              <g fill="#F6D98A" opacity="{{bulb}}">
+                <circle class="tw" cx="80" cy="39" r="9"></circle>
+                <circle cx="80" cy="39" r="5"></circle>
+                <circle class="tw" style="animation-delay:.4s" cx="160" cy="48" r="9"></circle>
+                <circle cx="160" cy="48" r="5"></circle>
+                <circle class="tw" style="animation-delay:.8s" cx="240" cy="53" r="9"></circle>
+                <circle cx="240" cy="53" r="5"></circle>
+                <circle class="tw" style="animation-delay:1.2s" cx="320" cy="55" r="9"></circle>
+                <circle cx="320" cy="55" r="5"></circle>
+                <circle class="tw" style="animation-delay:1.6s" cx="400" cy="54" r="9"></circle>
+                <circle cx="400" cy="54" r="5"></circle>
+                <circle class="tw" style="animation-delay:2s" cx="480" cy="50" r="9"></circle>
+                <circle cx="480" cy="50" r="5"></circle>
+                <circle class="tw" style="animation-delay:2.4s" cx="560" cy="42" r="9"></circle>
+                <circle cx="560" cy="42" r="5"></circle>
+                <circle class="tw" style="animation-delay:2.8s" cx="640" cy="31" r="9"></circle>
+                <circle cx="640" cy="31" r="5"></circle>
+                <circle class="tw" style="animation-delay:.2s" cx="720" cy="42" r="9"></circle>
+                <circle cx="720" cy="42" r="5"></circle>
+                <circle class="tw" style="animation-delay:.6s" cx="800" cy="50" r="9"></circle>
+                <circle cx="800" cy="50" r="5"></circle>
+                <circle class="tw" style="animation-delay:1s" cx="880" cy="54" r="9"></circle>
+                <circle cx="880" cy="54" r="5"></circle>
+                <circle class="tw" style="animation-delay:1.4s" cx="960" cy="55" r="9"></circle>
+                <circle cx="960" cy="55" r="5"></circle>
+                <circle class="tw" style="animation-delay:1.8s" cx="1040" cy="53" r="9"></circle>
+                <circle cx="1040" cy="53" r="5"></circle>
+                <circle class="tw" style="animation-delay:2.2s" cx="1120" cy="48" r="9"></circle>
+                <circle cx="1120" cy="48" r="5"></circle>
+                <circle class="tw" style="animation-delay:2.6s" cx="1200" cy="39" r="9"></circle>
+                <circle cx="1200" cy="39" r="5"></circle>
+              </g>
             </g>
+          </defs>
+          <defs>
+            <filter id="fireBlur" x="-25%" y="-25%" width="150%" height="150%">
+              <feGaussianBlur stdDeviation="0.9"></feGaussianBlur>
+            </filter>
+            <radialGradient id="fireHalo" cx=".5" cy=".6" r=".5">
+              <stop offset="0" stop-color="#FFB45F" stop-opacity=".34"></stop>
+              <stop offset=".55" stop-color="#F28A3A" stop-opacity=".12"></stop>
+              <stop offset="1" stop-color="#E8641F" stop-opacity="0"></stop>
+            </radialGradient>
+            <radialGradient id="fireEmber" cx=".5" cy=".5" r=".5">
+              <stop offset="0" stop-color="#FFB45F" stop-opacity=".9"></stop>
+              <stop offset=".6" stop-color="#E8641F" stop-opacity=".45"></stop>
+              <stop offset="1" stop-color="#C0391A" stop-opacity="0"></stop>
+            </radialGradient>
+            <linearGradient id="flOuter" gradientUnits="userSpaceOnUse" x1="0" y1="608" x2="0" y2="494">
+              <stop offset="0" stop-color="#F0792A" stop-opacity=".98"></stop>
+              <stop offset=".45" stop-color="#E8641F" stop-opacity=".9"></stop>
+              <stop offset=".8" stop-color="#C93A1A" stop-opacity=".55"></stop>
+              <stop offset="1" stop-color="#B02E18" stop-opacity="0"></stop>
+            </linearGradient>
+            <linearGradient id="flMid" gradientUnits="userSpaceOnUse" x1="0" y1="608" x2="0" y2="514">
+              <stop offset="0" stop-color="#FFD66E" stop-opacity="1"></stop>
+              <stop offset=".5" stop-color="#FFA93C" stop-opacity=".92"></stop>
+              <stop offset=".85" stop-color="#F0742A" stop-opacity=".45"></stop>
+              <stop offset="1" stop-color="#F0742A" stop-opacity="0"></stop>
+            </linearGradient>
+            <linearGradient id="flCore" gradientUnits="userSpaceOnUse" x1="0" y1="608" x2="0" y2="546">
+              <stop offset="0" stop-color="#FFF8D6" stop-opacity="1"></stop>
+              <stop offset=".5" stop-color="#FFE493" stop-opacity=".9"></stop>
+              <stop offset="1" stop-color="#FFC24D" stop-opacity="0"></stop>
+            </linearGradient>
           </defs>
           <!-- wall + floor (drawn in room units, always fills the whole screen) -->
           <g transform="{{bgTf}}">
@@ -471,1016 +545,1221 @@
             <path d="{{seamD}}" stroke="#7E5A3A" stroke-width="2" opacity=".6" fill="none"></path>
           </g>
           <g class="cl" data-cl="beam" transform="{{tfs_beam}}" display="{{dsp_beam}}">
-          <!-- window light on the floor -->
-          <path d="M170 620 L390 620 L480 790 L110 790 Z" fill="{{beamFill}}" opacity="{{beam}}"></path>
+            <!-- window light on the floor -->
+            <path d="M170 620 L390 620 L480 790 L110 790 Z" fill="{{beamFill}}" opacity="{{beam}}"></path>
           </g>
 
           <g class="cl" data-cl="window" transform="{{tfs_window}}" display="{{dsp_window}}">
-          <!-- window view -->
-          <g clip-path="url(#win)">
-            <rect x="90" y="130" width="280" height="290" fill="url(#skyG)"></rect>
-            <circle cx="{{sunX}}" cy="{{sunY}}" r="{{haloR}}" fill="{{sunFill}}" opacity="{{halo}}"></circle>
-            <circle cx="{{sunX}}" cy="{{sunY}}" r="{{sunR}}" fill="{{sunFill}}"></circle>
-            <g opacity="{{starOp}}" fill="#FBF4E2">
-              <circle class="tw" cx="205" cy="175" r="2.2"></circle>
-              <circle class="tw" style="animation-delay:.7s" cx="262" cy="190" r="1.8"></circle>
-              <circle class="tw" style="animation-delay:1.4s" cx="322" cy="172" r="2.4"></circle>
-              <circle class="tw" style="animation-delay:2.1s" cx="180" cy="290" r="1.8"></circle>
-              <circle class="tw" style="animation-delay:.3s" cx="125" cy="300" r="2"></circle>
-              <circle class="tw" style="animation-delay:1.1s" cx="250" cy="335" r="2.2"></circle>
-              <circle class="tw" style="animation-delay:1.8s" cx="340" cy="340" r="1.8"></circle>
-              <circle class="tw" style="animation-delay:2.5s" cx="150" cy="350" r="1.6"></circle>
-              <circle class="tw" style="animation-delay:.9s" cx="300" cy="225" r="1.8"></circle>
-              <circle class="tw" style="animation-delay:1.6s" cx="215" cy="240" r="1.6"></circle>
-            </g>
-            <path d="M90 372 L130 332 L165 356 L210 316 L255 352 L300 324 L370 362 V420 H90 Z" fill="{{mtn}}"></path>
-            <path d="M90 392 Q160 362 230 388 T370 378 V420 H90 Z" fill="{{hill}}"></path>
-            <path d="M90 392 Q160 362 230 388 T370 378 V420 H90 Z" fill="#F4F7FA" opacity="{{hillSnow}}" class="fade">
-            </path>
-            <g fill="{{pine}}">
-              <path transform="translate(112 398)" d="M0 -34 L-9 -14 H-4 L-13 0 H13 L4 -14 H9 Z"></path>
-              <path transform="translate(138 393)" d="M0 -26 L-8 -10 H-3 L-11 0 H11 L3 -10 H8 Z"></path>
-              <path transform="translate(168 400)" d="M0 -38 L-10 -16 H-5 L-14 0 H14 L5 -16 H10 Z"></path>
-              <path transform="translate(292 402)" d="M0 -28 L-8 -11 H-3 L-12 0 H12 L3 -11 H8 Z"></path>
-            </g>
-
-            <!-- tree -->
-            <!-- Reusable rounded cherry blossom petal -->
-            <path id="petal"
-              d="M 0,0 C -1.5,-2 -4,-5.5 -4,-8 C -4,-10.5 -1.5,-12 0,-9 C 1.5,-12 4,-10.5 4,-8 C 4,-5.5 1.5,-2 0,0 Z" />
-
-            <!-- branches -->
-            <path d="M348 420 C344 370 338 330 324 286" stroke="#3E2F22" stroke-width="12" stroke-linecap="round"
-              fill="none"></path>
-            <path d="M324 286 C300 266 280 256 250 250" stroke="#3E2F22" stroke-width="6" stroke-linecap="round"
-              fill="none"></path>
-            <path d="M330 300 C352 270 366 246 376 216" stroke="#3E2F22" stroke-width="6" stroke-linecap="round"
-              fill="none"></path>
-            <path d="M326 290 C316 256 310 230 300 200" stroke="#3E2F22" stroke-width="5" stroke-linecap="round"
-              fill="none"></path>
-            <path d="M300 262 C282 280 262 290 238 296" stroke="#3E2F22" stroke-width="4" stroke-linecap="round"
-              fill="none"></path>
-            <path d="M276 258 C268 244 262 238 252 232" stroke="#3E2F22" stroke-width="3" stroke-linecap="round"
-              fill="none"></path>
-
-
-            <!-- Soft, layered seasonal canopy -->
-            <defs>
-              <filter id="canopyBlur" x="-30%" y="-30%" width="160%" height="160%">
-                <feGaussianBlur stdDeviation="4" />
-              </filter>
-            </defs>
-
-            <!-- Spring: blended pink canopy -->
-            <g class="fade" opacity="{{opSpring}}" filter="url(#canopyBlur)">
-              <g opacity="0.55">
-                <circle cx="228" cy="230" r="22" fill="#F6C5D5" />
-                <circle cx="247" cy="244" r="27" fill="#F9D9E3" />
-                <circle cx="268" cy="247" r="23" fill="#EFB3C8" />
-                <circle cx="288" cy="226" r="26" fill="#F7D0DF" />
-                <circle cx="305" cy="207" r="23" fill="#F4BFD1" />
-                <circle cx="331" cy="224" r="26" fill="#F9DCE5" />
-                <circle cx="355" cy="231" r="24" fill="#EFB8CD" />
-                <circle cx="371" cy="211" r="19" fill="#F7D1DF" />
-
-                <circle cx="229" cy="270" r="23" fill="#F4C4D5" />
-                <circle cx="251" cy="282" r="25" fill="#F8D7E2" />
-                <circle cx="276" cy="269" r="27" fill="#F0B8CC" />
-                <circle cx="299" cy="254" r="24" fill="#F9DCE5" />
-                <circle cx="322" cy="265" r="26" fill="#F5C7D8" />
-                <circle cx="345" cy="267" r="23" fill="#F8D4E0" />
-                <circle cx="366" cy="252" r="21" fill="#F0B6CA" />
-
-                <circle cx="260" cy="216" r="20" fill="#FCE4EA" />
-                <circle cx="284" cy="197" r="22" fill="#F3C0D2" />
-                <circle cx="320" cy="192" r="19" fill="#F9D8E3" />
-                <circle cx="346" cy="201" r="21" fill="#F3C4D5" />
+            <!-- window view -->
+            <g clip-path="url(#win)">
+              <rect x="90" y="130" width="280" height="290" fill="url(#skyG)"></rect>
+              <circle cx="{{sunX}}" cy="{{sunY}}" r="{{haloR}}" fill="{{sunFill}}" opacity="{{halo}}"></circle>
+              <circle cx="{{sunX}}" cy="{{sunY}}" r="{{sunR}}" fill="{{sunFill}}"></circle>
+              <g opacity="{{starOp}}" fill="#FBF4E2">
+                <circle class="tw" cx="205" cy="175" r="2.2"></circle>
+                <circle class="tw" style="animation-delay:.7s" cx="262" cy="190" r="1.8"></circle>
+                <circle class="tw" style="animation-delay:1.4s" cx="322" cy="172" r="2.4"></circle>
+                <circle class="tw" style="animation-delay:2.1s" cx="180" cy="290" r="1.8"></circle>
+                <circle class="tw" style="animation-delay:.3s" cx="125" cy="300" r="2"></circle>
+                <circle class="tw" style="animation-delay:1.1s" cx="250" cy="335" r="2.2"></circle>
+                <circle class="tw" style="animation-delay:1.8s" cx="340" cy="340" r="1.8"></circle>
+                <circle class="tw" style="animation-delay:2.5s" cx="150" cy="350" r="1.6"></circle>
+                <circle class="tw" style="animation-delay:.9s" cx="300" cy="225" r="1.8"></circle>
+                <circle class="tw" style="animation-delay:1.6s" cx="215" cy="240" r="1.6"></circle>
               </g>
-            </g>
-
-            <!-- Summer: richer, blended green canopy -->
-            <g class="fade" opacity="{{opSummer}}" filter="url(#canopyBlur)">
-              <g opacity="0.55">
-                <circle cx="228" cy="230" r="24" fill="#75A968" />
-                <circle cx="248" cy="245" r="28" fill="#8FBA78" />
-                <circle cx="270" cy="242" r="25" fill="#5F9858" />
-                <circle cx="291" cy="222" r="27" fill="#80AE6D" />
-                <circle cx="309" cy="204" r="24" fill="#6FA363" />
-                <circle cx="333" cy="224" r="27" fill="#91B979" />
-                <circle cx="356" cy="229" r="24" fill="#72A865" />
-                <circle cx="372" cy="211" r="21" fill="#83B272" />
-
-                <circle cx="230" cy="272" r="25" fill="#82B474" />
-                <circle cx="252" cy="286" r="26" fill="#639B58" />
-                <circle cx="276" cy="270" r="28" fill="#8AB975" />
-                <circle cx="299" cy="254" r="25" fill="#6FA565" />
-                <circle cx="322" cy="264" r="27" fill="#80AF6B" />
-                <circle cx="346" cy="267" r="24" fill="#5E9655" />
-                <circle cx="366" cy="251" r="22" fill="#8AB675" />
-
-                <circle cx="260" cy="215" r="21" fill="#9AC581" />
-                <circle cx="285" cy="196" r="23" fill="#76A968" />
-                <circle cx="319" cy="191" r="21" fill="#88B675" />
-                <circle cx="347" cy="201" r="22" fill="#669C5C" />
+              <path d="M90 372 L130 332 L165 356 L210 316 L255 352 L300 324 L370 362 V420 H90 Z" fill="{{mtn}}"></path>
+              <path d="M90 392 Q160 362 230 388 T370 378 V420 H90 Z" fill="{{hill}}"></path>
+              <path d="M90 392 Q160 362 230 388 T370 378 V420 H90 Z" fill="#F4F7FA" opacity="{{hillSnow}}" class="fade">
+              </path>
+              <g fill="{{pine}}">
+                <path transform="translate(112 398)" d="M0 -34 L-9 -14 H-4 L-13 0 H13 L4 -14 H9 Z"></path>
+                <path transform="translate(138 393)" d="M0 -26 L-8 -10 H-3 L-11 0 H11 L3 -10 H8 Z"></path>
+                <path transform="translate(168 400)" d="M0 -38 L-10 -16 H-5 L-14 0 H14 L5 -16 H10 Z"></path>
+                <path transform="translate(292 402)" d="M0 -28 L-8 -11 H-3 L-12 0 H12 L3 -11 H8 Z"></path>
               </g>
-            </g>
+
+              <!-- tree -->
+              <!-- Reusable rounded cherry blossom petal -->
+              <path id="petal"
+                d="M 0,0 C -1.5,-2 -4,-5.5 -4,-8 C -4,-10.5 -1.5,-12 0,-9 C 1.5,-12 4,-10.5 4,-8 C 4,-5.5 1.5,-2 0,0 Z" />
+
+              <!-- branches -->
+              <path d="M348 420 C344 370 338 330 324 286" stroke="#3E2F22" stroke-width="12" stroke-linecap="round"
+                fill="none"></path>
+              <path d="M324 286 C300 266 280 256 250 250" stroke="#3E2F22" stroke-width="6" stroke-linecap="round"
+                fill="none"></path>
+              <path d="M330 300 C352 270 366 246 376 216" stroke="#3E2F22" stroke-width="6" stroke-linecap="round"
+                fill="none"></path>
+              <path d="M326 290 C316 256 310 230 300 200" stroke="#3E2F22" stroke-width="5" stroke-linecap="round"
+                fill="none"></path>
+              <path d="M300 262 C282 280 262 290 238 296" stroke="#3E2F22" stroke-width="4" stroke-linecap="round"
+                fill="none"></path>
+              <path d="M276 258 C268 244 262 238 252 232" stroke="#3E2F22" stroke-width="3" stroke-linecap="round"
+                fill="none"></path>
 
 
-            <g class="fade" opacity="{{leafOp}}">
-              <g fill="{{leafA}}">
-                <use href="#leaf" transform="translate(250 246) rotate(-20) scale(1.1)"></use>
-                <use href="#leaf" transform="translate(268 252) rotate(30) scale(1.1)"></use>
-                <use href="#leaf" transform="translate(286 258) rotate(-10) scale(1.1)"></use>
-                <use href="#leaf" transform="translate(240 288) rotate(20) scale(1.1)"></use>
-                <use href="#leaf" transform="translate(262 296) rotate(-30) scale(1.1)"></use>
-                <use href="#leaf" transform="translate(254 230) rotate(10) scale(1.1)"></use>
-                <use href="#leaf" transform="translate(302 198) rotate(-25) scale(1.1)"></use>
-                <use href="#leaf" transform="translate(298 226) rotate(20) scale(1.1)"></use>
-                <use href="#leaf" transform="translate(312 246) rotate(25) scale(1.1)"></use>
-                <use href="#leaf" transform="translate(374 214) rotate(-20) scale(1.1)"></use>
-                <use href="#leaf" transform="translate(346 264) rotate(-25) scale(1.1)"></use>
-                <use href="#leaf" transform="translate(324 262) rotate(-10) scale(1.1)"></use>
-                <use href="#leaf" transform="translate(276 280) rotate(35) scale(1.1)"></use>
-                <use href="#leaf" transform="translate(214 236) rotate(-18) scale(1.1)"></use>
-                <use href="#leaf" transform="translate(220 274) rotate(25) scale(1.1)"></use>
-                <use href="#leaf" transform="translate(292 182) rotate(-25) scale(1.1)"></use>
-                <use href="#leaf" transform="translate(332 190) rotate(18) scale(1.1)"></use>
-                <use href="#leaf" transform="translate(362 282) rotate(-35) scale(1.1)"></use>
-                <use href="#leaf" transform="translate(382 244) rotate(20) scale(1.1)"></use>
+              <!-- Soft, layered seasonal canopy -->
+              <defs>
+                <filter id="canopyBlur" x="-30%" y="-30%" width="160%" height="160%">
+                  <feGaussianBlur stdDeviation="4" />
+                </filter>
+              </defs>
+
+              <!-- Spring: blended pink canopy -->
+              <g class="fade" opacity="{{opSpring}}" filter="url(#canopyBlur)">
+                <g opacity="0.55">
+                  <circle cx="228" cy="230" r="22" fill="#F6C5D5" />
+                  <circle cx="247" cy="244" r="27" fill="#F9D9E3" />
+                  <circle cx="268" cy="247" r="23" fill="#EFB3C8" />
+                  <circle cx="288" cy="226" r="26" fill="#F7D0DF" />
+                  <circle cx="305" cy="207" r="23" fill="#F4BFD1" />
+                  <circle cx="331" cy="224" r="26" fill="#F9DCE5" />
+                  <circle cx="355" cy="231" r="24" fill="#EFB8CD" />
+                  <circle cx="371" cy="211" r="19" fill="#F7D1DF" />
+
+                  <circle cx="229" cy="270" r="23" fill="#F4C4D5" />
+                  <circle cx="251" cy="282" r="25" fill="#F8D7E2" />
+                  <circle cx="276" cy="269" r="27" fill="#F0B8CC" />
+                  <circle cx="299" cy="254" r="24" fill="#F9DCE5" />
+                  <circle cx="322" cy="265" r="26" fill="#F5C7D8" />
+                  <circle cx="345" cy="267" r="23" fill="#F8D4E0" />
+                  <circle cx="366" cy="252" r="21" fill="#F0B6CA" />
+
+                  <circle cx="260" cy="216" r="20" fill="#FCE4EA" />
+                  <circle cx="284" cy="197" r="22" fill="#F3C0D2" />
+                  <circle cx="320" cy="192" r="19" fill="#F9D8E3" />
+                  <circle cx="346" cy="201" r="21" fill="#F3C4D5" />
+                </g>
               </g>
-              <g fill="{{leafB}}">
-                <use href="#leaf" transform="translate(258 238) rotate(40) scale(1.1)"></use>
-                <use href="#leaf" transform="translate(276 246) rotate(-35) scale(1.1)"></use>
-                <use href="#leaf" transform="translate(292 250) rotate(25) scale(1.1)"></use>
-                <use href="#leaf" transform="translate(246 298) rotate(-25) scale(1.1)"></use>
-                <use href="#leaf" transform="translate(268 288) rotate(35) scale(1.1)"></use>
-                <use href="#leaf" transform="translate(262 222) rotate(-30) scale(1.1)"></use>
-                <use href="#leaf" transform="translate(308 208) rotate(35) scale(1.1)"></use>
-                <use href="#leaf" transform="translate(306 234) rotate(-30) scale(1.1)"></use>
-                <use href="#leaf" transform="translate(318 256) rotate(-35) scale(1.1)"></use>
-                <use href="#leaf" transform="translate(366 224) rotate(30) scale(1.1)"></use>
-                <use href="#leaf" transform="translate(352 248) rotate(-30) scale(1.1)"></use>
-                <use href="#leaf" transform="translate(340 236) rotate(-35) scale(1.1)"></use>
-                <use href="#leaf" transform="translate(330 276) rotate(20) scale(1.1)"></use>
-                <use href="#leaf" transform="translate(236 214) rotate(30) scale(1.1)"></use>
-                <use href="#leaf" transform="translate(206 262) rotate(-28) scale(1.1)"></use>
-                <use href="#leaf" transform="translate(286 206) rotate(28) scale(1.1)"></use>
-                <use href="#leaf" transform="translate(336 224) rotate(-20) scale(1.1)"></use>
-                <use href="#leaf" transform="translate(348 294) rotate(26) scale(1.1)"></use>
-                <use href="#leaf" transform="translate(382 200) rotate(-30) scale(1.1)"></use>
-              </g>
-            </g>
-            <!-- Cherry blossoms: original positions preserved -->
-            <g class="fade" opacity="{{opSpring}}">
 
-              <!-- Blossom 1 -->
-              <g transform="translate(250 246)" fill="#F7D7E2" stroke="#D78EA1" stroke-width=".5" stroke-opacity=".5"">
+              <!-- Summer: richer, blended green canopy -->
+              <g class="fade" opacity="{{opSummer}}" filter="url(#canopyBlur)">
+                <g opacity="0.55">
+                  <circle cx="228" cy="230" r="24" fill="#75A968" />
+                  <circle cx="248" cy="245" r="28" fill="#8FBA78" />
+                  <circle cx="270" cy="242" r="25" fill="#5F9858" />
+                  <circle cx="291" cy="222" r="27" fill="#80AE6D" />
+                  <circle cx="309" cy="204" r="24" fill="#6FA363" />
+                  <circle cx="333" cy="224" r="27" fill="#91B979" />
+                  <circle cx="356" cy="229" r="24" fill="#72A865" />
+                  <circle cx="372" cy="211" r="21" fill="#83B272" />
+
+                  <circle cx="230" cy="272" r="25" fill="#82B474" />
+                  <circle cx="252" cy="286" r="26" fill="#639B58" />
+                  <circle cx="276" cy="270" r="28" fill="#8AB975" />
+                  <circle cx="299" cy="254" r="25" fill="#6FA565" />
+                  <circle cx="322" cy="264" r="27" fill="#80AF6B" />
+                  <circle cx="346" cy="267" r="24" fill="#5E9655" />
+                  <circle cx="366" cy="251" r="22" fill="#8AB675" />
+
+                  <circle cx="260" cy="215" r="21" fill="#9AC581" />
+                  <circle cx="285" cy="196" r="23" fill="#76A968" />
+                  <circle cx="319" cy="191" r="21" fill="#88B675" />
+                  <circle cx="347" cy="201" r="22" fill="#669C5C" />
+                </g>
+              </g>
+
+
+              <g class="fade" opacity="{{leafOp}}">
+                <g fill="{{leafA}}">
+                  <use href="#leaf" transform="translate(250 246) rotate(-20) scale(1.1)"></use>
+                  <use href="#leaf" transform="translate(268 252) rotate(30) scale(1.1)"></use>
+                  <use href="#leaf" transform="translate(286 258) rotate(-10) scale(1.1)"></use>
+                  <use href="#leaf" transform="translate(240 288) rotate(20) scale(1.1)"></use>
+                  <use href="#leaf" transform="translate(262 296) rotate(-30) scale(1.1)"></use>
+                  <use href="#leaf" transform="translate(254 230) rotate(10) scale(1.1)"></use>
+                  <use href="#leaf" transform="translate(302 198) rotate(-25) scale(1.1)"></use>
+                  <use href="#leaf" transform="translate(298 226) rotate(20) scale(1.1)"></use>
+                  <use href="#leaf" transform="translate(312 246) rotate(25) scale(1.1)"></use>
+                  <use href="#leaf" transform="translate(374 214) rotate(-20) scale(1.1)"></use>
+                  <use href="#leaf" transform="translate(346 264) rotate(-25) scale(1.1)"></use>
+                  <use href="#leaf" transform="translate(324 262) rotate(-10) scale(1.1)"></use>
+                  <use href="#leaf" transform="translate(276 280) rotate(35) scale(1.1)"></use>
+                  <use href="#leaf" transform="translate(214 236) rotate(-18) scale(1.1)"></use>
+                  <use href="#leaf" transform="translate(220 274) rotate(25) scale(1.1)"></use>
+                  <use href="#leaf" transform="translate(292 182) rotate(-25) scale(1.1)"></use>
+                  <use href="#leaf" transform="translate(332 190) rotate(18) scale(1.1)"></use>
+                  <use href="#leaf" transform="translate(362 282) rotate(-35) scale(1.1)"></use>
+                  <use href="#leaf" transform="translate(382 244) rotate(20) scale(1.1)"></use>
+                </g>
+                <g fill="{{leafB}}">
+                  <use href="#leaf" transform="translate(258 238) rotate(40) scale(1.1)"></use>
+                  <use href="#leaf" transform="translate(276 246) rotate(-35) scale(1.1)"></use>
+                  <use href="#leaf" transform="translate(292 250) rotate(25) scale(1.1)"></use>
+                  <use href="#leaf" transform="translate(246 298) rotate(-25) scale(1.1)"></use>
+                  <use href="#leaf" transform="translate(268 288) rotate(35) scale(1.1)"></use>
+                  <use href="#leaf" transform="translate(262 222) rotate(-30) scale(1.1)"></use>
+                  <use href="#leaf" transform="translate(308 208) rotate(35) scale(1.1)"></use>
+                  <use href="#leaf" transform="translate(306 234) rotate(-30) scale(1.1)"></use>
+                  <use href="#leaf" transform="translate(318 256) rotate(-35) scale(1.1)"></use>
+                  <use href="#leaf" transform="translate(366 224) rotate(30) scale(1.1)"></use>
+                  <use href="#leaf" transform="translate(352 248) rotate(-30) scale(1.1)"></use>
+                  <use href="#leaf" transform="translate(340 236) rotate(-35) scale(1.1)"></use>
+                  <use href="#leaf" transform="translate(330 276) rotate(20) scale(1.1)"></use>
+                  <use href="#leaf" transform="translate(236 214) rotate(30) scale(1.1)"></use>
+                  <use href="#leaf" transform="translate(206 262) rotate(-28) scale(1.1)"></use>
+                  <use href="#leaf" transform="translate(286 206) rotate(28) scale(1.1)"></use>
+                  <use href="#leaf" transform="translate(336 224) rotate(-20) scale(1.1)"></use>
+                  <use href="#leaf" transform="translate(348 294) rotate(26) scale(1.1)"></use>
+                  <use href="#leaf" transform="translate(382 200) rotate(-30) scale(1.1)"></use>
+                </g>
+              </g>
+              <!-- Cherry blossoms: original positions preserved -->
+              <g class="fade" opacity="{{opSpring}}">
+
+                <!-- Blossom 1 -->
+                <g transform="translate(250 246)" fill="#F7D7E2" stroke="#D78EA1" stroke-width=".5" stroke-opacity=".5"">
                 <use href=" #petal" transform="rotate(0)">
-                </use>
-                <use href="#petal" transform="rotate(72)"></use>
-                <use href="#petal" transform="rotate(144)"></use>
-                <use href="#petal" transform="rotate(216)"></use>
-                <use href="#petal" transform="rotate(288)"></use>
-                <circle r="3.2" fill="#E6BA4B" stroke="none"></circle>
-              </g>
+                  </use>
+                  <use href="#petal" transform="rotate(72)"></use>
+                  <use href="#petal" transform="rotate(144)"></use>
+                  <use href="#petal" transform="rotate(216)"></use>
+                  <use href="#petal" transform="rotate(288)"></use>
+                  <circle r="3.2" fill="#E6BA4B" stroke="none"></circle>
+                </g>
 
-              <!-- Blossom 2 -->
-              <g transform="translate(270 250) rotate(16)" fill="#F9D3DF" stroke="#D78EA1" stroke-width=".5"
-                stroke-opacity=".5"">
+                <!-- Blossom 2 -->
+                <g transform="translate(270 250) rotate(16)" fill="#F9D3DF" stroke="#D78EA1" stroke-width=".5"
+                  stroke-opacity=".5"">
                 <use href=" #petal" transform="rotate(0)">
-                </use>
-                <use href="#petal" transform="rotate(72)"></use>
-                <use href="#petal" transform="rotate(144)"></use>
-                <use href="#petal" transform="rotate(216)"></use>
-                <use href="#petal" transform="rotate(288)"></use>
-                <circle r="2" fill="#E6BA4B" stroke="none"></circle>
-              </g>
+                  </use>
+                  <use href="#petal" transform="rotate(72)"></use>
+                  <use href="#petal" transform="rotate(144)"></use>
+                  <use href="#petal" transform="rotate(216)"></use>
+                  <use href="#petal" transform="rotate(288)"></use>
+                  <circle r="2" fill="#E6BA4B" stroke="none"></circle>
+                </g>
 
-              <!-- Blossom 3 -->
-              <g transform="translate(302 210) rotate(-20)" fill="#F6C9DA" stroke="#D78EA1" stroke-width=".5"
-                stroke-opacity=".5"">
+                <!-- Blossom 3 -->
+                <g transform="translate(302 210) rotate(-20)" fill="#F6C9DA" stroke="#D78EA1" stroke-width=".5"
+                  stroke-opacity=".5"">
                 <use href=" #petal" transform="rotate(0)">
-                </use>
-                <use href="#petal" transform="rotate(72)"></use>
-                <use href="#petal" transform="rotate(144)"></use>
-                <use href="#petal" transform="rotate(216)"></use>
-                <use href="#petal" transform="rotate(288)"></use>
-                <circle r="2" fill="#E6BA4B" stroke="none"></circle>
-              </g>
+                  </use>
+                  <use href="#petal" transform="rotate(72)"></use>
+                  <use href="#petal" transform="rotate(144)"></use>
+                  <use href="#petal" transform="rotate(216)"></use>
+                  <use href="#petal" transform="rotate(288)"></use>
+                  <circle r="2" fill="#E6BA4B" stroke="none"></circle>
+                </g>
 
-              <!-- Blossom 4 -->
-              <g transform="translate(334 244) rotate(28)" fill="#F8DDE6" stroke="#D78EA1" stroke-width=".5"
-                stroke-opacity=".5"">
+                <!-- Blossom 4 -->
+                <g transform="translate(334 244) rotate(28)" fill="#F8DDE6" stroke="#D78EA1" stroke-width=".5"
+                  stroke-opacity=".5"">
                 <use href=" #petal" transform="rotate(0)">
-                </use>
-                <use href="#petal" transform="rotate(72)"></use>
-                <use href="#petal" transform="rotate(144)"></use>
-                <use href="#petal" transform="rotate(216)"></use>
-                <use href="#petal" transform="rotate(288)"></use>
-                <circle r="2.2" fill="#E6BA4B" stroke="none"></circle>
-              </g>
+                  </use>
+                  <use href="#petal" transform="rotate(72)"></use>
+                  <use href="#petal" transform="rotate(144)"></use>
+                  <use href="#petal" transform="rotate(216)"></use>
+                  <use href="#petal" transform="rotate(288)"></use>
+                  <circle r="2.2" fill="#E6BA4B" stroke="none"></circle>
+                </g>
 
-              <!-- Blossom 5 -->
-              <g transform="translate(288 282) rotate(-12)" fill="#F8D5E1" stroke="#D78EA1" stroke-width=".5"
-                stroke-opacity=".5"">
+                <!-- Blossom 5 -->
+                <g transform="translate(288 282) rotate(-12)" fill="#F8D5E1" stroke="#D78EA1" stroke-width=".5"
+                  stroke-opacity=".5"">
                 <use href=" #petal" transform="rotate(0)">
-                </use>
-                <use href="#petal" transform="rotate(72)"></use>
-                <use href="#petal" transform="rotate(144)"></use>
-                <use href="#petal" transform="rotate(216)"></use>
-                <use href="#petal" transform="rotate(288)"></use>
-                <circle r="2.2" fill="#E6BA4B" stroke="none"></circle>
-              </g>
+                  </use>
+                  <use href="#petal" transform="rotate(72)"></use>
+                  <use href="#petal" transform="rotate(144)"></use>
+                  <use href="#petal" transform="rotate(216)"></use>
+                  <use href="#petal" transform="rotate(288)"></use>
+                  <circle r="2.2" fill="#E6BA4B" stroke="none"></circle>
+                </g>
 
-              <!-- Blossom 6 -->
-              <g transform="translate(214 236) rotate(24)" fill="#F8D2DE" stroke="#D78EA1" stroke-width=".5"
-                stroke-opacity=".5"">
+                <!-- Blossom 6 -->
+                <g transform="translate(214 236) rotate(24)" fill="#F8D2DE" stroke="#D78EA1" stroke-width=".5"
+                  stroke-opacity=".5"">
                 <use href=" #petal" transform="rotate(0)">
-                </use>
-                <use href="#petal" transform="rotate(72)"></use>
-                <use href="#petal" transform="rotate(144)"></use>
-                <use href="#petal" transform="rotate(216)"></use>
-                <use href="#petal" transform="rotate(288)"></use>
-                <circle r="2.2" fill="#E6BA4B" stroke="none"></circle>
-              </g>
+                  </use>
+                  <use href="#petal" transform="rotate(72)"></use>
+                  <use href="#petal" transform="rotate(144)"></use>
+                  <use href="#petal" transform="rotate(216)"></use>
+                  <use href="#petal" transform="rotate(288)"></use>
+                  <circle r="2.2" fill="#E6BA4B" stroke="none"></circle>
+                </g>
 
+              </g>
+              <g class="fade" opacity="{{snowOp}}" stroke="#F4F7FA" stroke-width="3.5" stroke-linecap="round"
+                fill="none">
+                <path d="M322 281 C300 261 280 251 252 245"></path>
+                <path d="M333 296 C354 266 367 243 376 212"></path>
+                <path d="M323 286 C313 252 307 226 297 198"></path>
+                <path d="M298 258 C280 276 262 286 238 292"></path>
+              </g>
+              <!-- drifting petals, leaves or snow -->
+              <g class="fade" opacity="{{fallOp}}" fill="{{fallColor}}">
+                <circle class="fall" style="animation-delay:-1s" cx="130" cy="150" r="3"></circle>
+                <circle class="fall" style="animation-delay:-3s;animation-duration:8s" cx="180" cy="140" r="2.6">
+                </circle>
+                <circle class="fall" style="animation-delay:-5s" cx="225" cy="150" r="3.2"></circle>
+                <circle class="fall" style="animation-delay:-2s;animation-duration:6s" cx="275" cy="140" r="2.8">
+                </circle>
+                <circle class="fall" style="animation-delay:-4s;animation-duration:9s" cx="320" cy="150" r="3"></circle>
+                <circle class="fall" style="animation-delay:-6s" cx="350" cy="140" r="2.6"></circle>
+                <circle class="fall" style="animation-delay:-.5s;animation-duration:7.5s" cx="110" cy="190" r="2.8">
+                </circle>
+              </g>
             </g>
-            <g class="fade" opacity="{{snowOp}}" stroke="#F4F7FA" stroke-width="3.5" stroke-linecap="round" fill="none">
-              <path d="M322 281 C300 261 280 251 252 245"></path>
-              <path d="M333 296 C354 266 367 243 376 212"></path>
-              <path d="M323 286 C313 252 307 226 297 198"></path>
-              <path d="M298 258 C280 276 262 286 238 292"></path>
-            </g>
-            <!-- drifting petals, leaves or snow -->
-            <g class="fade" opacity="{{fallOp}}" fill="{{fallColor}}">
-              <circle class="fall" style="animation-delay:-1s" cx="130" cy="150" r="3"></circle>
-              <circle class="fall" style="animation-delay:-3s;animation-duration:8s" cx="180" cy="140" r="2.6"></circle>
-              <circle class="fall" style="animation-delay:-5s" cx="225" cy="150" r="3.2"></circle>
-              <circle class="fall" style="animation-delay:-2s;animation-duration:6s" cx="275" cy="140" r="2.8"></circle>
-              <circle class="fall" style="animation-delay:-4s;animation-duration:9s" cx="320" cy="150" r="3"></circle>
-              <circle class="fall" style="animation-delay:-6s" cx="350" cy="140" r="2.6"></circle>
-              <circle class="fall" style="animation-delay:-.5s;animation-duration:7.5s" cx="110" cy="190" r="2.8">
-              </circle>
-            </g>
-          </g>
-          <!-- window frame, curtains, sill + vase -->
-          <g filter="url(#wobble)">
-            <path d="M90 410 V250 A140 110 0 0 1 370 250 V410 Z" fill="none" stroke="#7A5A3E" stroke-width="10"></path>
-            <path d="M230 140 V410 M90 300 H370" stroke="#7A5A3E" stroke-width="6"></path>
-            <rect x="78" y="410" width="304" height="14" rx="4" fill="#8A6445"></rect>
-            <rect x="78" y="410" width="304" height="4" rx="2" fill="#A9825A"></rect>
-            <line x1="50" y1="128" x2="410" y2="128" stroke="#6A4A34" stroke-width="6" stroke-linecap="round"></line>
-            <circle cx="48" cy="128" r="7" fill="#C9A24D"></circle>
-            <circle cx="412" cy="128" r="7" fill="#C9A24D"></circle>
-            <path d="M64 130 H112 Q96 275 112 424 H64 Z" fill="#8FA27A"></path>
-            <path d="M82 134 Q76 275 82 420 M98 134 Q92 275 98 420" stroke="#6F8460" stroke-width="2.5" fill="none">
-            </path>
-            <path d="M396 130 H348 Q364 275 348 424 H396 Z" fill="#8FA27A"></path>
-            <path d="M378 134 Q384 275 378 420 M362 134 Q368 275 362 420" stroke="#6F8460" stroke-width="2.8"
-              fill="none">
-            </path>
+            <!-- window frame, curtains, sill + vase -->
+            <g filter="url(#wobble)">
+              <path d="M90 410 V250 A140 110 0 0 1 370 250 V410 Z" fill="none" stroke="#7A5A3E" stroke-width="10">
+              </path>
+              <path d="M230 140 V410 M90 300 H370" stroke="#7A5A3E" stroke-width="6"></path>
+              <rect x="78" y="410" width="304" height="14" rx="4" fill="#8A6445"></rect>
+              <rect x="78" y="410" width="304" height="4" rx="2" fill="#A9825A"></rect>
+              <line x1="50" y1="128" x2="410" y2="128" stroke="#6A4A34" stroke-width="6" stroke-linecap="round"></line>
+              <circle cx="48" cy="128" r="7" fill="#C9A24D"></circle>
+              <circle cx="412" cy="128" r="7" fill="#C9A24D"></circle>
+              <path d="M64 130 H112 Q96 275 112 424 H64 Z" fill="#8FA27A"></path>
+              <path d="M82 134 Q76 275 82 420 M98 134 Q92 275 98 420" stroke="#6F8460" stroke-width="2.5" fill="none">
+              </path>
+              <path d="M396 130 H348 Q364 275 348 424 H396 Z" fill="#8FA27A"></path>
+              <path d="M378 134 Q384 275 378 420 M362 134 Q368 275 362 420" stroke="#6F8460" stroke-width="2.8"
+                fill="none">
+              </path>
 
-            <!-- season vase: flowers change with the season -->
-            <g class="fade" opacity="{{opSpring}}">
-              <path d="M316 372 L300 330 M318 372 L318 318 M320 372 L336 332" stroke="#6F8F5B" stroke-width="3"
-                stroke-linecap="round" fill="none"></path>
-              <ellipse cx="308" cy="358" rx="3" ry="12" fill="#7FA06A" transform="rotate(-30 308 358)"></ellipse>
-              <ellipse cx="330" cy="358" rx="3" ry="12" fill="#7FA06A" transform="rotate(30 330 358)"></ellipse>
-              <path transform="translate(300 328)" d="M-7 2 Q-9 -12 0 -15 Q9 -12 7 2 Q0 6 -7 2 Z" fill="#F2B8C6"></path>
-              <path transform="translate(318 316)" d="M-7 2 Q-9 -12 0 -15 Q9 -12 7 2 Q0 6 -7 2 Z" fill="#F6D98A"></path>
-              <path transform="translate(336 330)" d="M-7 2 Q-9 -12 0 -15 Q9 -12 7 2 Q0 6 -7 2 Z" fill="#E88AA6"></path>
+              <!-- season vase: flowers change with the season -->
+              <g class="fade" opacity="{{opSpring}}">
+                <path d="M316 372 L300 330 M318 372 L318 318 M320 372 L336 332" stroke="#6F8F5B" stroke-width="3"
+                  stroke-linecap="round" fill="none"></path>
+                <ellipse cx="308" cy="358" rx="3" ry="12" fill="#7FA06A" transform="rotate(-30 308 358)"></ellipse>
+                <ellipse cx="330" cy="358" rx="3" ry="12" fill="#7FA06A" transform="rotate(30 330 358)"></ellipse>
+                <path transform="translate(300 328)" d="M-7 2 Q-9 -12 0 -15 Q9 -12 7 2 Q0 6 -7 2 Z" fill="#F2B8C6">
+                </path>
+                <path transform="translate(318 316)" d="M-7 2 Q-9 -12 0 -15 Q9 -12 7 2 Q0 6 -7 2 Z" fill="#F6D98A">
+                </path>
+                <path transform="translate(336 330)" d="M-7 2 Q-9 -12 0 -15 Q9 -12 7 2 Q0 6 -7 2 Z" fill="#E88AA6">
+                </path>
+              </g>
+              <g class="fade" opacity="{{opSummer}}">
+                <path d="M316 372 L302 338 M320 372 L334 332 M318 372 L318 322" stroke="#6F8F5B" stroke-width="3"
+                  stroke-linecap="round" fill="none"></path>
+                <ellipse cx="308" cy="360" rx="5" ry="11" fill="#7FA06A" transform="rotate(-40 308 360)"></ellipse>
+                <ellipse cx="330" cy="360" rx="5" ry="11" fill="#7FA06A" transform="rotate(40 330 360)"></ellipse>
+                <g transform="translate(302 332)" fill="#F0B93A">
+                  <ellipse rx="3.2" ry="11"></ellipse>
+                  <ellipse rx="3.2" ry="11" transform="rotate(45)"></ellipse>
+                  <ellipse rx="3.2" ry="11" transform="rotate(90)"></ellipse>
+                  <ellipse rx="3.2" ry="11" transform="rotate(135)"></ellipse>
+                  <circle r="5" fill="#5A3E2A"></circle>
+                </g>
+                <g transform="translate(334 326)" fill="#F0B93A">
+                  <ellipse rx="3" ry="10"></ellipse>
+                  <ellipse rx="3" ry="10" transform="rotate(45)"></ellipse>
+                  <ellipse rx="3" ry="10" transform="rotate(90)"></ellipse>
+                  <ellipse rx="3" ry="10" transform="rotate(135)"></ellipse>
+                  <circle r="4.6" fill="#5A3E2A"></circle>
+                </g>
+                <g transform="translate(318 316)" fill="#FBF4E2">
+                  <ellipse rx="2.4" ry="7"></ellipse>
+                  <ellipse rx="2.4" ry="7" transform="rotate(60)"></ellipse>
+                  <ellipse rx="2.4" ry="7" transform="rotate(120)"></ellipse>
+                  <circle r="2.6" fill="#E6C24F"></circle>
+                </g>
+              </g>
+              <g class="fade" opacity="{{opAutumn}}">
+                <path d="M316 372 L302 334 M318 372 L318 322 M321 372 L335 338" stroke="#8A6A3A" stroke-width="3"
+                  stroke-linecap="round" fill="none"></path>
+                <path d="M324 372 L344 332" stroke="#C9A24D" stroke-width="2" stroke-linecap="round" fill="none"></path>
+                <ellipse cx="344" cy="328" rx="2.5" ry="6" fill="#E3C58A" transform="rotate(25 344 328)"></ellipse>
+                <ellipse cx="348" cy="338" rx="2.5" ry="5.5" fill="#E3C58A" transform="rotate(25 348 338)"></ellipse>
+                <circle cx="302" cy="330" r="9" fill="#C0602F"></circle>
+                <circle cx="302" cy="330" r="4.6" fill="#E0A33A"></circle>
+                <circle cx="318" cy="318" r="9" fill="#E0A33A"></circle>
+                <circle cx="318" cy="318" r="4.6" fill="#C0602F"></circle>
+                <circle cx="335" cy="334" r="8" fill="#B8481F"></circle>
+                <circle cx="335" cy="334" r="4" fill="#E8B25A"></circle>
+                <path d="M306 356 l6 7 l-4 1 l5 8 l-7 -3 l-2 6 l-3 -6 l-7 3 l5 -8 l-4 -1 z" fill="#B8481F"></path>
+              </g>
+              <g class="fade" opacity="{{opWinter}}">
+                <path d="M316 372 L300 336 M318 372 L318 322 M320 372 L338 336" stroke="#3F6048" stroke-width="3"
+                  stroke-linecap="round" fill="none"></path>
+                <g fill="#4F7A5A">
+                  <ellipse cx="298" cy="340" rx="3" ry="9" transform="rotate(-35 298 340)"></ellipse>
+                  <ellipse cx="305" cy="354" rx="3" ry="9" transform="rotate(30 305 354)"></ellipse>
+                  <ellipse cx="297" cy="328" rx="3" ry="8" transform="rotate(-20 297 328)"></ellipse>
+                  <ellipse cx="311" cy="332" rx="3" ry="9" transform="rotate(-25 311 332)"></ellipse>
+                  <ellipse cx="325" cy="332" rx="3" ry="9" transform="rotate(25 325 332)"></ellipse>
+                  <ellipse cx="311" cy="348" rx="3" ry="9" transform="rotate(-30 311 348)"></ellipse>
+                  <ellipse cx="325" cy="348" rx="3" ry="9" transform="rotate(30 325 348)"></ellipse>
+                  <ellipse cx="318" cy="314" rx="3" ry="9"></ellipse>
+                  <ellipse cx="337" cy="342" rx="3" ry="9" transform="rotate(35 337 342)"></ellipse>
+                  <ellipse cx="331" cy="354" rx="3" ry="9" transform="rotate(-30 331 354)"></ellipse>
+                  <ellipse cx="341" cy="330" rx="3" ry="8" transform="rotate(25 341 330)"></ellipse>
+                </g>
+                <g fill="#B83A3A">
+                  <circle cx="308" cy="340" r="3.5"></circle>
+                  <circle cx="322" cy="336" r="3.5"></circle>
+                  <circle cx="334" cy="347" r="3.5"></circle>
+                  <circle cx="318" cy="326" r="3.5"></circle>
+                </g>
+                <g fill="#F4F7FA">
+                  <circle cx="300" cy="322" r="3"></circle>
+                  <circle cx="336" cy="326" r="3"></circle>
+                </g>
+              </g>
+              <path d="M303 372 Q297 394 307 410 H329 Q339 394 333 372 Z" fill="#E8D5B0"></path>
+              <path d="M301 386 H335" stroke="#C46F3F" stroke-width="2" stroke-dasharray="2 4" stroke-linecap="round"
+                fill="none"></path>
             </g>
-            <g class="fade" opacity="{{opSummer}}">
-              <path d="M316 372 L302 338 M320 372 L334 332 M318 372 L318 322" stroke="#6F8F5B" stroke-width="3"
-                stroke-linecap="round" fill="none"></path>
-              <ellipse cx="308" cy="360" rx="5" ry="11" fill="#7FA06A" transform="rotate(-40 308 360)"></ellipse>
-              <ellipse cx="330" cy="360" rx="5" ry="11" fill="#7FA06A" transform="rotate(40 330 360)"></ellipse>
-              <g transform="translate(302 332)" fill="#F0B93A">
-                <ellipse rx="3.2" ry="11"></ellipse>
-                <ellipse rx="3.2" ry="11" transform="rotate(45)"></ellipse>
-                <ellipse rx="3.2" ry="11" transform="rotate(90)"></ellipse>
-                <ellipse rx="3.2" ry="11" transform="rotate(135)"></ellipse>
-                <circle r="5" fill="#5A3E2A"></circle>
+            <!-- ===== window sill: succulent ===== -->
+            <g filter="url(#wobble)">
+              <!-- sill aloe: layered rosette -->
+              <g class="psway" style="animation-duration:7s;animation-delay:-1s">
+                <use href="#aloe" style="color:#2B8A5C" transform="translate(134 397) rotate(-62) scale(1.0)"></use>
+                <use href="#aloe" style="color:#2F9A63" transform="translate(134 397) rotate(-34) scale(1.05)"></use>
+                <use href="#aloe" style="color:#2B8A5C" transform="translate(134 397) rotate(0) scale(1.1)"></use>
+                <use href="#aloe" style="color:#2F9A63" transform="translate(134 397) rotate(34) scale(1.05)"></use>
+                <use href="#aloe" style="color:#2B8A5C" transform="translate(134 397) rotate(62) scale(1.0)"></use>
+                <use href="#aloe" style="color:#3FAE72" transform="translate(134 397) rotate(-48) scale(0.8)"></use>
+                <use href="#aloe" style="color:#4DB87D" transform="translate(134 397) rotate(-18) scale(0.85)"></use>
+                <use href="#aloe" style="color:#4DB87D" transform="translate(134 397) rotate(18) scale(0.85)"></use>
+                <use href="#aloe" style="color:#3FAE72" transform="translate(134 397) rotate(48) scale(0.8)"></use>
+                <use href="#aloe" style="color:#7ACB99" transform="translate(134 397) rotate(-6) scale(0.55)"></use>
+                <use href="#aloe" style="color:#8AD3A6" transform="translate(134 397) rotate(9) scale(0.5)"></use>
               </g>
-              <g transform="translate(334 326)" fill="#F0B93A">
-                <ellipse rx="3" ry="10"></ellipse>
-                <ellipse rx="3" ry="10" transform="rotate(45)"></ellipse>
-                <ellipse rx="3" ry="10" transform="rotate(90)"></ellipse>
-                <ellipse rx="3" ry="10" transform="rotate(135)"></ellipse>
-                <circle r="4.6" fill="#5A3E2A"></circle>
-              </g>
-              <g transform="translate(318 316)" fill="#FBF4E2">
-                <ellipse rx="2.4" ry="7"></ellipse>
-                <ellipse rx="2.4" ry="7" transform="rotate(60)"></ellipse>
-                <ellipse rx="2.4" ry="7" transform="rotate(120)"></ellipse>
-                <circle r="2.6" fill="#E6C24F"></circle>
-              </g>
+              <path d="M120 396 H148 L145 410 H123 Z" fill="#C46F3F"></path>
             </g>
-            <g class="fade" opacity="{{opAutumn}}">
-              <path d="M316 372 L302 334 M318 372 L318 322 M321 372 L335 338" stroke="#8A6A3A" stroke-width="3"
-                stroke-linecap="round" fill="none"></path>
-              <path d="M324 372 L344 332" stroke="#C9A24D" stroke-width="2" stroke-linecap="round" fill="none"></path>
-              <ellipse cx="344" cy="328" rx="2.5" ry="6" fill="#E3C58A" transform="rotate(25 344 328)"></ellipse>
-              <ellipse cx="348" cy="338" rx="2.5" ry="5.5" fill="#E3C58A" transform="rotate(25 348 338)"></ellipse>
-              <circle cx="302" cy="330" r="9" fill="#C0602F"></circle>
-              <circle cx="302" cy="330" r="4.6" fill="#E0A33A"></circle>
-              <circle cx="318" cy="318" r="9" fill="#E0A33A"></circle>
-              <circle cx="318" cy="318" r="4.6" fill="#C0602F"></circle>
-              <circle cx="335" cy="334" r="8" fill="#B8481F"></circle>
-              <circle cx="335" cy="334" r="4" fill="#E8B25A"></circle>
-              <path d="M306 356 l6 7 l-4 1 l5 8 l-7 -3 l-2 6 l-3 -6 l-7 3 l5 -8 l-4 -1 z" fill="#B8481F"></path>
+            <!-- coin-leaf pilea on the window sill, pink pot -->
+            <g filter="url(#wobble)">
+              <g class="psway" style="animation-duration:5s;animation-delay:-.5s">
+                <path
+                  d="M205 396 C202 380 196 372 190 364 M205 396 C206 376 206 362 206 352 M205 396 C210 380 216 372 222 366 M205 396 C200 386 194 384 186 384"
+                  stroke="#4F7A3E" stroke-width="1.8" fill="none" stroke-linecap="round"></path>
+                <g fill="#6FA562">
+                  <circle cx="189" cy="361" r="7"></circle>
+                  <circle cx="206" cy="349" r="8.5"></circle>
+                  <circle cx="223" cy="363" r="7"></circle>
+                  <circle cx="184" cy="384" r="6"></circle>
+                </g>
+                <g fill="#A9D08A" opacity=".7">
+                  <circle cx="187" cy="359" r="3"></circle>
+                  <circle cx="204" cy="347" r="3"></circle>
+                  <circle cx="221" cy="361" r="3"></circle>
+                </g>
+              </g>
+              <path d="M190 397 H220 L217 410 H193 Z" fill="#E58FA8"></path>
+              <rect x="187" y="392" width="36" height="7" rx="3" fill="#D4728E"></rect>
             </g>
-            <g class="fade" opacity="{{opWinter}}">
-              <path d="M316 372 L300 336 M318 372 L318 322 M320 372 L338 336" stroke="#3F6048" stroke-width="3"
-                stroke-linecap="round" fill="none"></path>
-              <g fill="#4F7A5A">
-                <ellipse cx="298" cy="340" rx="3" ry="9" transform="rotate(-35 298 340)"></ellipse>
-                <ellipse cx="305" cy="354" rx="3" ry="9" transform="rotate(30 305 354)"></ellipse>
-                <ellipse cx="297" cy="328" rx="3" ry="8" transform="rotate(-20 297 328)"></ellipse>
-                <ellipse cx="311" cy="332" rx="3" ry="9" transform="rotate(-25 311 332)"></ellipse>
-                <ellipse cx="325" cy="332" rx="3" ry="9" transform="rotate(25 325 332)"></ellipse>
-                <ellipse cx="311" cy="348" rx="3" ry="9" transform="rotate(-30 311 348)"></ellipse>
-                <ellipse cx="325" cy="348" rx="3" ry="9" transform="rotate(30 325 348)"></ellipse>
-                <ellipse cx="318" cy="314" rx="3" ry="9"></ellipse>
-                <ellipse cx="337" cy="342" rx="3" ry="9" transform="rotate(35 337 342)"></ellipse>
-                <ellipse cx="331" cy="354" rx="3" ry="9" transform="rotate(-30 331 354)"></ellipse>
-                <ellipse cx="341" cy="330" rx="3" ry="8" transform="rotate(25 341 330)"></ellipse>
-              </g>
-              <g fill="#B83A3A">
-                <circle cx="308" cy="340" r="3.5"></circle>
-                <circle cx="322" cy="336" r="3.5"></circle>
-                <circle cx="334" cy="347" r="3.5"></circle>
-                <circle cx="318" cy="326" r="3.5"></circle>
-              </g>
-              <g fill="#F4F7FA">
-                <circle cx="300" cy="322" r="3"></circle>
-                <circle cx="336" cy="326" r="3"></circle>
-              </g>
-            </g>
-            <path d="M303 372 Q297 394 307 410 H329 Q339 394 333 372 Z" fill="#E8D5B0"></path>
-            <path d="M301 386 H335" stroke="#C46F3F" stroke-width="2" stroke-dasharray="2 4" stroke-linecap="round"
-              fill="none"></path>
-          </g>
-          <!-- ===== window sill: succulent ===== -->
-          <g filter="url(#wobble)">
-            <!-- sill aloe: layered rosette -->
-            <g class="psway" style="animation-duration:7s;animation-delay:-1s">
-              <use href="#aloe" style="color:#2B8A5C" transform="translate(134 397) rotate(-62) scale(1.0)"></use>
-              <use href="#aloe" style="color:#2F9A63" transform="translate(134 397) rotate(-34) scale(1.05)"></use>
-              <use href="#aloe" style="color:#2B8A5C" transform="translate(134 397) rotate(0) scale(1.1)"></use>
-              <use href="#aloe" style="color:#2F9A63" transform="translate(134 397) rotate(34) scale(1.05)"></use>
-              <use href="#aloe" style="color:#2B8A5C" transform="translate(134 397) rotate(62) scale(1.0)"></use>
-              <use href="#aloe" style="color:#3FAE72" transform="translate(134 397) rotate(-48) scale(0.8)"></use>
-              <use href="#aloe" style="color:#4DB87D" transform="translate(134 397) rotate(-18) scale(0.85)"></use>
-              <use href="#aloe" style="color:#4DB87D" transform="translate(134 397) rotate(18) scale(0.85)"></use>
-              <use href="#aloe" style="color:#3FAE72" transform="translate(134 397) rotate(48) scale(0.8)"></use>
-              <use href="#aloe" style="color:#7ACB99" transform="translate(134 397) rotate(-6) scale(0.55)"></use>
-              <use href="#aloe" style="color:#8AD3A6" transform="translate(134 397) rotate(9) scale(0.5)"></use>
-            </g>
-            <path d="M120 396 H148 L145 410 H123 Z" fill="#C46F3F"></path>
-          </g>
-          <!-- coin-leaf pilea on the window sill, pink pot -->
-          <g filter="url(#wobble)">
-            <g class="psway" style="animation-duration:5s;animation-delay:-.5s">
-              <path
-                d="M205 396 C202 380 196 372 190 364 M205 396 C206 376 206 362 206 352 M205 396 C210 380 216 372 222 366 M205 396 C200 386 194 384 186 384"
-                stroke="#4F7A3E" stroke-width="1.8" fill="none" stroke-linecap="round"></path>
-              <g fill="#6FA562">
-                <circle cx="189" cy="361" r="7"></circle>
-                <circle cx="206" cy="349" r="8.5"></circle>
-                <circle cx="223" cy="363" r="7"></circle>
-                <circle cx="184" cy="384" r="6"></circle>
-              </g>
-              <g fill="#A9D08A" opacity=".7">
-                <circle cx="187" cy="359" r="3"></circle>
-                <circle cx="204" cy="347" r="3"></circle>
-                <circle cx="221" cy="361" r="3"></circle>
-              </g>
-            </g>
-            <path d="M190 397 H220 L217 410 H193 Z" fill="#E58FA8"></path>
-            <rect x="187" y="392" width="36" height="7" rx="3" fill="#D4728E"></rect>
-          </g>
           </g>
 
           <g class="cl" data-cl="rug" transform="{{tfs_rug}}" display="{{dsp_rug}}">
-          <ellipse cx="585" cy="742" rx="60" ry="8" fill="#3C2814" opacity=".2"></ellipse>
-          <g filter="url(#wobble)">
-            <!-- round crocheted rug -->
-            <ellipse cx="640" cy="715" rx="270" ry="52" fill="#A85A45"></ellipse>
-            <ellipse cx="640" cy="715" rx="252" ry="47" fill="none" stroke="#E7C8A0" stroke-width="5"></ellipse>
-            <ellipse cx="640" cy="715" rx="228" ry="41" fill="none" stroke="#3E4A6A" stroke-width="8"
-              stroke-dasharray="14 8"></ellipse>
-            <ellipse cx="640" cy="715" rx="204" ry="35" fill="none" stroke="#E3C58A" stroke-width="4"></ellipse>
-            <ellipse cx="640" cy="715" rx="180" ry="29" fill="none" stroke="#7A3A2E" stroke-width="7"
-              stroke-dasharray="6 6"></ellipse>
-            <ellipse cx="640" cy="715" rx="150" ry="22" fill="#C27F5C"></ellipse>
-          </g>
+            <ellipse cx="585" cy="742" rx="60" ry="8" fill="#3C2814" opacity=".2"></ellipse>
+            <g filter="url(#wobble)">
+              <!-- round crocheted rug -->
+              <ellipse cx="640" cy="715" rx="270" ry="52" fill="#A85A45"></ellipse>
+              <ellipse cx="640" cy="715" rx="252" ry="47" fill="none" stroke="#E7C8A0" stroke-width="5"></ellipse>
+              <ellipse cx="640" cy="715" rx="228" ry="41" fill="none" stroke="#3E4A6A" stroke-width="8"
+                stroke-dasharray="14 8"></ellipse>
+              <ellipse cx="640" cy="715" rx="204" ry="35" fill="none" stroke="#E3C58A" stroke-width="4"></ellipse>
+              <ellipse cx="640" cy="715" rx="180" ry="29" fill="none" stroke="#7A3A2E" stroke-width="7"
+                stroke-dasharray="6 6"></ellipse>
+              <ellipse cx="640" cy="715" rx="150" ry="22" fill="#C27F5C"></ellipse>
+            </g>
           </g>
 
           <g class="cl" data-cl="fireplace" transform="{{tfs_fireplace}}" display="{{dsp_fireplace}}">
-          <ellipse cx="630" cy="628" rx="160" ry="8" fill="#3C2814" opacity=".2"></ellipse>
-          <!-- chimney + fireplace -->
-          <g filter="url(#wobble)">
-            <rect x="480" y="-2400" width="300" height="3016" fill="url(#brick)"></rect>
-            <rect x="480" y="-2400" width="300" height="3016" fill="url(#chimG)"></rect>
-            <!-- shelf 3 -->
-            <rect x="510" y="184" width="240" height="8" rx="2" fill="#8A6445"></rect>
-            <rect x="510" y="192" width="240" height="12" fill="url(#shadeDown)"></rect>
-            <rect x="708" y="164" width="12" height="20" rx="1" fill="#FBF4E2"></rect>
-            <rect x="695" y="154" width="9" height="30" rx="2" fill="#F3E9D2"></rect>
-            <!-- shelf 2 -->
-            <rect x="510" y="262" width="240" height="8" rx="2" fill="#8A6445"></rect>
-            <rect x="510" y="270" width="240" height="12" fill="url(#shadeDown)"></rect>
-            <rect x="580" y="252" width="56" height="10" rx="2" fill="#6F8F5B"></rect>
-            <rect x="584" y="242" width="48" height="10" rx="2" fill="#C46F3F"></rect>
-            <rect x="578" y="232" width="54" height="10" rx="2" fill="#E3C58A"></rect>
-            <rect x="660" y="196" width="52" height="66" fill="#FBF4E2" stroke="#8A6445" stroke-width="4"></rect>
-            <circle cx="678" cy="222" r="7" fill="#C0602F"></circle>
-            <path d="M678 229 V250" stroke="#6F8F5B" stroke-width="2"></path>
-            <ellipse cx="694" cy="236" rx="5" ry="11" fill="#6F8F5B" transform="rotate(25 694 236)"></ellipse>
-            <!-- shelf 1 -->
-            <rect x="510" y="340" width="240" height="8" rx="2" fill="#8A6445"></rect>
-            <rect x="510" y="348" width="240" height="12" fill="url(#shadeDown)"></rect>
-            <rect x="580" y="296" width="12" height="44" rx="1" fill="#6F8F5B"></rect>
-            <rect x="592" y="288" width="10" height="52" rx="1" fill="#C46F3F"></rect>
-            <rect x="602" y="294" width="14" height="46" rx="1" fill="#E3C58A"></rect>
-            <rect x="616" y="290" width="10" height="50" rx="1" fill="#3E2F22"></rect>
-            <rect x="626" y="298" width="12" height="42" rx="1" fill="#8FA27A"></rect>
-            <rect x="638" y="286" width="10" height="54" rx="1" fill="#A4524A"></rect>
-            <rect x="648" y="294" width="14" height="46" rx="1" fill="#5F7A8A"></rect>
-            <rect x="662" y="292" width="10" height="48" rx="1" fill="#D98A5C"></rect>
-            <rect x="672" y="288" width="12" height="52" rx="1" fill="#6F8F5B"></rect>
-            <rect x="684" y="296" width="10" height="44" rx="1" fill="#E3C58A"></rect>
-            <rect x="694" y="290" width="14" height="50" rx="1" fill="#3E2F22"></rect>
-            <rect x="708" y="294" width="10" height="46" rx="1" fill="#C46F3F"></rect>
-            <rect x="718" y="288" width="12" height="52" rx="1" fill="#8FA27A"></rect>
-            <rect x="730" y="298" width="10" height="42" rx="1" fill="#A4524A"></rect>
-            <!-- firebox -->
-            <rect x="528" y="452" width="204" height="164" rx="6" fill="#6E3424"></rect>
-            <path d="M546 616 V510 Q546 478 578 478 H682 Q714 478 714 510 V616 Z" fill="#24140E"></path>
-            <rect x="498" y="612" width="264" height="14" rx="3" fill="#8E5A44"></rect>
-            <rect x="498" y="612" width="264" height="4" fill="#B07C62"></rect>
-            <!-- fire tools -->
-            <path d="M746 616 V540 M756 616 V548 M740 548 H762" stroke="#2A1A12" stroke-width="3" stroke-linecap="round"
-              fill="none"></path>
-            <!-- mantle -->
-            <rect x="458" y="410" width="344" height="18" rx="3" fill="#8A6445"></rect>
-            <rect x="458" y="410" width="344" height="4" rx="2" fill="#B28A5E"></rect>
-            <rect x="458" y="428" width="344" height="46" fill="url(#shadeDown)" opacity="0.6"></rect>
-            <!-- candles on mantle -->
-            <rect x="706" y="382" width="10" height="28" rx="2" fill="#FBF4E2"></rect>
-            <rect x="722" y="372" width="10" height="38" rx="2" fill="#F3E9D2"></rect>
-            <rect x="740" y="388" width="10" height="22" rx="2" fill="#FBF4E2"></rect>
-          </g>
-          <!-- cat 1 (ginger tabby), a round, chubby loaf sitting on the mantle -->
-          <g filter="url(#wobble)" aria-hidden="true">
-            <ellipse cx="540" cy="413" rx="48" ry="5" fill="#573824" opacity=".17"></ellipse>
-            <path class="cat-tail" d="M574 404 C598 412 612 396 604 380 C601 374 595 374 593 379" fill="none"
-              stroke="#C77836" stroke-width="13" stroke-linecap="round"></path>
-            <path class="cat-tail" d="M574 404 C598 412 612 396 604 382" fill="none" stroke="#A95D2E" stroke-width="2"
-              stroke-linecap="round" opacity=".4"></path>
-            <g class="cat-breathe">
-              <path
-                d="M499 408 C496 378 514 356 540 356 C566 356 584 378 581 408 Q579 414 568 414 H512 Q501 414 499 408 Z"
-                fill="#D58A4A" stroke="#A96838" stroke-width="1.4" stroke-opacity=".4"></path>
-              <path d="M522 410 C516 392 524 372 540 372 C556 372 564 392 558 410 Z" fill="#F2D9AE" opacity=".96">
-              </path>
-              <path d="M503 392 Q510 388 516 392 M577 392 Q570 388 564 392" fill="none" stroke="#A95D2E"
-                stroke-width="2.2" stroke-linecap="round" opacity=".6"></path>
-              <path d="M513 328 Q507 308 515 304 Q523 303 535 314 Z M567 328 Q573 308 565 304 Q557 303 545 314 Z"
-                fill="#C77836" stroke="#A96838" stroke-width="1.2" stroke-opacity=".4"></path>
-              <path d="M517 321 Q513 311 517 309 Q522 309 528 315 Z M563 321 Q567 311 563 309 Q558 309 552 315 Z"
-                fill="#E3A08C" opacity=".85"></path>
-              <path
-                d="M509 342 C506 320 522 312 540 312 C558 312 574 320 571 342 C570 360 556 368 540 368 C524 368 510 360 509 342 Z"
-                fill="#D58A4A" stroke="#A96838" stroke-width="1.4" stroke-opacity=".4"></path>
-              <path d="M540 314 Q536 320 538 326 M532 315 Q529 319 530 324 M548 315 Q551 319 550 324" fill="none"
-                stroke="#A95D2E" stroke-width="2" stroke-linecap="round" opacity=".7"></path>
-              <ellipse cx="523" cy="352" rx="6" ry="4.5" fill="#E88F7A" opacity=".35"></ellipse>
-              <ellipse cx="557" cy="352" rx="6" ry="4.5" fill="#E88F7A" opacity=".35"></ellipse>
-              <path d="M533 349 C531 344 533 340 540 340 C547 340 549 344 547 349 C545 356 535 356 533 349 Z"
-                fill="#F2D9AE" opacity=".9"></path>
-              <ellipse cx="526" cy="341" rx="5.4" ry="6" fill="#F8EBD0"></ellipse>
-              <ellipse cx="554" cy="341" rx="5.4" ry="6" fill="#F8EBD0"></ellipse>
-              <ellipse cx="527" cy="342" rx="3" ry="4.6" fill="#cfc857" transform="{{c1l}}"></ellipse>
-              <ellipse cx="553" cy="342" rx="3" ry="4.6" fill="#cfc857" transform="{{c1r}}"></ellipse>
-              <circle cx="527" cy="342" r="2" fill="#28231C" opacity="0.95" transform="{{c1l}}"></circle>
-              <circle cx="553" cy="342" r="2" fill="#28231C" opacity="0.95" transform="{{c1r}}"></circle>
-              <path class="cat-blink" d="M520 342 Q526 337 532 342 M548 342 Q554 337 560 342" fill="none"
-                stroke="#A95D2E" stroke-width="2.6" stroke-linecap="round"></path>
-              <path d="M537 347 Q540 345 543 347 Q542 350 540 351 Q538 350 537 347 Z" fill="#B96765"></path>
-              <path d="M540 351 Q538 355 534 354 M540 351 Q542 355 546 354" fill="none" stroke="#79513C"
-                stroke-width="1.4" stroke-linecap="round"></path>
-              <path d="M518 349 Q508 344 496 347 M518 353 Q507 353 495 358 M519 345 Q510 338 500 337" fill="none"
-                stroke="#4A2F1E" stroke-width="1.5" stroke-linecap="round" opacity=".85"></path>
-              <path d="M562 349 Q572 344 584 347 M562 353 Q573 353 585 358 M561 345 Q570 338 580 337" fill="none"
-                stroke="#4A2F1E" stroke-width="1.5" stroke-linecap="round" opacity=".85"></path>
-              <ellipse cx="524" cy="410" rx="10" ry="6" fill="#F2D9AE" stroke="#A96838" stroke-width="1"
-                stroke-opacity=".35"></ellipse>
-              <ellipse cx="556" cy="410" rx="10" ry="6" fill="#F2D9AE" stroke="#A96838" stroke-width="1"
-                stroke-opacity=".35"></ellipse>
-              <path d="M522 411 V407 M527 411 V407 M554 411 V407 M559 411 V407" stroke="#C79A6A" stroke-width="1"
-                stroke-linecap="round" opacity=".7"></path>
+            <ellipse cx="630" cy="628" rx="160" ry="8" fill="#3C2814" opacity=".2"></ellipse>
+            <!-- chimney + fireplace -->
+            <g filter="url(#wobble)">
+              <rect x="480" y="-2400" width="300" height="3016" fill="url(#brick)"></rect>
+              <rect x="480" y="-2400" width="300" height="3016" fill="url(#chimG)"></rect>
+              <!-- shelf 3 -->
+              <rect x="510" y="184" width="240" height="8" rx="2" fill="#8A6445"></rect>
+              <rect x="510" y="192" width="240" height="12" fill="url(#shadeDown)"></rect>
+              <rect x="708" y="164" width="12" height="20" rx="1" fill="#FBF4E2"></rect>
+              <rect x="695" y="154" width="9" height="30" rx="2" fill="#F3E9D2"></rect>
+              <!-- shelf 2 -->
+              <rect x="510" y="262" width="240" height="8" rx="2" fill="#8A6445"></rect>
+              <rect x="510" y="270" width="240" height="12" fill="url(#shadeDown)"></rect>
+              <rect x="580" y="252" width="56" height="10" rx="2" fill="#6F8F5B"></rect>
+              <rect x="584" y="242" width="48" height="10" rx="2" fill="#C46F3F"></rect>
+              <rect x="578" y="232" width="54" height="10" rx="2" fill="#E3C58A"></rect>
+              <rect x="660" y="196" width="52" height="66" fill="#FBF4E2" stroke="#8A6445" stroke-width="4"></rect>
+              <circle cx="678" cy="222" r="7" fill="#C0602F"></circle>
+              <path d="M678 229 V250" stroke="#6F8F5B" stroke-width="2"></path>
+              <ellipse cx="694" cy="236" rx="5" ry="11" fill="#6F8F5B" transform="rotate(25 694 236)"></ellipse>
+              <!-- shelf 1 -->
+              <rect x="510" y="340" width="240" height="8" rx="2" fill="#8A6445"></rect>
+              <rect x="510" y="348" width="240" height="12" fill="url(#shadeDown)"></rect>
+              <rect x="580" y="296" width="12" height="44" rx="1" fill="#6F8F5B"></rect>
+              <rect x="592" y="288" width="10" height="52" rx="1" fill="#C46F3F"></rect>
+              <rect x="602" y="294" width="14" height="46" rx="1" fill="#E3C58A"></rect>
+              <rect x="616" y="290" width="10" height="50" rx="1" fill="#3E2F22"></rect>
+              <rect x="626" y="298" width="12" height="42" rx="1" fill="#8FA27A"></rect>
+              <rect x="638" y="286" width="10" height="54" rx="1" fill="#A4524A"></rect>
+              <rect x="648" y="294" width="14" height="46" rx="1" fill="#5F7A8A"></rect>
+              <rect x="662" y="292" width="10" height="48" rx="1" fill="#D98A5C"></rect>
+              <rect x="672" y="288" width="12" height="52" rx="1" fill="#6F8F5B"></rect>
+              <rect x="684" y="296" width="10" height="44" rx="1" fill="#E3C58A"></rect>
+              <rect x="694" y="290" width="14" height="50" rx="1" fill="#3E2F22"></rect>
+              <rect x="708" y="294" width="10" height="46" rx="1" fill="#C46F3F"></rect>
+              <rect x="718" y="288" width="12" height="52" rx="1" fill="#8FA27A"></rect>
+              <rect x="730" y="298" width="10" height="42" rx="1" fill="#A4524A"></rect>
+              <!-- firebox -->
+              <rect x="528" y="452" width="204" height="164" rx="6" fill="#6E3424"></rect>
+              <path d="M546 616 V510 Q546 478 578 478 H682 Q714 478 714 510 V616 Z" fill="#24140E"></path>
+              <rect x="498" y="612" width="264" height="14" rx="3" fill="#8E5A44"></rect>
+              <rect x="498" y="612" width="264" height="4" fill="#B07C62"></rect>
+              <!-- fire tools -->
+              <path d="M746 616 V540 M756 616 V548 M740 548 H762" stroke="#2A1A12" stroke-width="3"
+                stroke-linecap="round" fill="none"></path>
+              <!-- mantle -->
+              <rect x="458" y="410" width="344" height="18" rx="3" fill="#8A6445"></rect>
+              <rect x="458" y="410" width="344" height="4" rx="2" fill="#B28A5E"></rect>
+              <rect x="458" y="428" width="344" height="46" fill="url(#shadeDown)" opacity="0.6"></rect>
+              <!-- candles on mantle -->
+              <rect x="706" y="382" width="10" height="28" rx="2" fill="#FBF4E2"></rect>
+              <rect x="722" y="372" width="10" height="38" rx="2" fill="#F3E9D2"></rect>
+              <rect x="740" y="388" width="10" height="22" rx="2" fill="#FBF4E2"></rect>
             </g>
-          </g>
-          <!-- ===== fireplace shelves: two little potted plants ===== -->
-          <g filter="url(#wobble)">
-            <g class="psway" style="animation-duration:6s;animation-delay:-2s"><path d="M538 158 Q526 146 522 132" stroke="#4F7A47" stroke-width="1.6" fill="none" stroke-linecap="round"></path><path d="M538 158 Q538 140 538 118" stroke="#4F7A47" stroke-width="1.6" fill="none" stroke-linecap="round"></path><path d="M538 158 Q550 146 554 132" stroke="#4F7A47" stroke-width="1.6" fill="none" stroke-linecap="round"></path><path d="M538 158 Q530 150 518 148" stroke="#4F7A47" stroke-width="1.6" fill="none" stroke-linecap="round"></path><path d="M538 158 Q546 150 558 148" stroke="#4F7A47" stroke-width="1.6" fill="none" stroke-linecap="round"></path><use href="#oval" style="color:#3F7A47" transform="translate(522 132) rotate(-30) scale(0.5)"></use><use href="#oval" style="color:#8CBF6C" transform="translate(538 118) rotate(0) scale(0.55)"></use><use href="#oval" style="color:#4F8A4A" transform="translate(554 132) rotate(30) scale(0.5)"></use><use href="#oval" style="color:#6FA55B" transform="translate(518 148) rotate(-70) scale(0.45)"></use><use href="#oval" style="color:#3F7A47" transform="translate(558 148) rotate(70) scale(0.45)"></use><use href="#oval" style="color:#4F8A4A" transform="translate(530 140) rotate(-45) scale(0.42)"></use><use href="#oval" style="color:#6FA55B" transform="translate(546 140) rotate(45) scale(0.42)"></use><use href="#oval" style="color:#4F8A4A" transform="translate(538 134) rotate(0) scale(0.4)"></use><use href="#oval" style="color:#6FA55B" transform="translate(527 126) rotate(-20) scale(0.4)"></use><use href="#oval" style="color:#8CBF6C" transform="translate(549 127) rotate(20) scale(0.4)"></use></g>
-            <path d="M522 158 H554 L550 184 H526 Z" fill="#C46F3F"></path>
-            <g class="psway" style="animation-duration:5s;animation-delay:-.8s"><path d="M538 238 Q530.8 229.7 517.3 231.2" stroke="#4F7A47" stroke-width="1.3" fill="none" stroke-linecap="round"></path><use href="#oval" style="color:#4F8A4A" transform="translate(533.1 233.9) rotate(-122) scale(0.30)"></use><use href="#oval" style="color:#6FA55B" transform="translate(533.1 233.9) rotate(2) scale(0.30)"></use><use href="#oval" style="color:#6FA55B" transform="translate(530.2 232.5) rotate(-125) scale(0.27)"></use><use href="#oval" style="color:#8CBF6C" transform="translate(530.2 232.5) rotate(-13) scale(0.27)"></use><use href="#oval" style="color:#8CBF6C" transform="translate(527.1 231.6) rotate(-128) scale(0.24)"></use><use href="#oval" style="color:#4F8A4A" transform="translate(527.1 231.6) rotate(-28) scale(0.24)"></use><use href="#oval" style="color:#4F8A4A" transform="translate(523.7 231.1) rotate(-129) scale(0.21)"></use><use href="#oval" style="color:#6FA55B" transform="translate(523.7 231.1) rotate(-41) scale(0.21)"></use><use href="#oval" style="color:#6FA55B" transform="translate(520.0 231.0) rotate(-130) scale(0.18)"></use><use href="#oval" style="color:#8CBF6C" transform="translate(520.0 231.0) rotate(-54) scale(0.18)"></use><path d="M538 238 Q532.4 215.5 522.0 219.6" stroke="#4F7A47" stroke-width="1.3" fill="none" stroke-linecap="round"></path><use href="#oval" style="color:#4F8A4A" transform="translate(534.2 226.9) rotate(-88) scale(0.30)"></use><use href="#oval" style="color:#6FA55B" transform="translate(534.2 226.9) rotate(36) scale(0.30)"></use><use href="#oval" style="color:#6FA55B" transform="translate(532.0 223.1) rotate(-92) scale(0.27)"></use><use href="#oval" style="color:#8CBF6C" transform="translate(532.0 223.1) rotate(20) scale(0.27)"></use><use href="#oval" style="color:#8CBF6C" transform="translate(529.5 220.5) rotate(-102) scale(0.24)"></use><use href="#oval" style="color:#4F8A4A" transform="translate(529.5 220.5) rotate(-2) scale(0.24)"></use><use href="#oval" style="color:#4F8A4A" transform="translate(526.9 219.2) rotate(-118) scale(0.21)"></use><use href="#oval" style="color:#6FA55B" transform="translate(526.9 219.2) rotate(-30) scale(0.21)"></use><use href="#oval" style="color:#6FA55B" transform="translate(524.0 219.0) rotate(-136) scale(0.18)"></use><use href="#oval" style="color:#8CBF6C" transform="translate(524.0 219.0) rotate(-60) scale(0.18)"></use><path d="M538 238 Q536.6 207.5 534.1 213.0" stroke="#4F7A47" stroke-width="1.3" fill="none" stroke-linecap="round"></path><use href="#oval" style="color:#4F8A4A" transform="translate(537.1 222.9) rotate(-67) scale(0.30)"></use><use href="#oval" style="color:#6FA55B" transform="translate(537.1 222.9) rotate(57) scale(0.30)"></use><use href="#oval" style="color:#6FA55B" transform="translate(536.5 217.8) rotate(-64) scale(0.27)"></use><use href="#oval" style="color:#8CBF6C" transform="translate(536.5 217.8) rotate(48) scale(0.27)"></use><use href="#oval" style="color:#8CBF6C" transform="translate(535.9 214.4) rotate(-63) scale(0.24)"></use><use href="#oval" style="color:#4F8A4A" transform="translate(535.9 214.4) rotate(37) scale(0.24)"></use><use href="#oval" style="color:#4F8A4A" transform="translate(535.3 212.5) rotate(-77) scale(0.21)"></use><use href="#oval" style="color:#6FA55B" transform="translate(535.3 212.5) rotate(11) scale(0.21)"></use><use href="#oval" style="color:#6FA55B" transform="translate(534.6 212.3) rotate(-167) scale(0.18)"></use><use href="#oval" style="color:#8CBF6C" transform="translate(534.6 212.3) rotate(-91) scale(0.18)"></use><path d="M538 238 Q541.4 211.5 547.7 216.3" stroke="#4F7A47" stroke-width="1.3" fill="none" stroke-linecap="round"></path><use href="#oval" style="color:#4F8A4A" transform="translate(540.3 224.9) rotate(-48) scale(0.30)"></use><use href="#oval" style="color:#6FA55B" transform="translate(540.3 224.9) rotate(76) scale(0.30)"></use><use href="#oval" style="color:#6FA55B" transform="translate(541.7 220.5) rotate(-35) scale(0.27)"></use><use href="#oval" style="color:#8CBF6C" transform="translate(541.7 220.5) rotate(77) scale(0.27)"></use><use href="#oval" style="color:#8CBF6C" transform="translate(543.1 217.5) rotate(-16) scale(0.24)"></use><use href="#oval" style="color:#4F8A4A" transform="translate(543.1 217.5) rotate(84) scale(0.24)"></use><use href="#oval" style="color:#4F8A4A" transform="translate(544.8 215.9) rotate(18) scale(0.21)"></use><use href="#oval" style="color:#6FA55B" transform="translate(544.8 215.9) rotate(106) scale(0.21)"></use><use href="#oval" style="color:#6FA55B" transform="translate(546.5 215.7) rotate(68) scale(0.18)"></use><use href="#oval" style="color:#8CBF6C" transform="translate(546.5 215.7) rotate(144) scale(0.18)"></use><path d="M538 238 Q544.8 222.5 557.4 225.3" stroke="#4F7A47" stroke-width="1.3" fill="none" stroke-linecap="round"></path><use href="#oval" style="color:#4F8A4A" transform="translate(542.6 230.3) rotate(-22) scale(0.30)"></use><use href="#oval" style="color:#6FA55B" transform="translate(542.6 230.3) rotate(102) scale(0.30)"></use><use href="#oval" style="color:#6FA55B" transform="translate(545.3 227.7) rotate(-4) scale(0.27)"></use><use href="#oval" style="color:#8CBF6C" transform="translate(545.3 227.7) rotate(108) scale(0.27)"></use><use href="#oval" style="color:#8CBF6C" transform="translate(548.3 226.0) rotate(16) scale(0.24)"></use><use href="#oval" style="color:#4F8A4A" transform="translate(548.3 226.0) rotate(116) scale(0.24)"></use><use href="#oval" style="color:#4F8A4A" transform="translate(551.5 225.0) rotate(37) scale(0.21)"></use><use href="#oval" style="color:#6FA55B" transform="translate(551.5 225.0) rotate(125) scale(0.21)"></use><use href="#oval" style="color:#6FA55B" transform="translate(555.0 224.9) rotate(57) scale(0.18)"></use><use href="#oval" style="color:#8CBF6C" transform="translate(555.0 224.9) rotate(133) scale(0.18)"></use><path d="M538 238 Q544.9 234.2 557.7 234.9" stroke="#4F7A47" stroke-width="1.3" fill="none" stroke-linecap="round"></path><use href="#oval" style="color:#4F8A4A" transform="translate(542.7 236.1) rotate(12) scale(0.30)"></use><use href="#oval" style="color:#6FA55B" transform="translate(542.7 236.1) rotate(136) scale(0.30)"></use><use href="#oval" style="color:#6FA55B" transform="translate(545.4 235.5) rotate(23) scale(0.27)"></use><use href="#oval" style="color:#8CBF6C" transform="translate(545.4 235.5) rotate(135) scale(0.27)"></use><use href="#oval" style="color:#8CBF6C" transform="translate(548.4 235.0) rotate(34) scale(0.24)"></use><use href="#oval" style="color:#4F8A4A" transform="translate(548.4 235.0) rotate(134) scale(0.24)"></use><use href="#oval" style="color:#4F8A4A" transform="translate(551.7 234.8) rotate(44) scale(0.21)"></use><use href="#oval" style="color:#6FA55B" transform="translate(551.7 234.8) rotate(132) scale(0.21)"></use><use href="#oval" style="color:#6FA55B" transform="translate(555.2 234.8) rotate(53) scale(0.18)"></use><use href="#oval" style="color:#8CBF6C" transform="translate(555.2 234.8) rotate(129) scale(0.18)"></use></g>
-            <path d="M524 238 H552 L548 262 H528 Z" fill="#E3C58A"></path>
-          </g>
-          <!-- ===== ivy trailing from the mantle ===== -->
-          <g filter="url(#wobble)">
-            <path d="M472 428 C462 470 480 510 470 570" stroke="#4F7A47" stroke-width="2.6" fill="none" stroke-linecap="round"></path><path d="M788 428 C800 470 782 510 792 570" stroke="#4F7A47" stroke-width="2.6" fill="none" stroke-linecap="round"></path>
-            <use href="#ivy" style="color:#6A9A55" transform="translate(469.8 440.6) rotate(-116) scale(0.97)"></use>
-            <use href="#ivy" style="color:#4F7A47" transform="translate(468.9 456.7) rotate(-247) scale(1.08)"></use>
-            <use href="#ivy" style="color:#6A9A55" transform="translate(469.4 473.2) rotate(241) scale(0.85)"></use>
-            <use href="#ivy" style="color:#5F8A4E" transform="translate(470.8 490.3) rotate(110) scale(0.77)"></use>
-            <use href="#ivy" style="color:#7FAE62" transform="translate(472.3 508.2) rotate(254) scale(0.97)"></use>
-            <use href="#ivy" style="color:#4F7A47" transform="translate(473.1 527.3) rotate(118) scale(0.90)"></use>
-            <use href="#ivy" style="color:#7FAE62" transform="translate(472.6 547.8) rotate(-119) scale(0.90)"></use>
-            <use href="#ivy" style="color:#4F7A47" transform="translate(470.0 570.0) rotate(-242) scale(0.63)"></use>
-            <use href="#ivy" style="color:#6A9A55" transform="translate(470.0 570.0) rotate(-171) scale(.8)"></use>
-            <use href="#ivy" style="color:#7FAE62" transform="translate(790.8 440.6) rotate(113) scale(0.87)"></use>
-            <use href="#ivy" style="color:#3F6B45" transform="translate(792.2 456.7) rotate(240) scale(0.85)"></use>
-            <use href="#ivy" style="color:#98C27A" transform="translate(792.0 473.2) rotate(-232) scale(0.80)"></use>
-            <use href="#ivy" style="color:#5F8A4E" transform="translate(790.9 490.3) rotate(-116) scale(0.89)"></use>
-            <use href="#ivy" style="color:#7FAE62" transform="translate(789.6 508.2) rotate(-247) scale(0.71)"></use>
-            <use href="#ivy" style="color:#6A9A55" transform="translate(788.9 527.3) rotate(-113) scale(0.82)"></use>
-            <use href="#ivy" style="color:#4F7A47" transform="translate(789.4 547.8) rotate(119) scale(0.67)"></use>
-            <use href="#ivy" style="color:#4F7A47" transform="translate(792.0 570.0) rotate(247) scale(0.67)"></use>
-            <use href="#ivy" style="color:#6A9A55" transform="translate(792.0 570.0) rotate(171) scale(.8)"></use>
-          </g>
-          <!-- spider plant on the mantle, teal pot -->
-          <g filter="url(#wobble)">
-            <g class="psway" style="animation-duration:4.2s;animation-delay:-1.6s">
-              <g fill="none" stroke-linecap="round">
+            <!-- cat 1 (ginger tabby), a round, chubby loaf sitting on the mantle -->
+            <g filter="url(#wobble)" aria-hidden="true">
+              <ellipse cx="540" cy="413" rx="48" ry="5" fill="#573824" opacity=".17"></ellipse>
+              <path class="cat-tail" d="M574 404 C598 412 612 396 604 380 C601 374 595 374 593 379" fill="none"
+                stroke="#C77836" stroke-width="13" stroke-linecap="round"></path>
+              <path class="cat-tail" d="M574 404 C598 412 612 396 604 382" fill="none" stroke="#A95D2E" stroke-width="2"
+                stroke-linecap="round" opacity=".4"></path>
+              <g class="cat-breathe">
                 <path
-                  d="M650 396 Q628 362 606 378 M650 396 Q640 350 614 346 M650 396 Q652 350 664 330 M650 396 Q664 350 688 346 M650 396 Q672 362 694 378"
-                  stroke="#8CC152" stroke-width="5"></path>
+                  d="M499 408 C496 378 514 356 540 356 C566 356 584 378 581 408 Q579 414 568 414 H512 Q501 414 499 408 Z"
+                  fill="#D58A4A" stroke="#A96838" stroke-width="1.4" stroke-opacity=".4"></path>
+                <path d="M522 410 C516 392 524 372 540 372 C556 372 564 392 558 410 Z" fill="#F2D9AE" opacity=".96">
+                </path>
+                <path d="M503 392 Q510 388 516 392 M577 392 Q570 388 564 392" fill="none" stroke="#A95D2E"
+                  stroke-width="2.2" stroke-linecap="round" opacity=".6"></path>
+                <path d="M513 328 Q507 308 515 304 Q523 303 535 314 Z M567 328 Q573 308 565 304 Q557 303 545 314 Z"
+                  fill="#C77836" stroke="#A96838" stroke-width="1.2" stroke-opacity=".4"></path>
+                <path d="M517 321 Q513 311 517 309 Q522 309 528 315 Z M563 321 Q567 311 563 309 Q558 309 552 315 Z"
+                  fill="#E3A08C" opacity=".85"></path>
                 <path
-                  d="M650 396 Q628 362 606 378 M650 396 Q640 350 614 346 M650 396 Q652 350 664 330 M650 396 Q664 350 688 346 M650 396 Q672 362 694 378"
-                  stroke="#EAF3C4" stroke-width="1.4"></path>
+                  d="M509 342 C506 320 522 312 540 312 C558 312 574 320 571 342 C570 360 556 368 540 368 C524 368 510 360 509 342 Z"
+                  fill="#D58A4A" stroke="#A96838" stroke-width="1.4" stroke-opacity=".4"></path>
+                <path d="M540 314 Q536 320 538 326 M532 315 Q529 319 530 324 M548 315 Q551 319 550 324" fill="none"
+                  stroke="#A95D2E" stroke-width="2" stroke-linecap="round" opacity=".7"></path>
+                <ellipse cx="523" cy="352" rx="6" ry="4.5" fill="#E88F7A" opacity=".35"></ellipse>
+                <ellipse cx="557" cy="352" rx="6" ry="4.5" fill="#E88F7A" opacity=".35"></ellipse>
+                <path d="M533 349 C531 344 533 340 540 340 C547 340 549 344 547 349 C545 356 535 356 533 349 Z"
+                  fill="#F2D9AE" opacity=".9"></path>
+                <ellipse cx="526" cy="341" rx="5.4" ry="6" fill="#F8EBD0"></ellipse>
+                <ellipse cx="554" cy="341" rx="5.4" ry="6" fill="#F8EBD0"></ellipse>
+                <ellipse cx="527" cy="342" rx="3" ry="4.6" fill="#cfc857" transform="{{c1l}}"></ellipse>
+                <ellipse cx="553" cy="342" rx="3" ry="4.6" fill="#cfc857" transform="{{c1r}}"></ellipse>
+                <circle cx="527" cy="342" r="2" fill="#28231C" opacity="0.95" transform="{{c1l}}"></circle>
+                <circle cx="553" cy="342" r="2" fill="#28231C" opacity="0.95" transform="{{c1r}}"></circle>
+                <path class="cat-blink" d="M520 342 Q526 337 532 342 M548 342 Q554 337 560 342" fill="none"
+                  stroke="#A95D2E" stroke-width="2.6" stroke-linecap="round"></path>
+                <path d="M537 347 Q540 345 543 347 Q542 350 540 351 Q538 350 537 347 Z" fill="#B96765"></path>
+                <path d="M540 351 Q538 355 534 354 M540 351 Q542 355 546 354" fill="none" stroke="#79513C"
+                  stroke-width="1.4" stroke-linecap="round"></path>
+                <path d="M518 349 Q508 344 496 347 M518 353 Q507 353 495 358 M519 345 Q510 338 500 337" fill="none"
+                  stroke="#4A2F1E" stroke-width="1.5" stroke-linecap="round" opacity=".85"></path>
+                <path d="M562 349 Q572 344 584 347 M562 353 Q573 353 585 358 M561 345 Q570 338 580 337" fill="none"
+                  stroke="#4A2F1E" stroke-width="1.5" stroke-linecap="round" opacity=".85"></path>
+                <ellipse cx="524" cy="410" rx="10" ry="6" fill="#F2D9AE" stroke="#A96838" stroke-width="1"
+                  stroke-opacity=".35"></ellipse>
+                <ellipse cx="556" cy="410" rx="10" ry="6" fill="#F2D9AE" stroke="#A96838" stroke-width="1"
+                  stroke-opacity=".35"></ellipse>
+                <path d="M522 411 V407 M527 411 V407 M554 411 V407 M559 411 V407" stroke="#C79A6A" stroke-width="1"
+                  stroke-linecap="round" opacity=".7"></path>
               </g>
             </g>
-            <path d="M634 395 H666 L662 412 H638 Z" fill="#5BA7A7"></path>
-            <rect x="631" y="390" width="38" height="8" rx="3" fill="#478D8D"></rect>
-            <g fill="#a5bfe6">
-              <rect x="636" y="402" width="28" height="3" width="3"></rect>
-              <circle cx="645" cy="404" r="1.8"></circle>
-              <circle cx="655" cy="406" r="1.8"></circle>
+            <!-- ===== fireplace shelves: two little potted plants ===== -->
+            <g filter="url(#wobble)">
+              <g class="psway" style="animation-duration:6s;animation-delay:-2s">
+                <path d="M538 158 Q526 146 522 132" stroke="#4F7A47" stroke-width="1.6" fill="none"
+                  stroke-linecap="round"></path>
+                <path d="M538 158 Q538 140 538 118" stroke="#4F7A47" stroke-width="1.6" fill="none"
+                  stroke-linecap="round"></path>
+                <path d="M538 158 Q550 146 554 132" stroke="#4F7A47" stroke-width="1.6" fill="none"
+                  stroke-linecap="round"></path>
+                <path d="M538 158 Q530 150 518 148" stroke="#4F7A47" stroke-width="1.6" fill="none"
+                  stroke-linecap="round"></path>
+                <path d="M538 158 Q546 150 558 148" stroke="#4F7A47" stroke-width="1.6" fill="none"
+                  stroke-linecap="round"></path>
+                <use href="#oval" style="color:#3F7A47" transform="translate(522 132) rotate(-30) scale(0.5)"></use>
+                <use href="#oval" style="color:#8CBF6C" transform="translate(538 118) rotate(0) scale(0.55)"></use>
+                <use href="#oval" style="color:#4F8A4A" transform="translate(554 132) rotate(30) scale(0.5)"></use>
+                <use href="#oval" style="color:#6FA55B" transform="translate(518 148) rotate(-70) scale(0.45)"></use>
+                <use href="#oval" style="color:#3F7A47" transform="translate(558 148) rotate(70) scale(0.45)"></use>
+                <use href="#oval" style="color:#4F8A4A" transform="translate(530 140) rotate(-45) scale(0.42)"></use>
+                <use href="#oval" style="color:#6FA55B" transform="translate(546 140) rotate(45) scale(0.42)"></use>
+                <use href="#oval" style="color:#4F8A4A" transform="translate(538 134) rotate(0) scale(0.4)"></use>
+                <use href="#oval" style="color:#6FA55B" transform="translate(527 126) rotate(-20) scale(0.4)"></use>
+                <use href="#oval" style="color:#8CBF6C" transform="translate(549 127) rotate(20) scale(0.4)"></use>
+              </g>
+              <path d="M522 158 H554 L550 184 H526 Z" fill="#C46F3F"></path>
+              <g class="psway" style="animation-duration:5s;animation-delay:-.8s">
+                <path d="M538 238 Q530.8 229.7 517.3 231.2" stroke="#4F7A47" stroke-width="1.3" fill="none"
+                  stroke-linecap="round"></path>
+                <use href="#oval" style="color:#4F8A4A" transform="translate(533.1 233.9) rotate(-122) scale(0.30)">
+                </use>
+                <use href="#oval" style="color:#6FA55B" transform="translate(533.1 233.9) rotate(2) scale(0.30)"></use>
+                <use href="#oval" style="color:#6FA55B" transform="translate(530.2 232.5) rotate(-125) scale(0.27)">
+                </use>
+                <use href="#oval" style="color:#8CBF6C" transform="translate(530.2 232.5) rotate(-13) scale(0.27)">
+                </use>
+                <use href="#oval" style="color:#8CBF6C" transform="translate(527.1 231.6) rotate(-128) scale(0.24)">
+                </use>
+                <use href="#oval" style="color:#4F8A4A" transform="translate(527.1 231.6) rotate(-28) scale(0.24)">
+                </use>
+                <use href="#oval" style="color:#4F8A4A" transform="translate(523.7 231.1) rotate(-129) scale(0.21)">
+                </use>
+                <use href="#oval" style="color:#6FA55B" transform="translate(523.7 231.1) rotate(-41) scale(0.21)">
+                </use>
+                <use href="#oval" style="color:#6FA55B" transform="translate(520.0 231.0) rotate(-130) scale(0.18)">
+                </use>
+                <use href="#oval" style="color:#8CBF6C" transform="translate(520.0 231.0) rotate(-54) scale(0.18)">
+                </use>
+                <path d="M538 238 Q532.4 215.5 522.0 219.6" stroke="#4F7A47" stroke-width="1.3" fill="none"
+                  stroke-linecap="round"></path>
+                <use href="#oval" style="color:#4F8A4A" transform="translate(534.2 226.9) rotate(-88) scale(0.30)">
+                </use>
+                <use href="#oval" style="color:#6FA55B" transform="translate(534.2 226.9) rotate(36) scale(0.30)"></use>
+                <use href="#oval" style="color:#6FA55B" transform="translate(532.0 223.1) rotate(-92) scale(0.27)">
+                </use>
+                <use href="#oval" style="color:#8CBF6C" transform="translate(532.0 223.1) rotate(20) scale(0.27)"></use>
+                <use href="#oval" style="color:#8CBF6C" transform="translate(529.5 220.5) rotate(-102) scale(0.24)">
+                </use>
+                <use href="#oval" style="color:#4F8A4A" transform="translate(529.5 220.5) rotate(-2) scale(0.24)"></use>
+                <use href="#oval" style="color:#4F8A4A" transform="translate(526.9 219.2) rotate(-118) scale(0.21)">
+                </use>
+                <use href="#oval" style="color:#6FA55B" transform="translate(526.9 219.2) rotate(-30) scale(0.21)">
+                </use>
+                <use href="#oval" style="color:#6FA55B" transform="translate(524.0 219.0) rotate(-136) scale(0.18)">
+                </use>
+                <use href="#oval" style="color:#8CBF6C" transform="translate(524.0 219.0) rotate(-60) scale(0.18)">
+                </use>
+                <path d="M538 238 Q536.6 207.5 534.1 213.0" stroke="#4F7A47" stroke-width="1.3" fill="none"
+                  stroke-linecap="round"></path>
+                <use href="#oval" style="color:#4F8A4A" transform="translate(537.1 222.9) rotate(-67) scale(0.30)">
+                </use>
+                <use href="#oval" style="color:#6FA55B" transform="translate(537.1 222.9) rotate(57) scale(0.30)"></use>
+                <use href="#oval" style="color:#6FA55B" transform="translate(536.5 217.8) rotate(-64) scale(0.27)">
+                </use>
+                <use href="#oval" style="color:#8CBF6C" transform="translate(536.5 217.8) rotate(48) scale(0.27)"></use>
+                <use href="#oval" style="color:#8CBF6C" transform="translate(535.9 214.4) rotate(-63) scale(0.24)">
+                </use>
+                <use href="#oval" style="color:#4F8A4A" transform="translate(535.9 214.4) rotate(37) scale(0.24)"></use>
+                <use href="#oval" style="color:#4F8A4A" transform="translate(535.3 212.5) rotate(-77) scale(0.21)">
+                </use>
+                <use href="#oval" style="color:#6FA55B" transform="translate(535.3 212.5) rotate(11) scale(0.21)"></use>
+                <use href="#oval" style="color:#6FA55B" transform="translate(534.6 212.3) rotate(-167) scale(0.18)">
+                </use>
+                <use href="#oval" style="color:#8CBF6C" transform="translate(534.6 212.3) rotate(-91) scale(0.18)">
+                </use>
+                <path d="M538 238 Q541.4 211.5 547.7 216.3" stroke="#4F7A47" stroke-width="1.3" fill="none"
+                  stroke-linecap="round"></path>
+                <use href="#oval" style="color:#4F8A4A" transform="translate(540.3 224.9) rotate(-48) scale(0.30)">
+                </use>
+                <use href="#oval" style="color:#6FA55B" transform="translate(540.3 224.9) rotate(76) scale(0.30)"></use>
+                <use href="#oval" style="color:#6FA55B" transform="translate(541.7 220.5) rotate(-35) scale(0.27)">
+                </use>
+                <use href="#oval" style="color:#8CBF6C" transform="translate(541.7 220.5) rotate(77) scale(0.27)"></use>
+                <use href="#oval" style="color:#8CBF6C" transform="translate(543.1 217.5) rotate(-16) scale(0.24)">
+                </use>
+                <use href="#oval" style="color:#4F8A4A" transform="translate(543.1 217.5) rotate(84) scale(0.24)"></use>
+                <use href="#oval" style="color:#4F8A4A" transform="translate(544.8 215.9) rotate(18) scale(0.21)"></use>
+                <use href="#oval" style="color:#6FA55B" transform="translate(544.8 215.9) rotate(106) scale(0.21)">
+                </use>
+                <use href="#oval" style="color:#6FA55B" transform="translate(546.5 215.7) rotate(68) scale(0.18)"></use>
+                <use href="#oval" style="color:#8CBF6C" transform="translate(546.5 215.7) rotate(144) scale(0.18)">
+                </use>
+                <path d="M538 238 Q544.8 222.5 557.4 225.3" stroke="#4F7A47" stroke-width="1.3" fill="none"
+                  stroke-linecap="round"></path>
+                <use href="#oval" style="color:#4F8A4A" transform="translate(542.6 230.3) rotate(-22) scale(0.30)">
+                </use>
+                <use href="#oval" style="color:#6FA55B" transform="translate(542.6 230.3) rotate(102) scale(0.30)">
+                </use>
+                <use href="#oval" style="color:#6FA55B" transform="translate(545.3 227.7) rotate(-4) scale(0.27)"></use>
+                <use href="#oval" style="color:#8CBF6C" transform="translate(545.3 227.7) rotate(108) scale(0.27)">
+                </use>
+                <use href="#oval" style="color:#8CBF6C" transform="translate(548.3 226.0) rotate(16) scale(0.24)"></use>
+                <use href="#oval" style="color:#4F8A4A" transform="translate(548.3 226.0) rotate(116) scale(0.24)">
+                </use>
+                <use href="#oval" style="color:#4F8A4A" transform="translate(551.5 225.0) rotate(37) scale(0.21)"></use>
+                <use href="#oval" style="color:#6FA55B" transform="translate(551.5 225.0) rotate(125) scale(0.21)">
+                </use>
+                <use href="#oval" style="color:#6FA55B" transform="translate(555.0 224.9) rotate(57) scale(0.18)"></use>
+                <use href="#oval" style="color:#8CBF6C" transform="translate(555.0 224.9) rotate(133) scale(0.18)">
+                </use>
+                <path d="M538 238 Q544.9 234.2 557.7 234.9" stroke="#4F7A47" stroke-width="1.3" fill="none"
+                  stroke-linecap="round"></path>
+                <use href="#oval" style="color:#4F8A4A" transform="translate(542.7 236.1) rotate(12) scale(0.30)"></use>
+                <use href="#oval" style="color:#6FA55B" transform="translate(542.7 236.1) rotate(136) scale(0.30)">
+                </use>
+                <use href="#oval" style="color:#6FA55B" transform="translate(545.4 235.5) rotate(23) scale(0.27)"></use>
+                <use href="#oval" style="color:#8CBF6C" transform="translate(545.4 235.5) rotate(135) scale(0.27)">
+                </use>
+                <use href="#oval" style="color:#8CBF6C" transform="translate(548.4 235.0) rotate(34) scale(0.24)"></use>
+                <use href="#oval" style="color:#4F8A4A" transform="translate(548.4 235.0) rotate(134) scale(0.24)">
+                </use>
+                <use href="#oval" style="color:#4F8A4A" transform="translate(551.7 234.8) rotate(44) scale(0.21)"></use>
+                <use href="#oval" style="color:#6FA55B" transform="translate(551.7 234.8) rotate(132) scale(0.21)">
+                </use>
+                <use href="#oval" style="color:#6FA55B" transform="translate(555.2 234.8) rotate(53) scale(0.18)"></use>
+                <use href="#oval" style="color:#8CBF6C" transform="translate(555.2 234.8) rotate(129) scale(0.18)">
+                </use>
+              </g>
+              <path d="M524 238 H552 L548 262 H528 Z" fill="#E3C58A"></path>
             </g>
-          </g>
+            <!-- ===== ivy trailing from the mantle ===== -->
+            <g filter="url(#wobble)">
+              <path d="M472 428 C462 470 480 510 470 570" stroke="#4F7A47" stroke-width="2.6" fill="none"
+                stroke-linecap="round"></path>
+              <path d="M788 428 C800 470 782 510 792 570" stroke="#4F7A47" stroke-width="2.6" fill="none"
+                stroke-linecap="round"></path>
+              <use href="#ivy" style="color:#6A9A55" transform="translate(469.8 440.6) rotate(-116) scale(0.97)"></use>
+              <use href="#ivy" style="color:#4F7A47" transform="translate(468.9 456.7) rotate(-247) scale(1.08)"></use>
+              <use href="#ivy" style="color:#6A9A55" transform="translate(469.4 473.2) rotate(241) scale(0.85)"></use>
+              <use href="#ivy" style="color:#5F8A4E" transform="translate(470.8 490.3) rotate(110) scale(0.77)"></use>
+              <use href="#ivy" style="color:#7FAE62" transform="translate(472.3 508.2) rotate(254) scale(0.97)"></use>
+              <use href="#ivy" style="color:#4F7A47" transform="translate(473.1 527.3) rotate(118) scale(0.90)"></use>
+              <use href="#ivy" style="color:#7FAE62" transform="translate(472.6 547.8) rotate(-119) scale(0.90)"></use>
+              <use href="#ivy" style="color:#4F7A47" transform="translate(470.0 570.0) rotate(-242) scale(0.63)"></use>
+              <use href="#ivy" style="color:#6A9A55" transform="translate(470.0 570.0) rotate(-171) scale(.8)"></use>
+              <use href="#ivy" style="color:#7FAE62" transform="translate(790.8 440.6) rotate(113) scale(0.87)"></use>
+              <use href="#ivy" style="color:#3F6B45" transform="translate(792.2 456.7) rotate(240) scale(0.85)"></use>
+              <use href="#ivy" style="color:#98C27A" transform="translate(792.0 473.2) rotate(-232) scale(0.80)"></use>
+              <use href="#ivy" style="color:#5F8A4E" transform="translate(790.9 490.3) rotate(-116) scale(0.89)"></use>
+              <use href="#ivy" style="color:#7FAE62" transform="translate(789.6 508.2) rotate(-247) scale(0.71)"></use>
+              <use href="#ivy" style="color:#6A9A55" transform="translate(788.9 527.3) rotate(-113) scale(0.82)"></use>
+              <use href="#ivy" style="color:#4F7A47" transform="translate(789.4 547.8) rotate(119) scale(0.67)"></use>
+              <use href="#ivy" style="color:#4F7A47" transform="translate(792.0 570.0) rotate(247) scale(0.67)"></use>
+              <use href="#ivy" style="color:#6A9A55" transform="translate(792.0 570.0) rotate(171) scale(.8)"></use>
+            </g>
+            <!-- spider plant on the mantle, teal pot -->
+            <g filter="url(#wobble)">
+              <g class="psway" style="animation-duration:4.2s;animation-delay:-1.6s">
+                <g fill="none" stroke-linecap="round">
+                  <path
+                    d="M650 396 Q628 362 606 378 M650 396 Q640 350 614 346 M650 396 Q652 350 664 330 M650 396 Q664 350 688 346 M650 396 Q672 362 694 378"
+                    stroke="#8CC152" stroke-width="5"></path>
+                  <path
+                    d="M650 396 Q628 362 606 378 M650 396 Q640 350 614 346 M650 396 Q652 350 664 330 M650 396 Q664 350 688 346 M650 396 Q672 362 694 378"
+                    stroke="#EAF3C4" stroke-width="1.4"></path>
+                </g>
+              </g>
+              <path d="M634 395 H666 L662 412 H638 Z" fill="#5BA7A7"></path>
+              <rect x="631" y="390" width="38" height="8" rx="3" fill="#478D8D"></rect>
+              <g fill="#a5bfe6">
+                <rect x="636" y="402" width="28" height="3" width="3"></rect>
+                <circle cx="645" cy="404" r="1.8"></circle>
+                <circle cx="655" cy="406" r="1.8"></circle>
+              </g>
+            </g>
           </g>
 
           <g class="cl" data-cl="keyboard" transform="{{tfs_keyboard}}" display="{{dsp_keyboard}}">
-          <ellipse cx="1160" cy="624" rx="130" ry="8" fill="#3C2814" opacity=".2"></ellipse>
-          <g filter="url(#wobble)">
-            <!-- keyboard + stool (right) -->
-            <g transform="translate(240 0)">
-              <path d="M826 504 V616 M1008 504 V616 M826 566 H1008" stroke="#2A2A2A" stroke-width="7"
-                stroke-linecap="round" fill="none"></path>
-              <rect x="808" y="452" width="224" height="54" rx="5" fill="#2A2A2A"></rect>
-              <rect x="808" y="452" width="224" height="5" rx="2.5" fill="#4A4A4A"></rect>
-              <circle cx="830" cy="463" r="3" fill="#8FA27A"></circle>
-              <circle cx="844" cy="463" r="3" fill="#E6C24F"></circle>
-              <rect x="940" y="460" width="70" height="6" rx="3" fill="#4A4A4A"></rect>
-              <rect x="814" y="474" width="212" height="30" fill="#FBF4E2"></rect>
-              <path
-                d="M831.7 474V504 M849.3 474V504 M867 474V504 M884.7 474V504 M902.3 474V504 M920 474V504 M937.7 474V504 M955.3 474V504 M973 474V504 M990.7 474V504 M1008.3 474V504"
-                stroke="#CDBB8E" stroke-width="1"></path>
-              <g fill="#2A2018">
-                <rect x="827.2" y="474" width="9" height="18" rx="1"></rect>
-                <rect x="844.8" y="474" width="9" height="18" rx="1"></rect>
-                <rect x="880.2" y="474" width="9" height="18" rx="1"></rect>
-                <rect x="897.8" y="474" width="9" height="18" rx="1"></rect>
-                <rect x="915.5" y="474" width="9" height="18" rx="1"></rect>
-                <rect x="950.8" y="474" width="9" height="18" rx="1"></rect>
-                <rect x="968.5" y="474" width="9" height="18" rx="1"></rect>
-                <rect x="1003.8" y="474" width="9" height="18" rx="1"></rect>
+            <ellipse cx="1160" cy="624" rx="130" ry="8" fill="#3C2814" opacity=".2"></ellipse>
+            <g filter="url(#wobble)">
+              <!-- keyboard + stool (right) -->
+              <g transform="translate(240 0)">
+                <path d="M826 504 V616 M1008 504 V616 M826 566 H1008" stroke="#2A2A2A" stroke-width="7"
+                  stroke-linecap="round" fill="none"></path>
+                <rect x="808" y="452" width="224" height="54" rx="5" fill="#2A2A2A"></rect>
+                <rect x="808" y="452" width="224" height="5" rx="2.5" fill="#4A4A4A"></rect>
+                <circle cx="830" cy="463" r="3" fill="#8FA27A"></circle>
+                <circle cx="844" cy="463" r="3" fill="#E6C24F"></circle>
+                <rect x="940" y="460" width="70" height="6" rx="3" fill="#4A4A4A"></rect>
+                <rect x="814" y="474" width="212" height="30" fill="#FBF4E2"></rect>
+                <path
+                  d="M831.7 474V504 M849.3 474V504 M867 474V504 M884.7 474V504 M902.3 474V504 M920 474V504 M937.7 474V504 M955.3 474V504 M973 474V504 M990.7 474V504 M1008.3 474V504"
+                  stroke="#CDBB8E" stroke-width="1"></path>
+                <g fill="#2A2018">
+                  <rect x="827.2" y="474" width="9" height="18" rx="1"></rect>
+                  <rect x="844.8" y="474" width="9" height="18" rx="1"></rect>
+                  <rect x="880.2" y="474" width="9" height="18" rx="1"></rect>
+                  <rect x="897.8" y="474" width="9" height="18" rx="1"></rect>
+                  <rect x="915.5" y="474" width="9" height="18" rx="1"></rect>
+                  <rect x="950.8" y="474" width="9" height="18" rx="1"></rect>
+                  <rect x="968.5" y="474" width="9" height="18" rx="1"></rect>
+                  <rect x="1003.8" y="474" width="9" height="18" rx="1"></rect>
+                </g>
+                <path d="M896 570 L884 616 M944 570 L956 616 M920 572 V616" stroke="#D9B98A" stroke-width="5"
+                  stroke-linecap="round"></path>
+                <rect x="884" y="548" width="72" height="22" rx="10" fill="#EFE3C8"></rect>
+                <ellipse cx="920" cy="548" rx="36" ry="8" fill="#F6ECD6"></ellipse>
               </g>
-              <path d="M896 570 L884 616 M944 570 L956 616 M920 572 V616" stroke="#D9B98A" stroke-width="5"
-                stroke-linecap="round"></path>
-              <rect x="884" y="548" width="72" height="22" rx="10" fill="#EFE3C8"></rect>
-              <ellipse cx="920" cy="548" rx="36" ry="8" fill="#F6ECD6"></ellipse>
             </g>
-          </g>
-          <!-- tiny flowering cactus on the keyboard, mustard pot -->
-          <g filter="url(#wobble)">
-            <g class="psway" style="animation-duration:6.5s;animation-delay:-4s">
-              <rect x="1236" y="410" width="14" height="32" rx="7" fill="#5E9B6A"></rect>
-              <path d="M1236 430 Q1226 430 1226 419 M1250 426 Q1260 426 1260 415" stroke="#5E9B6A" stroke-width="6"
-                fill="none" stroke-linecap="round"></path>
-              <path d="M1243 414 V438" stroke="#8BC29A" stroke-width="1.4"></path>
-              <circle cx="1243" cy="408" r="4.5" fill="#cf6a61"></circle>
+            <!-- tiny flowering cactus on the keyboard, mustard pot -->
+            <g filter="url(#wobble)">
+              <g class="psway" style="animation-duration:6.5s;animation-delay:-4s">
+                <rect x="1236" y="410" width="14" height="32" rx="7" fill="#5E9B6A"></rect>
+                <path d="M1236 430 Q1226 430 1226 419 M1250 426 Q1260 426 1260 415" stroke="#5E9B6A" stroke-width="6"
+                  fill="none" stroke-linecap="round"></path>
+                <path d="M1243 414 V438" stroke="#8BC29A" stroke-width="1.4"></path>
+                <circle cx="1243" cy="408" r="4.5" fill="#cf6a61"></circle>
+              </g>
+              <path d="M1229 440 H1257 L1254 455 H1232 Z" fill="#F2C14E"></path>
+              <rect x="1226" y="435" width="34" height="7" rx="3" fill="#DDA92F"></rect>
             </g>
-            <path d="M1229 440 H1257 L1254 455 H1232 Z" fill="#F2C14E"></path>
-            <rect x="1226" y="435" width="34" height="7" rx="3" fill="#DDA92F"></rect>
-          </g>
           </g>
 
           <g class="cl" data-cl="desk" transform="{{tfs_desk}}" display="{{dsp_desk}}">
-          <ellipse cx="918" cy="624" rx="125" ry="8" fill="#3C2814" opacity=".2"></ellipse>
-          <g filter="url(#wobble)">
-            <!-- desk (middle-right) -->
-            <g transform="translate(-244 0)">
-              <rect x="1044" y="470" width="236" height="14" rx="4" fill="#8f673c"></rect>
-              <rect x="1044" y="470" width="236" height="4" rx="2" fill="#B28A5E"></rect>
-              <rect x="1060" y="484" width="12" height="136" fill="#7A5A3E"></rect>
-              <rect x="1250" y="484" width="12" height="136" fill="#7A5A3E"></rect>
-              <rect x="1120" y="484" width="120" height="50" rx="2" fill="#756246"></rect>
-              <rect x="1120" y="484" width="120" height="10" rx="2" fill="#362d20" opacity="0.2"></rect>
-              <circle cx="1180" cy="505" r="4.5" fill="#E3C58A"></circle>
-              <!-- laptop -->
-              <rect x="1066" y="392" width="100" height="70" rx="3" fill="#63615d"></rect>
-              <rect x="1071" y="397" width="90" height="60" rx="3" fill="{{laptopScreen}}"></rect>
-              <rect x="1078" y="405" width="34" height="5" rx="2.5" fill="#9DBF6B"></rect>
-              <rect x="1086" y="414" width="56" height="5" rx="2.5" fill="#E6C24F"></rect>
-              <rect x="1086" y="423" width="40" height="5" rx="2.5" fill="#F6E7B4"></rect>
-              <rect x="1078" y="432" width="66" height="5" rx="2.5" fill="#E3A27A"></rect>
-              <rect x="1086" y="441" width="28" height="5" rx="2.5" fill="#9DBF6B"></rect>
-              <rect x="1054" y="462" width="124" height="8" rx="2.5" fill="#757572"></rect>
-              <!-- cup of tea -->
-              <path d="M1210 442 Q1223 444 1221 454 Q1219 463 1210 461" stroke="#E3D3B0" stroke-width="3.5" fill="none"
-                stroke-linecap="round"></path>
-              <path d="M1182 434 H1210 V462 Q1210 470 1202 470 H1190 Q1182 470 1182 462 Z" fill="#F3E9D2"></path>
-              <path d="M1182 450 H1210" stroke="#D9C79C" stroke-width="1.5"></path>
-              <ellipse cx="1196" cy="435" rx="14" ry="3.5" fill="#F8F1DE"></ellipse>
-              <ellipse cx="1196" cy="435.5" rx="12" ry="2.6" fill="{{drinkColor}}"></ellipse>
-              <g fill="#C46F3F">
-                <circle cx="1191" cy="458" r="2.2"></circle>
-                <circle cx="1201" cy="456" r="2.2"></circle>
+            <ellipse cx="918" cy="624" rx="125" ry="8" fill="#3C2814" opacity=".2"></ellipse>
+            <g filter="url(#wobble)">
+              <!-- desk (middle-right) -->
+              <g transform="translate(-244 0)">
+                <rect x="1044" y="470" width="236" height="14" rx="4" fill="#8f673c"></rect>
+                <rect x="1044" y="470" width="236" height="4" rx="2" fill="#B28A5E"></rect>
+                <rect x="1060" y="484" width="12" height="136" fill="#7A5A3E"></rect>
+                <rect x="1250" y="484" width="12" height="136" fill="#7A5A3E"></rect>
+                <rect x="1120" y="484" width="120" height="50" rx="2" fill="#756246"></rect>
+                <rect x="1120" y="484" width="120" height="10" rx="2" fill="#362d20" opacity="0.2"></rect>
+                <circle cx="1180" cy="505" r="4.5" fill="#E3C58A"></circle>
+                <!-- laptop -->
+                <rect x="1066" y="392" width="100" height="70" rx="3" fill="#63615d"></rect>
+                <rect x="1071" y="397" width="90" height="60" rx="3" fill="{{laptopScreen}}"></rect>
+                <rect x="1078" y="405" width="34" height="5" rx="2.5" fill="#9DBF6B"></rect>
+                <rect x="1086" y="414" width="56" height="5" rx="2.5" fill="#E6C24F"></rect>
+                <rect x="1086" y="423" width="40" height="5" rx="2.5" fill="#F6E7B4"></rect>
+                <rect x="1078" y="432" width="66" height="5" rx="2.5" fill="#E3A27A"></rect>
+                <rect x="1086" y="441" width="28" height="5" rx="2.5" fill="#9DBF6B"></rect>
+                <rect x="1054" y="462" width="124" height="8" rx="2.5" fill="#757572"></rect>
+                <!-- cup of tea -->
+                <path d="M1210 442 Q1223 444 1221 454 Q1219 463 1210 461" stroke="#E3D3B0" stroke-width="3.5"
+                  fill="none" stroke-linecap="round"></path>
+                <path d="M1182 434 H1210 V462 Q1210 470 1202 470 H1190 Q1182 470 1182 462 Z" fill="#F3E9D2"></path>
+                <path d="M1182 450 H1210" stroke="#D9C79C" stroke-width="1.5"></path>
+                <ellipse cx="1196" cy="435" rx="14" ry="3.5" fill="#F8F1DE"></ellipse>
+                <ellipse cx="1196" cy="435.5" rx="12" ry="2.6" fill="{{drinkColor}}"></ellipse>
+                <g fill="#C46F3F">
+                  <circle cx="1191" cy="458" r="2.2"></circle>
+                  <circle cx="1201" cy="456" r="2.2"></circle>
+                </g>
+                <g fill="#8FA27A">
+                  <circle cx="1196" cy="462" r="1.6"></circle>
+                </g>
+                <!-- slice of pumpkin pie -->
+                <ellipse cx="1244" cy="469" rx="30" ry="6" fill="#FBF4E2"></ellipse>
+                <ellipse cx="1244" cy="469" rx="30" ry="6" fill="none" stroke="#E3D3B0" stroke-width="1.5"></ellipse>
+                <path d="M1226 466 L1262 463 L1262 470 Q1244 475 1227 471 Z" fill="#C46F3F"></path>
+                <path d="M1226 466 L1262 450 L1262 463 Z" fill="#E39A45"></path>
+                <path d="M1259 449 Q1269 456 1263 467 L1258 465 Q1263 456 1256 451 Z" fill="#C99A5E"></path>
+                <circle cx="1248" cy="456" r="5" fill="#FFF8EC"></circle>
+                <path d="M1244 456 Q1248 450 1252 456" stroke="#EFE3C8" stroke-width="1.3" fill="none"></path>
               </g>
-              <g fill="#8FA27A">
-                <circle cx="1196" cy="462" r="1.6"></circle>
-              </g>
-              <!-- slice of pumpkin pie -->
-              <ellipse cx="1244" cy="469" rx="30" ry="6" fill="#FBF4E2"></ellipse>
-              <ellipse cx="1244" cy="469" rx="30" ry="6" fill="none" stroke="#E3D3B0" stroke-width="1.5"></ellipse>
-              <path d="M1226 466 L1262 463 L1262 470 Q1244 475 1227 471 Z" fill="#C46F3F"></path>
-              <path d="M1226 466 L1262 450 L1262 463 Z" fill="#E39A45"></path>
-              <path d="M1259 449 Q1269 456 1263 467 L1258 465 Q1263 456 1256 451 Z" fill="#C99A5E"></path>
-              <circle cx="1248" cy="456" r="5" fill="#FFF8EC"></circle>
-              <path d="M1244 456 Q1248 450 1252 456" stroke="#EFE3C8" stroke-width="1.3" fill="none"></path>
             </g>
-          </g>
-          <!-- laptop cursor + tea steam (animated, kept out of the painted layer) -->
-          <g transform="translate(-244 0)">
-            <rect class="cur" x="1120" y="439" width="5" height="9" fill="#F6E7B4"></rect>
-            <path class="steam" d="M1192 428 C1188 420 1196 416 1192 408" stroke="#FBF4E2" stroke-width="2.5"
-              fill="none" stroke-linecap="round"></path>
-            <path class="steam" style="animation-delay:1.1s" d="M1202 428 C1198 420 1206 416 1202 406" stroke="#FBF4E2"
-              stroke-width="2.5" fill="none" stroke-linecap="round"></path>
-          </g>
+            <!-- laptop cursor + tea steam (animated, kept out of the painted layer) -->
+            <g transform="translate(-244 0)">
+              <rect class="cur" x="1120" y="439" width="5" height="9" fill="#F6E7B4"></rect>
+              <path class="steam" d="M1192 428 C1188 420 1196 416 1192 408" stroke="#FBF4E2" stroke-width="2.5"
+                fill="none" stroke-linecap="round"></path>
+              <path class="steam" style="animation-delay:1.1s" d="M1202 428 C1198 420 1206 416 1202 406"
+                stroke="#FBF4E2" stroke-width="2.5" fill="none" stroke-linecap="round"></path>
+            </g>
           </g>
 
           <g class="cl" data-cl="bunting" transform="{{tfs_bunting}}" display="{{dsp_bunting}}">
-          <g filter="url(#wobble)">
-            <!-- bunting + small landscape print above the keyboard -->
-            <path d="M1096 156 Q1180 206 1272 150" stroke="#6A4A34" stroke-width="2" fill="none"></path>
-            <path transform="translate(1113 165)" d="M-12 0 H12 L0 28 Z" fill="#8FA27A"></path>
-            <path transform="translate(1147 176)" d="M-12 0 H12 L0 28 Z" fill="#C46F3F"></path>
-            <path transform="translate(1182 180)" d="M-12 0 H12 L0 28 Z" fill="#E3C58A"></path>
-            <path transform="translate(1218 174)" d="M-12 0 H12 L0 28 Z" fill="#A4524A"></path>
-            <path transform="translate(1254 160)" d="M-12 0 H12 L0 28 Z" fill="#6F8F5B"></path>
-            <g fill="none" stroke="#FBF4E2" stroke-width="1.2" stroke-dasharray="2 3" opacity=".7">
-              <path transform="translate(1113 165)" d="M-8 3 H8 L0 20 Z"></path>
-              <path transform="translate(1147 176)" d="M-8 3 H8 L0 20 Z"></path>
-              <path transform="translate(1182 180)" d="M-8 3 H8 L0 20 Z"></path>
-              <path transform="translate(1218 174)" d="M-8 3 H8 L0 20 Z"></path>
-              <path transform="translate(1254 160)" d="M-8 3 H8 L0 20 Z"></path>
+            <g filter="url(#wobble)">
+              <!-- bunting + small landscape print above the keyboard -->
+              <path d="M1096 156 Q1180 206 1272 150" stroke="#6A4A34" stroke-width="2" fill="none"></path>
+              <path transform="translate(1113 165)" d="M-12 0 H12 L0 28 Z" fill="#8FA27A"></path>
+              <path transform="translate(1147 176)" d="M-12 0 H12 L0 28 Z" fill="#C46F3F"></path>
+              <path transform="translate(1182 180)" d="M-12 0 H12 L0 28 Z" fill="#E3C58A"></path>
+              <path transform="translate(1218 174)" d="M-12 0 H12 L0 28 Z" fill="#A4524A"></path>
+              <path transform="translate(1254 160)" d="M-12 0 H12 L0 28 Z" fill="#6F8F5B"></path>
+              <g fill="none" stroke="#FBF4E2" stroke-width="1.2" stroke-dasharray="2 3" opacity=".7">
+                <path transform="translate(1113 165)" d="M-8 3 H8 L0 20 Z"></path>
+                <path transform="translate(1147 176)" d="M-8 3 H8 L0 20 Z"></path>
+                <path transform="translate(1182 180)" d="M-8 3 H8 L0 20 Z"></path>
+                <path transform="translate(1218 174)" d="M-8 3 H8 L0 20 Z"></path>
+                <path transform="translate(1254 160)" d="M-8 3 H8 L0 20 Z"></path>
+              </g>
+              <rect x="1004" y="222" width="92" height="66" fill="#7A5A3E"></rect>
+              <rect x="1010" y="228" width="80" height="54" fill="#E8A070"></rect>
+              <circle cx="1074" cy="244" r="5" fill="#FFE3A0"></circle>
+              <path d="M1010 266 L1034 242 L1052 258 L1070 238 L1090 262 V282 H1010 Z" fill="#6A5A8A"></path>
+              <rect x="1010" y="270" width="80" height="12" fill="#3E4A5E"></rect>
             </g>
-            <rect x="1004" y="222" width="92" height="66" fill="#7A5A3E"></rect>
-            <rect x="1010" y="228" width="80" height="54" fill="#E8A070"></rect>
-            <circle cx="1074" cy="244" r="5" fill="#FFE3A0"></circle>
-            <path d="M1010 266 L1034 242 L1052 258 L1070 238 L1090 262 V282 H1010 Z" fill="#6A5A8A"></path>
-            <rect x="1010" y="270" width="80" height="12" fill="#3E4A5E"></rect>
-          </g>
           </g>
 
           <g class="cl" data-cl="basket" transform="{{tfs_basket}}" display="{{dsp_basket}}">
-          <ellipse cx="230" cy="722" rx="110" ry="9" fill="#3C2814" opacity=".2"></ellipse>
-          <g filter="url(#wobble)">
-            <!-- yarn strand + ball -->
-            <path d="M290 624 C330 690 420 745 540 730" stroke="#C46F3F" stroke-width="4" fill="none"
-              stroke-linecap="round"></path>
-            <circle cx="538" cy="731" r="11" fill="#C46F3F"></circle>
-            <path d="M530 726 Q538 721 546 727 M529 734 Q538 729 547 735" stroke="#D98A5C" stroke-width="1.5"
-              fill="none">
-            </path>
-            <!-- yarn basket -->
-            <circle cx="175" cy="612" r="28" fill="#8FA27A"></circle>
-            <path d="M155 604 Q175 590 195 608 M152 618 Q175 604 198 622" stroke="#B3C4A0" stroke-width="2" fill="none">
-            </path>
-            <circle cx="218" cy="598" r="27" fill="#E8D5B0"></circle>
-            <path d="M198 590 Q218 576 240 594 M196 606 Q218 592 242 610" stroke="#F6ECD6" stroke-width="2" fill="none">
-            </path>
-            <circle cx="262" cy="606" r="32" fill="#C46F3F"></circle>
-            <path d="M236 596 Q262 580 290 600 M232 612 Q262 596 292 618" stroke="#DA8F62" stroke-width="2" fill="none">
-            </path>
-            <circle cx="201" cy="618" r="14" fill="#7A6A9A"></circle>
-            <path d="M190 614 Q201 606 212 616" stroke="#9A8ABA" stroke-width="1.5" fill="none"></path>
-            <line x1="298" y1="546" x2="274" y2="604" stroke="#E3C58A" stroke-width="5" stroke-linecap="round"></line>
-            <rect x="148" y="622" width="164" height="14" rx="7" fill="#734e31"></rect>
-            <path d="M152 636 L308 636 L292 712 Q290 718 284 718 L176 718 Q170 718 168 712 Z" fill="#594128"></path>
-            <path d="M156 654 H304 M160 672 H300 M164 690 H296" stroke="#A07446" stroke-width="3"></path>
-            <path d="M196 640 V716 M236 640 V718 M276 640 V716" stroke="#A07446" stroke-width="2" opacity=".6"></path>
-          </g>
+            <ellipse cx="230" cy="722" rx="110" ry="9" fill="#3C2814" opacity=".2"></ellipse>
+            <g filter="url(#wobble)">
+              <!-- yarn strand + ball -->
+              <path d="M290 624 C330 690 420 745 540 730" stroke="#C46F3F" stroke-width="4" fill="none"
+                stroke-linecap="round"></path>
+              <circle cx="538" cy="731" r="11" fill="#C46F3F"></circle>
+              <path d="M530 726 Q538 721 546 727 M529 734 Q538 729 547 735" stroke="#D98A5C" stroke-width="1.5"
+                fill="none">
+              </path>
+              <!-- yarn basket -->
+              <circle cx="175" cy="612" r="28" fill="#8FA27A"></circle>
+              <path d="M155 604 Q175 590 195 608 M152 618 Q175 604 198 622" stroke="#B3C4A0" stroke-width="2"
+                fill="none">
+              </path>
+              <circle cx="218" cy="598" r="27" fill="#E8D5B0"></circle>
+              <path d="M198 590 Q218 576 240 594 M196 606 Q218 592 242 610" stroke="#F6ECD6" stroke-width="2"
+                fill="none">
+              </path>
+              <circle cx="262" cy="606" r="32" fill="#C46F3F"></circle>
+              <path d="M236 596 Q262 580 290 600 M232 612 Q262 596 292 618" stroke="#DA8F62" stroke-width="2"
+                fill="none">
+              </path>
+              <circle cx="201" cy="618" r="14" fill="#7A6A9A"></circle>
+              <path d="M190 614 Q201 606 212 616" stroke="#9A8ABA" stroke-width="1.5" fill="none"></path>
+              <line x1="298" y1="546" x2="274" y2="604" stroke="#E3C58A" stroke-width="5" stroke-linecap="round"></line>
+              <rect x="148" y="622" width="164" height="14" rx="7" fill="#734e31"></rect>
+              <path d="M152 636 L308 636 L292 712 Q290 718 284 718 L176 718 Q170 718 168 712 Z" fill="#594128"></path>
+              <path d="M156 654 H304 M160 672 H300 M164 690 H296" stroke="#A07446" stroke-width="3"></path>
+              <path d="M196 640 V716 M236 640 V718 M276 640 V716" stroke="#A07446" stroke-width="2" opacity=".6"></path>
+            </g>
           </g>
 
           <g class="cl" data-cl="monstera" transform="{{tfs_monstera}}" display="{{dsp_monstera}}">
-          <!-- ===== monstera, lavender pot (floor, bottom left) ===== -->
-          <g transform="translate(33 0)"><g filter="url(#wobble)">
-            <ellipse cx="54" cy="778" rx="52" ry="6" fill="#3C2814" opacity=".2"></ellipse>
-            <g class="psway" style="animation-duration:6.2s;animation-delay:-1.4s">
-              <path d="M54 712 C60 670 68 630 72 602 M54 712 C54 660 54 620 54 590 M54 712 C46 692 38 674 30 656 M54 712 C62 698 72 690 84 682"
-                stroke="#4F7A3E" stroke-width="3" fill="none" stroke-linecap="round"></path>
-              <use href="#monstera" style="color:#2F6B3F" transform="translate(70 616) rotate(26) scale(1)"></use>
-              <use href="#monstera" style="color:#5CA04F" transform="translate(54 586) scale(1.2)"></use>
-              <use href="#monstera" style="color:#2F6B3F" transform="translate(30 656) rotate(-46) scale(.95)"></use>
-              <use href="#monstera" style="color:#4F9A52" transform="translate(84 684) rotate(62) scale(.8)"></use>
+            <!-- ===== monstera, lavender pot (floor, bottom left) ===== -->
+            <g transform="translate(33 0)">
+              <g filter="url(#wobble)">
+                <ellipse cx="54" cy="778" rx="52" ry="6" fill="#3C2814" opacity=".2"></ellipse>
+                <g class="psway" style="animation-duration:6.2s;animation-delay:-1.4s">
+                  <path
+                    d="M54 712 C60 670 68 630 72 602 M54 712 C54 660 54 620 54 590 M54 712 C46 692 38 674 30 656 M54 712 C62 698 72 690 84 682"
+                    stroke="#4F7A3E" stroke-width="3" fill="none" stroke-linecap="round"></path>
+                  <use href="#monstera" style="color:#2F6B3F" transform="translate(70 616) rotate(26) scale(1)"></use>
+                  <use href="#monstera" style="color:#5CA04F" transform="translate(54 586) scale(1.2)"></use>
+                  <use href="#monstera" style="color:#2F6B3F" transform="translate(30 656) rotate(-46) scale(.95)">
+                  </use>
+                  <use href="#monstera" style="color:#4F9A52" transform="translate(84 684) rotate(62) scale(.8)"></use>
+                </g>
+                <path d="M24 716 H84 L78 778 H30 Z" fill="#a8482c"></path>
+                <rect x="18" y="708" width="72" height="13" rx="6" fill="#804737"></rect>
+              </g>
             </g>
-            <path d="M24 716 H84 L78 778 H30 Z" fill="#a8482c"></path>
-            <rect x="18" y="708" width="72" height="13" rx="6" fill="#804737"></rect>
-          </g>
-          </g>
           </g>
 
           <g class="cl" data-cl="cat2" transform="{{tfs_cat2}}" display="{{dsp_cat2}}">
-          <!-- cat 2 (calico), a round, chubby sitter -->
-          <g transform="translate(410 0)" filter="url(#wobble)" aria-hidden="true">
-            <defs>
-              <clipPath id="cb2">
+            <!-- cat 2 (calico), a round, chubby sitter -->
+            <g transform="translate(410 0)" filter="url(#wobble)" aria-hidden="true">
+              <defs>
+                <clipPath id="cb2">
+                  <path
+                    d="M547 738 C545 704 561 682 589 682 C617 682 633 704 631 738 Q629 745 619 745 H559 Q549 745 547 738 Z">
+                  </path>
+                </clipPath>
+                <clipPath id="ch2">
+                  <path
+                    d="M555 668 C552 641 570 634 589 634 C608 634 626 641 623 668 C622 688 608 694 589 694 C570 694 556 688 555 668 Z">
+                  </path>
+                </clipPath>
+              </defs>
+              <ellipse cx="589" cy="745" rx="54" ry="5" fill="#573824" opacity=".18"></ellipse>
+              <path class="cat-tail" d="M558 726 C536 726 530 744 546 747 C556 748 566 744 572 740" fill="none"
+                stroke="#302820" stroke-width="12" stroke-linecap="round"></path>
+              <path class="cat-tail" d="M546 747 Q556 748 563 745" fill="none" stroke="#C47A3D" stroke-width="10"
+                stroke-linecap="round"></path>
+              <g class="cat-breathe">
                 <path
-                  d="M547 738 C545 704 561 682 589 682 C617 682 633 704 631 738 Q629 745 619 745 H559 Q549 745 547 738 Z">
-                </path>
-              </clipPath>
-              <clipPath id="ch2">
+                  d="M547 738 C545 704 561 682 589 682 C617 682 633 704 631 738 Q629 745 619 745 H559 Q549 745 547 738 Z"
+                  fill="#F2E3C6"></path>
+                <g clip-path="url(#cb2)">
+                  <ellipse cx="560" cy="708" rx="20" ry="26" fill="#302820"></ellipse>
+                  <ellipse cx="620" cy="722" rx="15" ry="20" fill="#C47A3D"></ellipse>
+                  <ellipse cx="612" cy="706" rx="9" ry="8" fill="#302820"></ellipse>
+                </g>
                 <path
-                  d="M555 668 C552 641 570 634 589 634 C608 634 626 641 623 668 C622 688 608 694 589 694 C570 694 556 688 555 668 Z">
-                </path>
-              </clipPath>
-            </defs>
-            <ellipse cx="589" cy="745" rx="54" ry="5" fill="#573824" opacity=".18"></ellipse>
-            <path class="cat-tail" d="M558 726 C536 726 530 744 546 747 C556 748 566 744 572 740" fill="none"
-              stroke="#302820" stroke-width="12" stroke-linecap="round"></path>
-            <path class="cat-tail" d="M546 747 Q556 748 563 745" fill="none" stroke="#C47A3D" stroke-width="10"
-              stroke-linecap="round"></path>
-            <g class="cat-breathe">
-              <path
-                d="M547 738 C545 704 561 682 589 682 C617 682 633 704 631 738 Q629 745 619 745 H559 Q549 745 547 738 Z"
-                fill="#F2E3C6"></path>
-              <g clip-path="url(#cb2)">
-                <ellipse cx="560" cy="708" rx="20" ry="26" fill="#302820"></ellipse>
-                <ellipse cx="620" cy="722" rx="15" ry="20" fill="#C47A3D"></ellipse>
-                <ellipse cx="612" cy="706" rx="9" ry="8" fill="#302820"></ellipse>
+                  d="M547 738 C545 704 561 682 589 682 C617 682 633 704 631 738 Q629 745 619 745 H559 Q549 745 547 738 Z"
+                  fill="none" stroke="#8D7055" stroke-width="1.4" stroke-opacity=".38"></path>
+                <path d="M561 654 Q553 632 562 626 Q572 626 583 640 Z" fill="#302820"></path>
+                <path d="M617 654 Q625 632 616 626 Q606 626 595 640 Z" fill="#C47A3D"></path>
+                <path d="M565 647 Q561 635 565 632 Q571 632 578 640 Z M613 647 Q617 635 613 632 Q607 632 600 640 Z"
+                  fill="#D59A82" opacity=".8"></path>
+                <path
+                  d="M555 668 C552 641 570 634 589 634 C608 634 626 641 623 668 C622 688 608 694 589 694 C570 694 556 688 555 668 Z"
+                  fill="#F7EEDC"></path>
+                <g clip-path="url(#ch2)">
+                  <ellipse cx="566" cy="646" rx="19" ry="16" fill="#302820"></ellipse>
+                  <ellipse cx="618" cy="654" rx="12" ry="15" fill="#C47A3D"></ellipse>
+                  <path d="M585 630 H595 L592 646 Q589 650 586 646 Z" fill="#F7EEDC"></path>
+                </g>
+                <path
+                  d="M555 668 C552 641 570 634 589 634 C608 634 626 641 623 668 C622 688 608 694 589 694 C570 694 556 688 555 668 Z"
+                  fill="none" stroke="#211B18" stroke-width="1.2" stroke-opacity=".3"></path>
+                <ellipse cx="567" cy="682" rx="6" ry="4.5" fill="#E88F7A" opacity=".3"></ellipse>
+                <ellipse cx="611" cy="682" rx="6" ry="4.5" fill="#E88F7A" opacity=".3"></ellipse>
+                <ellipse cx="577" cy="664" rx="5.6" ry="6.2" fill="#FBF3DF"></ellipse>
+                <ellipse cx="601" cy="664" rx="5.6" ry="6.2" fill="#FBF3DF"></ellipse>
+                <ellipse cx="578" cy="665" rx="3" ry="4.6" fill="#cfc857" transform="{{c2l}}"></ellipse>
+                <ellipse cx="600" cy="665" rx="3" ry="4.6" fill="#cfc857" transform="{{c2r}}"></ellipse>
+                <circle cx="578" cy="665" r="2" fill="#28231C" opacity="0.95" transform="{{c2l}}"></circle>
+                <circle cx="600" cy="665" r="2" fill="#28231C" opacity="0.95" transform="{{c2r}}"></circle>
+                <path class="cat-blink" d="M571 665 Q577 660 583 665 M595 665 Q601 660 607 665" fill="none"
+                  stroke="#302820" stroke-width="2.6" stroke-linecap="round"></path>
+                <path d="M586 673 Q589 671 592 673 Q591 676 589 677 Q587 676 586 673 Z" fill="#C47A76"></path>
+                <path d="M589 677 Q587 681 583 680 M589 677 Q591 681 595 680" fill="none" stroke="#79645A"
+                  stroke-width="1.4" stroke-linecap="round"></path>
+                <path d="M572 675 Q561 670 548 673 M572 679 Q560 679 547 685 M573 671 Q564 664 554 663" fill="none"
+                  stroke="#3A2F28" stroke-width="1.5" stroke-linecap="round" opacity=".85"></path>
+                <path d="M606 675 Q617 670 630 673 M606 679 Q618 679 631 685 M605 671 Q614 664 624 663" fill="none"
+                  stroke="#3A2F28" stroke-width="1.5" stroke-linecap="round" opacity=".85"></path>
+                <ellipse cx="571" cy="740" rx="10" ry="6" fill="#F8EBD4" stroke="#8D7055" stroke-width="1"
+                  stroke-opacity=".35"></ellipse>
+                <ellipse cx="607" cy="740" rx="10" ry="6" fill="#F8EBD4" stroke="#8D7055" stroke-width="1"
+                  stroke-opacity=".35"></ellipse>
+                <path d="M569 741 V737 M574 741 V737 M605 741 V737 M610 741 V737" stroke="#C7B08C" stroke-width="1"
+                  stroke-linecap="round" opacity=".8"></path>
               </g>
-              <path
-                d="M547 738 C545 704 561 682 589 682 C617 682 633 704 631 738 Q629 745 619 745 H559 Q549 745 547 738 Z"
-                fill="none" stroke="#8D7055" stroke-width="1.4" stroke-opacity=".38"></path>
-              <path d="M561 654 Q553 632 562 626 Q572 626 583 640 Z" fill="#302820"></path>
-              <path d="M617 654 Q625 632 616 626 Q606 626 595 640 Z" fill="#C47A3D"></path>
-              <path d="M565 647 Q561 635 565 632 Q571 632 578 640 Z M613 647 Q617 635 613 632 Q607 632 600 640 Z"
-                fill="#D59A82" opacity=".8"></path>
-              <path
-                d="M555 668 C552 641 570 634 589 634 C608 634 626 641 623 668 C622 688 608 694 589 694 C570 694 556 688 555 668 Z"
-                fill="#F7EEDC"></path>
-              <g clip-path="url(#ch2)">
-                <ellipse cx="566" cy="646" rx="19" ry="16" fill="#302820"></ellipse>
-                <ellipse cx="618" cy="654" rx="12" ry="15" fill="#C47A3D"></ellipse>
-                <path d="M585 630 H595 L592 646 Q589 650 586 646 Z" fill="#F7EEDC"></path>
-              </g>
-              <path
-                d="M555 668 C552 641 570 634 589 634 C608 634 626 641 623 668 C622 688 608 694 589 694 C570 694 556 688 555 668 Z"
-                fill="none" stroke="#211B18" stroke-width="1.2" stroke-opacity=".3"></path>
-              <ellipse cx="567" cy="682" rx="6" ry="4.5" fill="#E88F7A" opacity=".3"></ellipse>
-              <ellipse cx="611" cy="682" rx="6" ry="4.5" fill="#E88F7A" opacity=".3"></ellipse>
-              <ellipse cx="577" cy="664" rx="5.6" ry="6.2" fill="#FBF3DF"></ellipse>
-              <ellipse cx="601" cy="664" rx="5.6" ry="6.2" fill="#FBF3DF"></ellipse>
-              <ellipse cx="578" cy="665" rx="3" ry="4.6" fill="#cfc857" transform="{{c2l}}"></ellipse>
-              <ellipse cx="600" cy="665" rx="3" ry="4.6" fill="#cfc857" transform="{{c2r}}"></ellipse>
-              <circle cx="578" cy="665" r="2" fill="#28231C" opacity="0.95" transform="{{c2l}}"></circle>
-              <circle cx="600" cy="665" r="2" fill="#28231C" opacity="0.95" transform="{{c2r}}"></circle>
-              <path class="cat-blink" d="M571 665 Q577 660 583 665 M595 665 Q601 660 607 665" fill="none"
-                stroke="#302820" stroke-width="2.6" stroke-linecap="round"></path>
-              <path d="M586 673 Q589 671 592 673 Q591 676 589 677 Q587 676 586 673 Z" fill="#C47A76"></path>
-              <path d="M589 677 Q587 681 583 680 M589 677 Q591 681 595 680" fill="none" stroke="#79645A"
-                stroke-width="1.4" stroke-linecap="round"></path>
-              <path d="M572 675 Q561 670 548 673 M572 679 Q560 679 547 685 M573 671 Q564 664 554 663" fill="none"
-                stroke="#3A2F28" stroke-width="1.5" stroke-linecap="round" opacity=".85"></path>
-              <path d="M606 675 Q617 670 630 673 M606 679 Q618 679 631 685 M605 671 Q614 664 624 663" fill="none"
-                stroke="#3A2F28" stroke-width="1.5" stroke-linecap="round" opacity=".85"></path>
-              <ellipse cx="571" cy="740" rx="10" ry="6" fill="#F8EBD4" stroke="#8D7055" stroke-width="1"
-                stroke-opacity=".35"></ellipse>
-              <ellipse cx="607" cy="740" rx="10" ry="6" fill="#F8EBD4" stroke="#8D7055" stroke-width="1"
-                stroke-opacity=".35"></ellipse>
-              <path d="M569 741 V737 M574 741 V737 M605 741 V737 M610 741 V737" stroke="#C7B08C" stroke-width="1"
-                stroke-linecap="round" opacity=".8"></path>
             </g>
-          </g>
           </g>
 
           <g class="cl" data-cl="banana" transform="{{tfs_banana}}" display="{{dsp_banana}}">
-          <!-- ===== the newer potted plants ===== -->
-          <!-- tall banana-leaf plant, mustard pot (floor, right) -->
-          <g transform="translate(-26 0)">
-            <g filter="url(#wobble)">
-              <ellipse cx="1216" cy="784" rx="56" ry="7" fill="#3C2814" opacity=".2"></ellipse>
-              <g class="psway" style="animation-duration:6s;animation-delay:-1s">
-                <use href="#banana" transform="translate(1216 724) rotate(-44) scale(.8)"></use>
-                <use href="#banana" transform="translate(1216 724) rotate(42) scale(.85)"></use>
-                <use href="#banana" transform="translate(1216 724) rotate(-15)"></use>
-                <use href="#banana" transform="translate(1216 724) rotate(17) scale(.95)"></use>
+            <!-- ===== the newer potted plants ===== -->
+            <!-- tall banana-leaf plant, mustard pot (floor, right) -->
+            <g transform="translate(-26 0)">
+              <g filter="url(#wobble)">
+                <ellipse cx="1216" cy="784" rx="56" ry="7" fill="#3C2814" opacity=".2"></ellipse>
+                <g class="psway" style="animation-duration:6s;animation-delay:-1s">
+                  <use href="#banana" transform="translate(1216 724) rotate(-44) scale(.8)"></use>
+                  <use href="#banana" transform="translate(1216 724) rotate(42) scale(.85)"></use>
+                  <use href="#banana" transform="translate(1216 724) rotate(-15)"></use>
+                  <use href="#banana" transform="translate(1216 724) rotate(17) scale(.95)"></use>
+                </g>
+                <path d="M1180 726 H1252 L1244 784 H1188 Z" fill="#d5d3bf"></path>
+                <rect x="1174" y="717" width="84" height="14" rx="6" fill="#D99B22"></rect>
               </g>
-              <path d="M1180 726 H1252 L1244 784 H1188 Z" fill="#d5d3bf"></path>
-              <rect x="1174" y="717" width="84" height="14" rx="6" fill="#D99B22"></rect>
             </g>
-          </g>
           </g>
 
           <g class="cl" data-cl="sword" transform="{{tfs_sword}}" display="{{dsp_sword}}">
-          <!-- sword-leaf plant, navy dotted pot -->
-          <g filter="url(#wobble)">
-            <ellipse cx="1100" cy="786" rx="38" ry="6" fill="#3C2814" opacity=".2"></ellipse>
-            <g class="psway" style="animation-duration:4.6s;animation-delay:-2.2s">
-              <use href="#sword" transform="translate(1100 740) rotate(-36) scale(.8)"></use>
-              <use href="#sword" transform="translate(1100 740) rotate(36) scale(.8)"></use>
-              <use href="#sword" transform="translate(1100 740) rotate(-17)"></use>
-              <use href="#sword" transform="translate(1100 740) rotate(18)"></use>
-              <use href="#sword" transform="translate(1100 740) scale(1.15)"></use>
+            <!-- sword-leaf plant, navy dotted pot -->
+            <g filter="url(#wobble)">
+              <ellipse cx="1100" cy="786" rx="38" ry="6" fill="#3C2814" opacity=".2"></ellipse>
+              <g class="psway" style="animation-duration:4.6s;animation-delay:-2.2s">
+                <use href="#sword" transform="translate(1100 740) rotate(-36) scale(.8)"></use>
+                <use href="#sword" transform="translate(1100 740) rotate(36) scale(.8)"></use>
+                <use href="#sword" transform="translate(1100 740) rotate(-17)"></use>
+                <use href="#sword" transform="translate(1100 740) rotate(18)"></use>
+                <use href="#sword" transform="translate(1100 740) scale(1.15)"></use>
+              </g>
+              <path d="M1076 744 H1124 L1119 786 H1081 Z" fill="#2E4A5A"></path>
+              <rect x="1071" y="736" width="58" height="11" rx="5" fill="#243C49"></rect>
+              <g fill="#CFE3E0">
+                <circle cx="1090" cy="758" r="2.4"></circle>
+                <circle cx="1106" cy="766" r="2.4"></circle>
+                <circle cx="1112" cy="752" r="2.4"></circle>
+                <circle cx="1096" cy="776" r="2.4"></circle>
+              </g>
             </g>
-            <path d="M1076 744 H1124 L1119 786 H1081 Z" fill="#2E4A5A"></path>
-            <rect x="1071" y="736" width="58" height="11" rx="5" fill="#243C49"></rect>
-            <g fill="#CFE3E0">
-              <circle cx="1090" cy="758" r="2.4"></circle>
-              <circle cx="1106" cy="766" r="2.4"></circle>
-              <circle cx="1112" cy="752" r="2.4"></circle>
-              <circle cx="1096" cy="776" r="2.4"></circle>
-            </g>
-          </g>
           </g>
 
           <g class="cl" data-cl="rubber" transform="{{tfs_rubber}}" display="{{dsp_rubber}}">
-          <!-- rubber plant, coral striped pot (floor, in front of the desk) -->
-          <g filter="url(#wobble)">
-            <ellipse cx="880" cy="776" rx="46" ry="6" fill="#3C2814" opacity=".2"></ellipse>
-            <g class="psway" style="animation-duration:5.4s;animation-delay:-3s">
-              <path
-                d="M880 712 C876 670 868 640 862 612 M880 712 C884 660 892 630 900 600 M880 712 C880 680 880 650 878 590"
-                stroke="#4F7A3E" stroke-width="3" fill="none" stroke-linecap="round"></path>
-              <use href="#oval" style="color:#3F7A45" transform="translate(862 614) rotate(-24) scale(1.25)"></use>
-              <use href="#oval" style="color:#7A3B4A" transform="translate(900 602) rotate(26) scale(1.25)"></use>
-              <use href="#oval" style="color:#4F8F4F" transform="translate(878 592) rotate(-4) scale(1.3)"></use>
-              <use href="#oval" style="color:#7A3B4A" transform="translate(870 652) rotate(-68) scale(1.05)"></use>
-              <use href="#oval" style="color:#3F7A45" transform="translate(890 650) rotate(66) scale(1.05)"></use>
+            <!-- rubber plant, coral striped pot (floor, in front of the desk) -->
+            <g filter="url(#wobble)">
+              <ellipse cx="880" cy="776" rx="46" ry="6" fill="#3C2814" opacity=".2"></ellipse>
+              <g class="psway" style="animation-duration:5.4s;animation-delay:-3s">
+                <path
+                  d="M880 712 C876 670 868 640 862 612 M880 712 C884 660 892 630 900 600 M880 712 C880 680 880 650 878 590"
+                  stroke="#4F7A3E" stroke-width="3" fill="none" stroke-linecap="round"></path>
+                <use href="#oval" style="color:#3F7A45" transform="translate(862 614) rotate(-24) scale(1.25)"></use>
+                <use href="#oval" style="color:#7A3B4A" transform="translate(900 602) rotate(26) scale(1.25)"></use>
+                <use href="#oval" style="color:#4F8F4F" transform="translate(878 592) rotate(-4) scale(1.3)"></use>
+                <use href="#oval" style="color:#7A3B4A" transform="translate(870 652) rotate(-68) scale(1.05)"></use>
+                <use href="#oval" style="color:#3F7A45" transform="translate(890 650) rotate(66) scale(1.05)"></use>
+              </g>
+              <path d="M848 714 H912 L906 776 H854 Z" fill="#E2674A"></path>
+              <rect x="842" y="706" width="76" height="13" rx="6" fill="#CF5438"></rect>
+              <path d="M850 738 H910 M852 752 H908" stroke="#F8E4C4" stroke-width="6"></path>
             </g>
-            <path d="M848 714 H912 L906 776 H854 Z" fill="#E2674A"></path>
-            <rect x="842" y="706" width="76" height="13" rx="6" fill="#CF5438"></rect>
-            <path d="M850 738 H910 M852 752 H908" stroke="#F8E4C4" stroke-width="6"></path>
-          </g>
           </g>
 
           <g class="cl" data-cl="hangIvy" transform="{{tfs_hangIvy}}" display="{{dsp_hangIvy}}">
-          <!-- ===== hanging planter with trailing ivy (by the window) ===== -->
-          <!-- hanging planter with trailing ivy -->
-          <g filter="url(#wobble)">
-            <path d="M425 0 V132 M425 132 L408 160 M425 132 L442 160" stroke="#8A6445" stroke-width="2" fill="none"></path>
-            <g class="pswing" style="animation-duration:8s;animation-delay:-3s;transform-origin:50% 0">
-            <path d="M418 190 C410 230 424 270 414 342" stroke="#4F7A47" stroke-width="2" fill="none" stroke-linecap="round"></path><path d="M436 190 C444 232 430 282 440 336" stroke="#4F7A47" stroke-width="2" fill="none" stroke-linecap="round"></path><path d="M427 192 C424 222 432 252 426 292" stroke="#4F7A47" stroke-width="1.6" fill="none" stroke-linecap="round"></path>
-            <use href="#ivy" style="color:#6A9A55" transform="translate(416.0 204.5) rotate(-241) scale(0.97)"></use>
-            <use href="#ivy" style="color:#4F7A47" transform="translate(415.4 218.0) rotate(-114) scale(1.04)"></use>
-            <use href="#ivy" style="color:#98C27A" transform="translate(415.7 232.1) rotate(120) scale(0.90)"></use>
-            <use href="#ivy" style="color:#6A9A55" transform="translate(416.4 246.9) rotate(247) scale(0.77)"></use>
-            <use href="#ivy" style="color:#98C27A" transform="translate(417.2 262.8) rotate(116) scale(0.72)"></use>
-            <use href="#ivy" style="color:#6A9A55" transform="translate(417.7 280.0) rotate(250) scale(0.84)"></use>
-            <use href="#ivy" style="color:#7FAE62" transform="translate(417.6 298.8) rotate(-259) scale(0.83)"></use>
-            <use href="#ivy" style="color:#7FAE62" transform="translate(416.5 319.4) rotate(-104) scale(0.79)"></use>
-            <use href="#ivy" style="color:#4F7A47" transform="translate(414.0 342.0) rotate(-226) scale(0.61)"></use>
-            <use href="#ivy" style="color:#6A9A55" transform="translate(414.0 342.0) rotate(-172) scale(.8)"></use>
-            <use href="#ivy" style="color:#5F8A4E" transform="translate(438.0 205.5) rotate(246) scale(1.04)"></use>
-            <use href="#ivy" style="color:#7FAE62" transform="translate(438.6 220.2) rotate(114) scale(1.03)"></use>
-            <use href="#ivy" style="color:#3F6B45" transform="translate(438.3 235.5) rotate(-119) scale(0.83)"></use>
-            <use href="#ivy" style="color:#5F8A4E" transform="translate(437.6 251.2) rotate(-249) scale(0.85)"></use>
-            <use href="#ivy" style="color:#3F6B45" transform="translate(436.8 267.4) rotate(-113) scale(0.85)"></use>
-            <use href="#ivy" style="color:#4F7A47" transform="translate(436.3 284.0) rotate(-252) scale(0.76)"></use>
-            <use href="#ivy" style="color:#7FAE62" transform="translate(436.4 301.0) rotate(246) scale(0.65)"></use>
-            <use href="#ivy" style="color:#5F8A4E" transform="translate(437.5 318.3) rotate(99) scale(0.73)"></use>
-            <use href="#ivy" style="color:#98C27A" transform="translate(440.0 336.0) rotate(233) scale(0.85)"></use>
-            <use href="#ivy" style="color:#6A9A55" transform="translate(440.0 336.0) rotate(170) scale(.8)"></use>
-            <use href="#ivy" style="color:#3F6B45" transform="translate(426.4 202.8) rotate(-231) scale(0.85)"></use>
-            <use href="#ivy" style="color:#6A9A55" transform="translate(426.8 223.0) rotate(243) scale(1.05)"></use>
-            <use href="#ivy" style="color:#4F7A47" transform="translate(427.9 244.2) rotate(113) scale(0.86)"></use>
-            <use href="#ivy" style="color:#3F6B45" transform="translate(428.2 266.9) rotate(-103) scale(0.72)"></use>
-            <use href="#ivy" style="color:#6A9A55" transform="translate(426.0 292.0) rotate(-233) scale(0.60)"></use>
-            <use href="#ivy" style="color:#6A9A55" transform="translate(426.0 292.0) rotate(-171) scale(.8)"></use>
+            <!-- ===== hanging planter with trailing ivy (by the window) ===== -->
+            <!-- hanging planter with trailing ivy -->
+            <g filter="url(#wobble)">
+              <path d="M425 0 V132 M425 132 L408 160 M425 132 L442 160" stroke="#8A6445" stroke-width="2" fill="none">
+              </path>
+              <g class="pswing" style="animation-duration:8s;animation-delay:-3s;transform-origin:50% 0">
+                <path d="M418 190 C410 230 424 270 414 342" stroke="#4F7A47" stroke-width="2" fill="none"
+                  stroke-linecap="round"></path>
+                <path d="M436 190 C444 232 430 282 440 336" stroke="#4F7A47" stroke-width="2" fill="none"
+                  stroke-linecap="round"></path>
+                <path d="M427 192 C424 222 432 252 426 292" stroke="#4F7A47" stroke-width="1.6" fill="none"
+                  stroke-linecap="round"></path>
+                <use href="#ivy" style="color:#6A9A55" transform="translate(416.0 204.5) rotate(-241) scale(0.97)">
+                </use>
+                <use href="#ivy" style="color:#4F7A47" transform="translate(415.4 218.0) rotate(-114) scale(1.04)">
+                </use>
+                <use href="#ivy" style="color:#98C27A" transform="translate(415.7 232.1) rotate(120) scale(0.90)"></use>
+                <use href="#ivy" style="color:#6A9A55" transform="translate(416.4 246.9) rotate(247) scale(0.77)"></use>
+                <use href="#ivy" style="color:#98C27A" transform="translate(417.2 262.8) rotate(116) scale(0.72)"></use>
+                <use href="#ivy" style="color:#6A9A55" transform="translate(417.7 280.0) rotate(250) scale(0.84)"></use>
+                <use href="#ivy" style="color:#7FAE62" transform="translate(417.6 298.8) rotate(-259) scale(0.83)">
+                </use>
+                <use href="#ivy" style="color:#7FAE62" transform="translate(416.5 319.4) rotate(-104) scale(0.79)">
+                </use>
+                <use href="#ivy" style="color:#4F7A47" transform="translate(414.0 342.0) rotate(-226) scale(0.61)">
+                </use>
+                <use href="#ivy" style="color:#6A9A55" transform="translate(414.0 342.0) rotate(-172) scale(.8)"></use>
+                <use href="#ivy" style="color:#5F8A4E" transform="translate(438.0 205.5) rotate(246) scale(1.04)"></use>
+                <use href="#ivy" style="color:#7FAE62" transform="translate(438.6 220.2) rotate(114) scale(1.03)"></use>
+                <use href="#ivy" style="color:#3F6B45" transform="translate(438.3 235.5) rotate(-119) scale(0.83)">
+                </use>
+                <use href="#ivy" style="color:#5F8A4E" transform="translate(437.6 251.2) rotate(-249) scale(0.85)">
+                </use>
+                <use href="#ivy" style="color:#3F6B45" transform="translate(436.8 267.4) rotate(-113) scale(0.85)">
+                </use>
+                <use href="#ivy" style="color:#4F7A47" transform="translate(436.3 284.0) rotate(-252) scale(0.76)">
+                </use>
+                <use href="#ivy" style="color:#7FAE62" transform="translate(436.4 301.0) rotate(246) scale(0.65)"></use>
+                <use href="#ivy" style="color:#5F8A4E" transform="translate(437.5 318.3) rotate(99) scale(0.73)"></use>
+                <use href="#ivy" style="color:#98C27A" transform="translate(440.0 336.0) rotate(233) scale(0.85)"></use>
+                <use href="#ivy" style="color:#6A9A55" transform="translate(440.0 336.0) rotate(170) scale(.8)"></use>
+                <use href="#ivy" style="color:#3F6B45" transform="translate(426.4 202.8) rotate(-231) scale(0.85)">
+                </use>
+                <use href="#ivy" style="color:#6A9A55" transform="translate(426.8 223.0) rotate(243) scale(1.05)"></use>
+                <use href="#ivy" style="color:#4F7A47" transform="translate(427.9 244.2) rotate(113) scale(0.86)"></use>
+                <use href="#ivy" style="color:#3F6B45" transform="translate(428.2 266.9) rotate(-103) scale(0.72)">
+                </use>
+                <use href="#ivy" style="color:#6A9A55" transform="translate(426.0 292.0) rotate(-233) scale(0.60)">
+                </use>
+                <use href="#ivy" style="color:#6A9A55" transform="translate(426.0 292.0) rotate(-171) scale(.8)"></use>
+              </g>
+              <path d="M406 160 H444 L438 192 H412 Z" fill="#C46F3F"></path>
+              <path d="M406 160 H444" stroke="#E0905F" stroke-width="3"></path>
+              <use href="#ivy" style="color:#3F6B45" transform="translate(412 160) rotate(-62) scale(1.15)"></use>
+              <use href="#ivy" style="color:#4F7A47" transform="translate(418 156) rotate(-30) scale(1.2)"></use>
+              <use href="#ivy" style="color:#4F7A47" transform="translate(425 152) rotate(0) scale(1.25)"></use>
+              <use href="#ivy" style="color:#98C27A" transform="translate(432 156) rotate(28) scale(1.2)"></use>
+              <use href="#ivy" style="color:#3F6B45" transform="translate(438 160) rotate(62) scale(1.15)"></use>
+              <use href="#ivy" style="color:#3F6B45" transform="translate(409 168) rotate(-95) scale(1.0)"></use>
+              <use href="#ivy" style="color:#3F6B45" transform="translate(441 168) rotate(95) scale(1.0)"></use>
+              <use href="#ivy" style="color:#6A9A55" transform="translate(421 160) rotate(-14) scale(1.0)"></use>
+              <use href="#ivy" style="color:#6A9A55" transform="translate(430 160) rotate(16) scale(1.0)"></use>
             </g>
-            <path d="M406 160 H444 L438 192 H412 Z" fill="#C46F3F"></path>
-            <path d="M406 160 H444" stroke="#E0905F" stroke-width="3"></path>
-            <use href="#ivy" style="color:#3F6B45" transform="translate(412 160) rotate(-62) scale(1.15)"></use><use href="#ivy" style="color:#4F7A47" transform="translate(418 156) rotate(-30) scale(1.2)"></use><use href="#ivy" style="color:#4F7A47" transform="translate(425 152) rotate(0) scale(1.25)"></use><use href="#ivy" style="color:#98C27A" transform="translate(432 156) rotate(28) scale(1.2)"></use><use href="#ivy" style="color:#3F6B45" transform="translate(438 160) rotate(62) scale(1.15)"></use><use href="#ivy" style="color:#3F6B45" transform="translate(409 168) rotate(-95) scale(1.0)"></use><use href="#ivy" style="color:#3F6B45" transform="translate(441 168) rotate(95) scale(1.0)"></use><use href="#ivy" style="color:#6A9A55" transform="translate(421 160) rotate(-14) scale(1.0)"></use><use href="#ivy" style="color:#6A9A55" transform="translate(430 160) rotate(16) scale(1.0)"></use>
-          </g>
           </g>
 
           <g class="cl" data-cl="heartPl" transform="{{tfs_heartPl}}" display="{{dsp_heartPl}}">
-          <!-- hanging heart-leaf plant, pink pot -->
-          <g filter="url(#wobble)">
-            <g class="pswing" style="animation-duration:7s;animation-delay:-2s">
-              <path d="M815 0 V100 M815 100 L798 124 M815 100 L832 124" stroke="#B89A6A" stroke-width="2" fill="none">
-              </path>
-              <path d="M802 150 Q796 195 794 238 M815 152 Q820 210 817 272 M829 150 Q836 185 840 220" stroke="#6E8F5B"
-                stroke-width="1.6" fill="none"></path>
-              <use href="#heart" style="color:#5E9B5A" transform="translate(799 170) rotate(6)"></use>
-              <use href="#heart" style="color:#8FC46C" transform="translate(796 193) rotate(-8)"></use>
-              <use href="#heart" style="color:#5E9B5A" transform="translate(795 215) rotate(5)"></use>
-              <use href="#heart" style="color:#A8CF6A" transform="translate(794 238) rotate(-4)"></use>
-              <use href="#heart" style="color:#8FC46C" transform="translate(817 174) rotate(-6)"></use>
-              <use href="#heart" style="color:#5E9B5A" transform="translate(819 198) rotate(8)"></use>
-              <use href="#heart" style="color:#A8CF6A" transform="translate(819 222) rotate(-5)"></use>
-              <use href="#heart" style="color:#8FC46C" transform="translate(818 247) rotate(6)"></use>
-              <use href="#heart" style="color:#5E9B5A" transform="translate(817 272) rotate(-3)"></use>
-              <use href="#heart" style="color:#A8CF6A" transform="translate(832 168) rotate(-8)"></use>
-              <use href="#heart" style="color:#5E9B5A" transform="translate(837 192) rotate(6)"></use>
-              <use href="#heart" style="color:#8FC46C" transform="translate(840 218) rotate(-4)"></use>
-              <path d="M794 124 H836 L830 152 Q815 160 800 152 Z" fill="#E58FA8"></path>
-              <rect x="791" y="119" width="48" height="9" rx="4" fill="#D4728E"></rect>
-              <path d="M798 138 H832" stroke="#FBE3D6" stroke-width="3"></path>
+            <!-- hanging heart-leaf plant, pink pot -->
+            <g filter="url(#wobble)">
+              <g class="pswing" style="animation-duration:7s;animation-delay:-2s">
+                <path d="M815 0 V100 M815 100 L798 124 M815 100 L832 124" stroke="#B89A6A" stroke-width="2" fill="none">
+                </path>
+                <path d="M802 150 Q796 195 794 238 M815 152 Q820 210 817 272 M829 150 Q836 185 840 220" stroke="#6E8F5B"
+                  stroke-width="1.6" fill="none"></path>
+                <use href="#heart" style="color:#5E9B5A" transform="translate(799 170) rotate(6)"></use>
+                <use href="#heart" style="color:#8FC46C" transform="translate(796 193) rotate(-8)"></use>
+                <use href="#heart" style="color:#5E9B5A" transform="translate(795 215) rotate(5)"></use>
+                <use href="#heart" style="color:#A8CF6A" transform="translate(794 238) rotate(-4)"></use>
+                <use href="#heart" style="color:#8FC46C" transform="translate(817 174) rotate(-6)"></use>
+                <use href="#heart" style="color:#5E9B5A" transform="translate(819 198) rotate(8)"></use>
+                <use href="#heart" style="color:#A8CF6A" transform="translate(819 222) rotate(-5)"></use>
+                <use href="#heart" style="color:#8FC46C" transform="translate(818 247) rotate(6)"></use>
+                <use href="#heart" style="color:#5E9B5A" transform="translate(817 272) rotate(-3)"></use>
+                <use href="#heart" style="color:#A8CF6A" transform="translate(832 168) rotate(-8)"></use>
+                <use href="#heart" style="color:#5E9B5A" transform="translate(837 192) rotate(6)"></use>
+                <use href="#heart" style="color:#8FC46C" transform="translate(840 218) rotate(-4)"></use>
+                <path d="M794 124 H836 L830 152 Q815 160 800 152 Z" fill="#E58FA8"></path>
+                <rect x="791" y="119" width="48" height="9" rx="4" fill="#D4728E"></rect>
+                <path d="M798 138 H832" stroke="#FBE3D6" stroke-width="3"></path>
+              </g>
             </g>
-          </g>
           </g>
 
           <g class="cl" data-cl="clock" transform="{{tfs_clock}}" display="{{dsp_clock}}">
-          <!-- wall clock: sets the time of day -->
-          <g transform="translate(918 210)">
-            <polygon points="58,24 24,58 -24,58 -58,24 -58,-24 -24,-58 24,-58 58,-24" fill="#9A5226" stroke="#6E3A1C"
-              stroke-width="1" stroke-opacity="0.5" stroke-linejoin="round"></polygon>
-            <polygon points="50,20 20,50 -20,50 -50,20 -50,-20 -20,-50 20,-50 50,-20" fill="#785137"></polygon>
-            <path d="M-54 -12 V12 M54 -12 V12 M-12 -54 H12 M-12 54 H12" stroke="#8A4A22" stroke-width="2"
-              stroke-linecap="round"></path>
-            <circle r="41" fill="#8f5533"></circle>
-            <circle r="37" fill="#F3EBDD"></circle>
-            <circle r="34" fill="none" stroke="#3A2A22" stroke-width="3" stroke-dasharray="1 2.56"></circle>
-            <g font-family="Marcellus, Georgia, serif" font-size="10" font-weight="600" fill="#1E1612"
-              text-anchor="middle" dominant-baseline="central">
-              <text x="0" y="-25">12</text><text x="12.5" y="-21.7">1</text><text x="21.7" y="-12.5">2</text><text
-                x="25" y="0">3</text>
-              <text x="21.7" y="12.5">4</text><text x="12.5" y="21.7">5</text><text x="0" y="25">6</text><text x="-12.5"
-                y="21.7">7</text>
-              <text x="-21.7" y="12.5">8</text><text x="-25" y="0">9</text><text x="-21.7" y="-12.5">10</text><text
-                x="-12.5" y="-21.7">11</text>
+            <!-- wall clock: sets the time of day -->
+            <g transform="translate(918 210)">
+              <polygon points="58,24 24,58 -24,58 -58,24 -58,-24 -24,-58 24,-58 58,-24" fill="#9A5226" stroke="#6E3A1C"
+                stroke-width="1" stroke-opacity="0.5" stroke-linejoin="round"></polygon>
+              <polygon points="50,20 20,50 -20,50 -50,20 -50,-20 -20,-50 20,-50 50,-20" fill="#785137"></polygon>
+              <path d="M-54 -12 V12 M54 -12 V12 M-12 -54 H12 M-12 54 H12" stroke="#8A4A22" stroke-width="2"
+                stroke-linecap="round"></path>
+              <circle r="41" fill="#8f5533"></circle>
+              <circle r="37" fill="#F3EBDD"></circle>
+              <circle r="34" fill="none" stroke="#3A2A22" stroke-width="3" stroke-dasharray="1 2.56"></circle>
+              <g font-family="Marcellus, Georgia, serif" font-size="10" font-weight="600" fill="#1E1612"
+                text-anchor="middle" dominant-baseline="central">
+                <text x="0" y="-25">12</text><text x="12.5" y="-21.7">1</text><text x="21.7" y="-12.5">2</text><text
+                  x="25" y="0">3</text>
+                <text x="21.7" y="12.5">4</text><text x="12.5" y="21.7">5</text><text x="0" y="25">6</text><text
+                  x="-12.5" y="21.7">7</text>
+                <text x="-21.7" y="12.5">8</text><text x="-25" y="0">9</text><text x="-21.7" y="-12.5">10</text><text
+                  x="-12.5" y="-21.7">11</text>
+              </g>
+              <path d="M0 3 L-2.4 -5 L0 -16 L2.4 -5 Z" fill="#1E1612" transform="{{hourTf}}"></path>
+              <path d="M0 4 L-1.8 -7 L0 -26 L1.8 -7 Z" fill="#1E1612" transform="{{minTf}}"></path>
+              <g>
+                <line x1="0" y1="6" x2="0" y2="-30" stroke="#C9A24D" stroke-width="1"></line>
+                <animateTransform attributeName="transform" type="rotate" from="0" to="360" dur="60s"
+                  repeatCount="indefinite"></animateTransform>
+              </g>
+              <circle r="3.2" fill="#1E1612"></circle>
             </g>
-            <path d="M0 3 L-2.4 -5 L0 -16 L2.4 -5 Z" fill="#1E1612" transform="{{hourTf}}"></path>
-            <path d="M0 4 L-1.8 -7 L0 -26 L1.8 -7 Z" fill="#1E1612" transform="{{minTf}}"></path>
-            <g>
-              <line x1="0" y1="6" x2="0" y2="-30" stroke="#C9A24D" stroke-width="1"></line>
-              <animateTransform attributeName="transform" type="rotate" from="0" to="360" dur="60s"
-                repeatCount="indefinite"></animateTransform>
-            </g>
-            <circle r="3.2" fill="#1E1612"></circle>
-          </g>
-          <text x="918" y="292" text-anchor="middle" font-family="Chango, cursive" font-size="24" font-weight="700"
-            fill="{{ink3}}">{{timeLabel}}</text>
+            <text x="918" y="292" text-anchor="middle" font-family="Chango, cursive" font-size="24" font-weight="700"
+              fill="{{ink3}}">{{timeLabel}}</text>
           </g>
 
           <!-- time-of-day tint (covers the whole screen) -->
           <rect x="0" y="0" width="{{vw}}" height="{{vh}}" fill="{{ovFill}}" opacity="{{ovOp}}"></rect>
           <!-- things that glow (above the tint) -->
           <g class="cl" data-cl="fireplace-glow" transform="{{tfs_fireplace}}" display="{{dsp_fireplace}}">
-          <circle cx="630" cy="554" r="235" fill="url(#warmFire)" opacity="{{fire}}" style="mix-blend-mode:screen">
-          </circle>
-          <ellipse cx="630" cy="660" rx="220" ry="72" fill="url(#fireFloorGlow)" opacity="{{fireFloor}}"
-            style="mix-blend-mode:screen"></ellipse>
-          <!-- fire -->
-          <path d="M556 616 V592 M684 616 V592 M552 598 H688" stroke="#1A100A" stroke-width="4" stroke-linecap="round"
-            fill="none"></path>
-          <rect x="566" y="598" width="104" height="16" rx="8" fill="#4A3424"></rect>
-          <rect x="600" y="582" width="104" height="16" rx="8" fill="#5A3E2A" transform="rotate(-6 650 590)"></rect>
-          <path class="flame" d="M590 600 C585 560 620 545 618 510 C640 535 660 550 655 600 Z" fill="#E8843A"></path>
-          <path class="flame" style="animation-delay:.35s"
-            d="M625 600 C615 570 640 560 640 530 C660 555 685 570 676 600 Z" fill="#F4B040"></path>
-          <path class="flame" style="animation-delay:.7s"
-            d="M620 600 C618 580 632 575 634 560 C646 575 652 586 648 600 Z" fill="#FBE08A"></path>
-          <!-- candle flames -->
-          <ellipse class="flame" cx="711" cy="376" rx="3" ry="6" fill="#FFC857"></ellipse>
-          <ellipse class="flame" style="animation-delay:.4s" cx="727" cy="366" rx="3" ry="6" fill="#FFC857"></ellipse>
-          <ellipse class="flame" style="animation-delay:.8s" cx="745" cy="382" rx="3" ry="6" fill="#FFC857"></ellipse>
-          <ellipse class="flame" style="animation-delay:.2s" cx="714" cy="158" rx="3" ry="6" fill="#FFC857"></ellipse>
-          <ellipse class="flame" style="animation-delay:.4s" cx="700" cy="148" rx="3" ry="6" fill="#FFC857"></ellipse>
+            <circle cx="630" cy="554" r="235" fill="url(#warmFire)" opacity="{{fire}}" style="mix-blend-mode:screen">
+            </circle>
+            <ellipse cx="630" cy="660" rx="220" ry="72" fill="url(#fireFloorGlow)" opacity="{{fireFloor}}"
+              style="mix-blend-mode:screen"></ellipse>
+            <!-- fire -->
+            <path d="M556 616 V592 M684 616 V592 M552 598 H688" stroke="#1A100A" stroke-width="4" stroke-linecap="round"
+              fill="none"></path>
+            <rect x="566" y="598" width="104" height="16" rx="8" fill="#4A3424"></rect>
+            <rect x="600" y="582" width="104" height="16" rx="8" fill="#5A3E2A" transform="rotate(-6 650 590)"></rect>
+            <!-- soft glow behind the flame -->
+            <ellipse cx="636" cy="572" rx="84" ry="70" fill="url(#fireHalo)"></ellipse>
+            <!-- flame: several overlapping tongues, each fading from bright at the base to transparent at a pointed tip,
+                 then softly blurred so the colours blend instead of showing hard edges -->
+            <g filter="url(#fireBlur)">
+              <path class="fl" style="animation-duration:2.3s" fill="url(#flOuter)"
+                d="M596 608 C586 578 608 560 622 534 C630 518 636 506 640 486 C643 506 650 520 657 538 C668 560 690 578 678 608 Z"></path>
+              <path class="fl" style="animation-duration:1.7s;animation-delay:-.6s" fill="url(#flOuter)" opacity=".85"
+                d="M588 608 C580 592 586 580 596 566 C602 558 604 550 602 540 C612 550 618 562 618 576 C619 588 620 600 618 608 Z"></path>
+              <path class="fl" style="animation-duration:1.9s;animation-delay:-1.1s" fill="url(#flOuter)" opacity=".85"
+                d="M656 608 C654 596 656 586 662 576 C668 568 672 560 672 550 C682 560 688 572 686 586 C685 596 684 602 682 608 Z"></path>
+              <path class="fl" style="animation-duration:1.8s;animation-delay:-.3s" fill="url(#flMid)"
+                d="M608 608 C602 582 618 568 628 548 C634 536 638 526 640 508 C643 526 649 538 653 550 C662 568 676 584 668 608 Z"></path>
+              <path class="fl" style="animation-duration:1.5s;animation-delay:-.9s" fill="url(#flCore)"
+                d="M620 608 C616 592 626 584 632 570 C636 562 639 554 640 538 C642 554 646 564 650 572 C655 584 662 594 656 608 Z"></path>
+              <path class="fl" style="animation-duration:1.2s;animation-delay:-.2s" fill="url(#flOuter)" opacity=".55"
+                d="M635 526 C633 512 638 498 640 474 C643 498 647 512 645 526 Z"></path>
+            </g>
+            <!-- hot coals under the flame -->
+            <ellipse cx="636" cy="608" rx="52" ry="5" fill="url(#fireEmber)" opacity=".8"></ellipse>
+            <!-- sparks -->
+            <g fill="#eda985">
+              <g class="sp" style="--dy:-62px;--t:2.6s;--d:-0.2s"><circle class="sp-s" cx="622" cy="574" r="1.6" style="--w:4px;--ts:1.3s;--d2:-0.43s"></circle></g>
+              <g class="sp" style="--dy:-70px;--t:2.2s;--d:-0.6s"><circle class="sp-s" cx="640" cy="566" r="1.3" style="--w:6px;--ts:1.1s;--d2:-0.86s"></circle></g>
+              <g class="sp" style="--dy:-56px;--t:3.0s;--d:-0.9s"><circle class="sp-s" cx="652" cy="578" r="1.7" style="--w:3.5px;--ts:1.5s;--d2:-1.29s"></circle></g>
+              <g class="sp" style="--dy:-76px;--t:2.4s;--d:-1.3s"><circle class="sp-s" cx="630" cy="584" r="1.1" style="--w:5px;--ts:1.2s;--d2:-0.52s"></circle></g>
+              <g class="sp" style="--dy:-66px;--t:2.8s;--d:-1.7s"><circle class="sp-s" cx="660" cy="570" r="1.4" style="--w:4.5px;--ts:1.4s;--d2:-0.75s"></circle></g>
+              <g class="sp" style="--dy:-60px;--t:3.1s;--d:-2.1s"><circle class="sp-s" cx="614" cy="582" r="1.2" style="--w:6.5px;--ts:1.55s;--d2:-1.03s"></circle></g>
+              <g class="sp" style="--dy:-72px;--t:2.3s;--d:-2.4s"><circle class="sp-s" cx="646" cy="560" r="1.7" style="--w:3px;--ts:1.15s;--d2:-0.71s"></circle></g>
+              <g class="sp" style="--dy:-54px;--t:2.9s;--d:-2.8s"><circle class="sp-s" cx="636" cy="590" r="1.3" style="--w:5.5px;--ts:1.45s;--d2:-0.54s"></circle></g>
+              <g class="sp" style="--dy:-78px;--t:2.5s;--d:-0.7s"><circle class="sp-s" cx="626" cy="568" r="1.1" style="--w:4px;--ts:1.25s;--d2:-0.12s"></circle></g>
+            </g>
+            <!-- candle flames -->
+            <ellipse class="flame" cx="711" cy="376" rx="3" ry="6" fill="#FFC857"></ellipse>
+            <ellipse class="flame" style="animation-delay:.4s" cx="727" cy="366" rx="3" ry="6" fill="#FFC857"></ellipse>
+            <ellipse class="flame" style="animation-delay:.8s" cx="745" cy="382" rx="3" ry="6" fill="#FFC857"></ellipse>
+            <ellipse class="flame" style="animation-delay:.2s" cx="714" cy="158" rx="3" ry="6" fill="#FFC857"></ellipse>
+            <ellipse class="flame" style="animation-delay:.4s" cx="700" cy="148" rx="3" ry="6" fill="#FFC857"></ellipse>
           </g>
           <g class="cl" data-cl="lamp" transform="{{tfs_lamp}}" display="{{dsp_lamp}}">
-          <circle cx="420" cy="560" r="150" fill="url(#warm)" opacity="{{lamp}}"></circle>
-          <!-- paper egg lamp -->
-          <path d="M410 576 L398 616 M430 576 L442 616 M420 578 V616" stroke="#4A3424" stroke-width="3"
-            stroke-linecap="round" fill="none"></path>
-          <ellipse cx="420" cy="538" rx="30" ry="38" fill="#edd89d"></ellipse>
-          <path d="M420 500 C400 520 400 556 420 576 M420 500 C440 520 440 556 420 576" stroke="#E9A860"
-            stroke-width="1.5" fill="none"></path>
-          <rect x="408" y="573" width="24" height="6" rx="3" fill="#4A3424"></rect>
+            <circle cx="420" cy="560" r="150" fill="url(#warm)" opacity="{{lamp}}"></circle>
+            <!-- paper egg lamp -->
+            <path d="M410 576 L398 616 M430 576 L442 616 M420 578 V616" stroke="#4A3424" stroke-width="3"
+              stroke-linecap="round" fill="none"></path>
+            <ellipse cx="420" cy="538" rx="30" ry="38" fill="#edd89d"></ellipse>
+            <path d="M420 500 C400 520 400 556 420 576 M420 500 C440 520 440 556 420 576" stroke="#E9A860"
+              stroke-width="1.5" fill="none"></path>
+            <rect x="408" y="573" width="24" height="6" rx="3" fill="#4A3424"></rect>
           </g>
 
           <!-- fairy lights: tiled so the string always spans the screen -->
           <g transform="{{lightsTf}}">
-            <use href="#lightsTile" x="-2560"></use><use href="#lightsTile" x="-1280"></use><use href="#lightsTile"></use>
-            <use href="#lightsTile" x="1280"></use><use href="#lightsTile" x="2560"></use><use href="#lightsTile" x="3840"></use>
+            <use href="#lightsTile" x="-2560"></use>
+            <use href="#lightsTile" x="-1280"></use>
+            <use href="#lightsTile"></use>
+            <use href="#lightsTile" x="1280"></use>
+            <use href="#lightsTile" x="2560"></use>
+            <use href="#lightsTile" x="3840"></use>
           </g>
           <!-- Cozy sketch finish: subtle paper grain + warm vignette -->
           <rect x="0" y="0" width="{{vw}}" height="{{vh}}" filter="url(#grain)" opacity="0.07"></rect>
@@ -1495,39 +1774,49 @@
               to my space!</div>
           </div>
         </div>
-        <div class="hcl" style="position:absolute;left:0;top:0;transform-origin:0 0;transform:{{tfc_desk}};display:{{cdsp_desk}};--inv:{{inv_desk}}">
+        <div class="hcl"
+          style="position:absolute;left:0;top:0;transform-origin:0 0;transform:{{tfc_desk}};display:{{cdsp_desk}};--inv:{{inv_desk}}">
           <button class="hot" aria-label="Open code projects" onClick="{{ openCode }}"
-            style="position:absolute;left:802px;top:384px;width:130px;height:94px;background:transparent;border:0;border-radius:14px;cursor:pointer;padding:0"><span class="tag">cs projects</span></button>
+            style="position:absolute;left:802px;top:384px;width:130px;height:94px;background:transparent;border:0;border-radius:14px;cursor:pointer;padding:0"><span
+              class="tag">cs projects</span></button>
           <button class="hot" aria-label="Say hi" onClick="{{ openContact }}"
-            style="position:absolute;left:934px;top:402px;width:102px;height:76px;background:transparent;border:0;border-radius:14px;cursor:pointer;padding:0"><span class="tag">say hi</span></button>
+            style="position:absolute;left:934px;top:402px;width:102px;height:76px;background:transparent;border:0;border-radius:14px;cursor:pointer;padding:0"><span
+              class="tag">say hi</span></button>
         </div>
-        <div class="hcl" style="position:absolute;left:0;top:0;transform-origin:0 0;transform:{{tfc_basket}};display:{{cdsp_basket}};--inv:{{inv_basket}}">
+        <div class="hcl"
+          style="position:absolute;left:0;top:0;transform-origin:0 0;transform:{{tfc_basket}};display:{{cdsp_basket}};--inv:{{inv_basket}}">
           <button class="hot" aria-label="Open crochet projects" onClick="{{ openCrochet }}"
-            style="position:absolute;left:140px;top:548px;width:190px;height:178px;background:transparent;border:0;border-radius:14px;cursor:pointer;padding:0"><span class="tag">crochet projects</span></button>
+            style="position:absolute;left:140px;top:548px;width:190px;height:178px;background:transparent;border:0;border-radius:14px;cursor:pointer;padding:0"><span
+              class="tag">crochet projects</span></button>
         </div>
-        <div class="hcl" style="position:absolute;left:0;top:0;transform-origin:0 0;transform:{{tfc_fireplace}};display:{{cdsp_fireplace}};--inv:{{inv_fireplace}}">
+        <div class="hcl"
+          style="position:absolute;left:0;top:0;transform-origin:0 0;transform:{{tfc_fireplace}};display:{{cdsp_fireplace}};--inv:{{inv_fireplace}}">
           <button class="hot" aria-label="About me, by the fire" onClick="{{ openAbout }}"
-            style="position:absolute;left:480px;top:432px;width:300px;height:190px;background:transparent;border:0;border-radius:14px;cursor:pointer;padding:0"><span class="tag">about me</span></button>
-          <button  aria-label="Pet the ginger cat" onClick="{{ meow1 }}"
+            style="position:absolute;left:480px;top:432px;width:300px;height:190px;background:transparent;border:0;border-radius:14px;cursor:pointer;padding:0"><span
+              class="tag">about me</span></button>
+          <button aria-label="Pet the ginger cat" onClick="{{ meow1 }}"
             style="position:absolute;left:488px;top:298px;width:106px;height:120px;background:transparent;border:0;border-radius:40px;cursor:pointer;padding:0"></button>
           <sc-if value="{{ say1 }}" hint-placeholder-val="{{ false }}">
             <div class="bubble" style="left:534px;top:252px">mrrp!</div>
           </sc-if>
         </div>
-        <div class="hcl" style="position:absolute;left:0;top:0;transform-origin:0 0;transform:{{tfc_cat2}};display:{{cdsp_cat2}};--inv:{{inv_cat2}}">
-          <button  aria-label="Pet the calico cat" onClick="{{ meow2 }}"
+        <div class="hcl"
+          style="position:absolute;left:0;top:0;transform-origin:0 0;transform:{{tfc_cat2}};display:{{cdsp_cat2}};--inv:{{inv_cat2}}">
+          <button aria-label="Pet the calico cat" onClick="{{ meow2 }}"
             style="position:absolute;left:946px;top:624px;width:100px;height:124px;background:transparent;border:0;border-radius:40px;cursor:pointer;padding:0"></button>
           <sc-if value="{{ say2 }}" hint-placeholder-val="{{ false }}">
             <div class="bubble" style="left:996px;top:580px">…purr</div>
           </sc-if>
         </div>
-        <div class="hcl" style="position:absolute;left:0;top:0;transform-origin:0 0;transform:{{tfc_clock}};display:{{cdsp_clock}};--inv:{{inv_clock}}">
+        <div class="hcl"
+          style="position:absolute;left:0;top:0;transform-origin:0 0;transform:{{tfc_clock}};display:{{cdsp_clock}};--inv:{{inv_clock}}">
           <button aria-label="{{ clockLabel }}" onClick="{{ cycleTime }}"
             style="position:absolute;left:852px;top:146px;width:132px;height:156px;background:transparent;border:0;border-radius:20px;cursor:pointer;padding:0">
           </button>
         </div>
-        <div class="hcl" style="position:absolute;left:0;top:0;transform-origin:0 0;transform:{{tfc_window}};display:{{cdsp_window}};--inv:{{inv_window}}">
-          <button  aria-label="{{ seasonLabel }}" onClick="{{ cycleSeason }}"
+        <div class="hcl"
+          style="position:absolute;left:0;top:0;transform-origin:0 0;transform:{{tfc_window}};display:{{cdsp_window}};--inv:{{inv_window}}">
+          <button aria-label="{{ seasonLabel }}" onClick="{{ cycleSeason }}"
             style="position:absolute;left:288px;top:304px;width:60px;height:108px;background:transparent;border:0;border-radius:14px;cursor:pointer;padding:0"></button>
         </div>
 
@@ -1535,22 +1824,25 @@
         <!-- section panel -->
         <sc-if value="{{ anyOpen }}" hint-placeholder-val="{{ false }}">
           <div
-            style="position:fixed;left:0;top:0;right:0;bottom:0;display:flex;align-items:center;justify-content:center;padding:16px;box-sizing:border-box;z-index:20">
+            style="position:fixed;left:0;top:0;right:0;bottom:0;display:flex;align-items:center;justify-content:center;padding:clamp(8px,2.5vw,16px);box-sizing:border-box;z-index:20">
             <button aria-label="Close and go back to the room" onClick="{{ close }}"
               style="position:absolute;left:0;top:0;right:0;bottom:0;width:100%;height:100%;border:0;padding:0;background:rgba(58,44,30,.5);cursor:pointer"></button>
             <div
-              style="position:relative;width:min(660px,100%);max-height:100%;overflow:auto;zoom:{{modalZoom}};box-sizing:border-box;padding:44px 48px 40px;background:#FBF4E2;border-radius:30px;box-shadow:0 24px 60px rgba(40,28,16,.4);color:#3E2F22">
+              style="position:relative;width:100%;max-width:660px;max-height:100%;display:flex;flex-direction:column;zoom:{{modalZoom}};box-sizing:border-box;background:#FBF4E2;border-radius:30px;box-shadow:0 24px 60px rgba(40,28,16,.4);color:#3E2F22">
               <div
                 style="position:absolute;left:10px;top:10px;right:10px;bottom:10px;border:2px dashed #CDBB8E;border-radius:22px;pointer-events:none">
               </div>
               <button aria-label="Close" onClick="{{ close }}"
                 style="position:absolute;right:22px;top:22px;width:44px;height:44px;border-radius:22px;border:0;background:#EFE3C2;color:#3E2F22;font-family:'Fraunces',serif;font-size:18px;line-height:1;cursor:pointer;padding:0">×</button>
 
+              <!-- scrolling content: sits inside the dotted frame, so long content scrolls without ever crossing it -->
+              <div style="flex:1 1 auto;min-height:0;overflow-y:auto;overflow-x:hidden;margin:13px;border-radius:20px;box-sizing:border-box;padding:clamp(12px,4.5vw,32px) clamp(8px,4.5vw,34px) clamp(10px,3.5vw,28px);-webkit-overflow-scrolling:touch">
+
               <sc-if value="{{ isCode }}" hint-placeholder-val="{{ false }}">
                 <div>
                   <div style="font-family:'Chango',cursive;font-size:18px;font-weight:700;line-height:1;color:#46543A">
                     things I've built</div>
-                  <h2 style="margin:6px 0 22px;font-size:44px;font-weight:600;line-height:1.05">Code projects</h2>
+                  <h2 style="margin:6px 0 22px;font-size:clamp(28px,8vw,44px);font-weight:600;line-height:1.05;padding-right:44px">Code projects</h2>
                   <div style="display:flex;flex-direction:column;gap:12px">
                     <a class="proj" href="family-of-buttons.html"
                       style="display:flex;gap:16px;align-items:center;background:#F1E8CC;border-radius:18px;padding:14px;text-decoration:none;color:inherit">
@@ -1592,25 +1884,25 @@
                 <div>
                   <div style="font-family:'Chango',cursive;font-size:18px;font-weight:700;line-height:1;color:#46543A">
                     things I've stitched</div>
-                  <h2 style="margin:6px 0 22px;font-size:44px;font-weight:600;line-height:1.05">Crochet projects</h2>
-                  <div style="display:grid;grid-template-columns:repeat(3, minmax(0, 1fr));gap:14px">
+                  <h2 style="margin:6px 0 22px;font-size:clamp(28px,8vw,44px);font-weight:600;line-height:1.05;padding-right:44px">Crochet projects</h2>
+                  <div style="display:grid;grid-template-columns:repeat(auto-fit, minmax(140px, 1fr));gap:clamp(10px,2.5vw,14px)">
                     <div>
                       <div
-                        style="height:150px;border-radius:18px;border:2px dashed #CDBB8E;background:#EFE3C2;display:flex;align-items:center;justify-content:center;font-family:'Chango',cursive;font-size:24px;font-weight:700;color:#5A4A36">
+                        style="height:clamp(110px,32vw,150px);border-radius:18px;border:2px dashed #CDBB8E;background:#EFE3C2;display:flex;align-items:center;justify-content:center;font-family:'Chango',cursive;font-size:18px;font-weight:700;color:#5A4A36">
                         [PHOTO]</div>
                       <div style="font-size:18px;font-weight:600;margin-top:8px">Coming soon</div>
                       <div style="font-size:14px;color:#5A4A36">Coming soon</div>
                     </div>
                     <div>
                       <div
-                        style="height:150px;border-radius:18px;border:2px dashed #CDBB8E;background:#EFE3C2;display:flex;align-items:center;justify-content:center;font-family:'Chango',cursive;font-size:24px;font-weight:700;color:#5A4A36">
+                        style="height:clamp(110px,32vw,150px);border-radius:18px;border:2px dashed #CDBB8E;background:#EFE3C2;display:flex;align-items:center;justify-content:center;font-family:'Chango',cursive;font-size:18px;font-weight:700;color:#5A4A36">
                         [PHOTO]</div>
                       <div style="font-size:18px;font-weight:600;margin-top:8px">Coming soon</div>
                       <div style="font-size:14px;color:#5A4A36">Coming soon</div>
                     </div>
                     <div>
                       <div
-                        style="height:150px;border-radius:18px;border:2px dashed #CDBB8E;background:#EFE3C2;display:flex;align-items:center;justify-content:center;font-family:'Chango',cursive;font-size:24px;font-weight:700;color:#5A4A36">
+                        style="height:clamp(110px,32vw,150px);border-radius:18px;border:2px dashed #CDBB8E;background:#EFE3C2;display:flex;align-items:center;justify-content:center;font-family:'Chango',cursive;font-size:18px;font-weight:700;color:#5A4A36">
                         [PHOTO]</div>
                       <div style="font-size:18px;font-weight:600;margin-top:8px">Coming soon</div>
                       <div style="font-size:14px;color:#5A4A36">Coming soon</div>
@@ -1623,7 +1915,7 @@
                 <div>
                   <div style="font-family:'Chango',cursive;font-size:18px;font-weight:700;line-height:1;color:#46543A">
                     pull up a seat by the fire</div>
-                  <h2 style="margin:6px 0 16px;font-size:44px;font-weight:600;line-height:1.05">About me</h2>
+                  <h2 style="margin:6px 0 16px;font-size:clamp(28px,8vw,44px);font-weight:600;line-height:1.05;padding-right:44px">About me</h2>
                   <p style="margin:0 0 22px;font-size:18px;line-height:1.5;color:#5A4A36">Hi, I’m Utaha, a fourth-year
                     Computer Science student at the University of Calgary! I am passionate about
                     solving real-world problems with technology. My goal is to apply my skills and knowledge to make the
@@ -1652,7 +1944,7 @@
                   <div style="font-family:'Chango',cursive;font-size:18px;font-weight:700;line-height:1;color:#46543A">
                     the
                     piano corner</div>
-                  <h2 style="margin:6px 0 16px;font-size:44px;font-weight:600;line-height:1.05">Music</h2>
+                  <h2 style="margin:6px 0 16px;font-size:clamp(28px,8vw,44px);font-weight:600;line-height:1.05;padding-right:44px">Music</h2>
                   <p style="margin:0 0 20px;font-size:18px;line-height:1.5;color:#5A4A36">Singing, musicals and piano.
                     [Add a favourite show, a piece you're learning, or what you've been humming lately.]</p>
                   <div style="display:flex;flex-direction:column;gap:12px">
@@ -1691,22 +1983,22 @@
                   <div style="font-family:'Chango',cursive;font-size:18px;font-weight:700;line-height:1;color:#46543A">
                     the
                     kettle's on</div>
-                  <h2 style="margin:6px 0 16px;font-size:44px;font-weight:600;line-height:1.05">Say hi</h2>
+                  <h2 style="margin:6px 0 16px;font-size:clamp(28px,8vw,44px);font-weight:600;line-height:1.05;padding-right:44px">Say hi</h2>
                   <p style="margin:0 0 20px;font-size:18px;line-height:1.5;color:#5A4A36">I'd love to connect with you!
                     The easiest way to reach me is via email. </p>
                   <div style="display:flex;flex-direction:column;gap:10px">
                     <div
-                      style="display:flex;justify-content:space-between;gap:12px;background:#F1E8CC;border-radius:16px;padding:14px 18px;font-size:18px">
+                      style="display:flex;flex-wrap:wrap;justify-content:space-between;gap:4px 12px;background:#F1E8CC;border-radius:16px;padding:14px 18px;font-size:18px;overflow-wrap:anywhere">
                       <span style="font-weight:600">Email</span><span style="color:#5A4A36">iwauta049@gmail.com</span>
                     </div>
                     <div
-                      style="display:flex;justify-content:space-between;gap:12px;background:#F1E8CC;border-radius:16px;padding:14px 18px;font-size:18px">
+                      style="display:flex;flex-wrap:wrap;justify-content:space-between;gap:4px 12px;background:#F1E8CC;border-radius:16px;padding:14px 18px;font-size:18px;overflow-wrap:anywhere">
                       <span style="font-weight:600">GitHub</span><span style="color:#5A4A36"><a
                           href="https://github.com/iwauta049" style="color:#5A4A36" target="_blank"
                           rel="noopener noreferrer">https://github.com/iwauta049</a></span>
                     </div>
                     <div
-                      style="display:flex;justify-content:space-between;gap:12px;background:#F1E8CC;border-radius:16px;padding:14px 18px;font-size:18px">
+                      style="display:flex;flex-wrap:wrap;justify-content:space-between;gap:4px 12px;background:#F1E8CC;border-radius:16px;padding:14px 18px;font-size:18px;overflow-wrap:anywhere">
                       <span style="font-weight:600">LinkedIn</span><span style="color:#5A4A36"><a
                           href="https://www.linkedin.com/in/utaha-iwai/" style="color:#5A4A36" target="_blank"
                           rel="noopener noreferrer">https://www.linkedin.com/in/utaha-iwai/</a></span>
@@ -1714,6 +2006,7 @@
                   </div>
                 </div>
               </sc-if>
+              </div>
             </div>
           </div>
         </sc-if>
